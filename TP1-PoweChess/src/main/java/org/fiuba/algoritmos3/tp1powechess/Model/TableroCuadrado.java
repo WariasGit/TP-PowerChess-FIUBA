@@ -1,10 +1,10 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
-public class Tablero {
+public class TableroCuadrado {
     private Casillero[][] tablero;
     static private Integer dimensiones = 8;
 
-    public Tablero() {
+    public TableroCuadrado() {
         tablero = new Casillero[dimensiones][dimensiones];
         inicializarTableroAjedrez();
     }

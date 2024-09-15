@@ -1,0 +1,54 @@
+package org.fiuba.algoritmos3.tp1powechess.Model;
+
+import java.util.ArrayList;
+
+public abstract class PeonBase implements TipoDePieza {
+    private boolean fueMovido;  // Tracks whether the pawn has moved
+
+    public PeonBase() {
+        this.fueMovido = false;  // Initially, the pawn hasn't moved
+    }
+
+    public String getTipoDePieza() {
+        return "Peon";
+    }
+
+    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
+        int dir = getDireccion();  // Definido en la subclase
+
+        if (finX == inicioX && finY == inicioY + dir) {
+            this.fueMovido = true;
+            return true;
+        }
+
+        if (!fueMovido && finX == inicioX && finY == inicioY + 2 * dir) {
+            this.fueMovido = true;
+            return true;
+        }
+
+        if (Math.abs(finX - inicioX) == 1 && finY == inicioY + dir) {
+            this.fueMovido = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    protected abstract int getDireccion();
+
+
+    public ArrayList<int[]> getDireccionesDeAmenaza() {
+        ArrayList<int[]> direcciones = new ArrayList<>();
+        int dir = getDireccion();
+
+        direcciones.add(new int[] {1, dir});
+        direcciones.add(new int[] {-1, dir});
+
+        return direcciones;
+    }
+
+    public int getMaxDistanciaDeAmenaza() {
+        return 1;
+    }
+
+}
