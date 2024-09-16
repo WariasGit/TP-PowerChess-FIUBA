@@ -36,15 +36,20 @@ public abstract class PeonBase implements TipoDePieza {
 
     protected abstract int getDireccion();
 
-
-    public ArrayList<int[]> getDireccionesDeAmenaza() {
-        ArrayList<int[]> direcciones = new ArrayList<>();
+    public ArrayList<Amenaza> getAmenazasGeneradas(String color,int inicioX, int inicioY) {
+        ArrayList<Amenaza> amenazas = new ArrayList<>();
         int dir = getDireccion();
+        int[][] direcciones = {
+                {1, dir}, {-1, dir}
+        };
 
-        direcciones.add(new int[] {1, dir});
-        direcciones.add(new int[] {-1, dir});
+        int maxDistancia = getMaxDistanciaDeAmenaza();
 
-        return direcciones;
+        for (int[] direccion : direcciones) {
+            amenazas.add(new Amenaza(color, direccion, maxDistancia));
+        }
+
+        return amenazas;
     }
 
     public int getMaxDistanciaDeAmenaza() {

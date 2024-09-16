@@ -15,20 +15,21 @@ public class Caballo implements TipoDePieza {
         return (difX == 2 && difY == 1) || (difX == 1 && difY == 2);
     }
 
-    public ArrayList<int[]> getDireccionesDeAmenaza() {
-        ArrayList<int[]> direcciones = new ArrayList<>();
+    public ArrayList<Amenaza> getAmenazasGeneradas(String color,int inicioX, int inicioY) {
+        ArrayList<Amenaza> amenazas = new ArrayList<>();
+        int[][] direcciones = {
+                {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+                {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+        };
 
-        // 8 movimientos posibles del caballo
-        direcciones.add(new int[] {2, 1});
-        direcciones.add(new int[] {2, -1});
-        direcciones.add(new int[] {-2, 1});
-        direcciones.add(new int[] {-2, -1});
-        direcciones.add(new int[] {1, 2});
-        direcciones.add(new int[] {1, -2});
-        direcciones.add(new int[] {-1, 2});
-        direcciones.add(new int[] {-1, -2});
+        // La Reina puede moverse a cualquier cantidad de casillas en línea recta
+        int maxDistancia = getMaxDistanciaDeAmenaza();
 
-        return direcciones;
+        for (int[] direccion : direcciones) {
+            amenazas.add(new Amenaza(color, direccion, maxDistancia));
+        }
+
+        return amenazas;
     }
 
     public int getMaxDistanciaDeAmenaza() {

@@ -29,12 +29,10 @@ public class Casillero {
 
     public void setPieza(Pieza pieza) {
         this.pieza = pieza;
-        this.estadoCasillero = new CasilleroOcupado();
     }
 
     public void removePieza(Pieza pieza) {
         this.pieza = null;
-        this.estadoCasillero = new CasilleroDesocupado();
     }
 
     public boolean estaOcupado(){

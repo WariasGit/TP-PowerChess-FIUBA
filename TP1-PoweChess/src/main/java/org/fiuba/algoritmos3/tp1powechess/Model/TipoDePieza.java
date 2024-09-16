@@ -5,6 +5,6 @@ import java.util.ArrayList;
 public interface TipoDePieza {
     String getTipoDePieza();
     boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY);
-    ArrayList<int[]> getDireccionesDeAmenaza();
+    public ArrayList<Amenaza> getAmenazasGeneradas(String color,int inicioX, int inicioY);
     int getMaxDistanciaDeAmenaza();
 }

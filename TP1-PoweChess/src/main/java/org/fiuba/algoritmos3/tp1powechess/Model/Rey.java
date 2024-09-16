@@ -15,19 +15,21 @@ public class Rey implements TipoDePieza {
         return (difX <= 1 && difY <= 1);
     }
 
-    public ArrayList<int[]> getDireccionesDeAmenaza() {
-        ArrayList<int[]> direcciones = new ArrayList<>();
+    public ArrayList<Amenaza> getAmenazasGeneradas(String color,int inicioX, int inicioY) {
+        ArrayList<Amenaza> amenazas = new ArrayList<>();
+        int[][] direcciones = {
+                {1, 0}, {-1, 0}, {0, 1}, {0, -1},   // Direcciones horizontales y verticales
+                {1, 1}, {-1, 1}, {1, -1}, {-1, -1}  // Direcciones diagonales
+        };
 
-        direcciones.add(new int[] {1, 0});
-        direcciones.add(new int[] {-1, 0});
-        direcciones.add(new int[] {0, 1});
-        direcciones.add(new int[] {0, -1});
-        direcciones.add(new int[] {1, 1});
-        direcciones.add(new int[] {-1, 1});
-        direcciones.add(new int[] {1, -1});
-        direcciones.add(new int[] {-1, -1});
+        // La Reina puede moverse a cualquier cantidad de casillas en línea recta
+        int maxDistancia = getMaxDistanciaDeAmenaza();
 
-        return direcciones;
+        for (int[] direccion : direcciones) {
+            amenazas.add(new Amenaza(color, direccion, maxDistancia));
+        }
+
+        return amenazas;
     }
 
     @Override
