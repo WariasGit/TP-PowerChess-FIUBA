@@ -4,6 +4,7 @@ public class Casillero {
     private Pieza pieza;
     private String color;
     private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
+    private EstadoDeAmenaza estadoDeAmenaza;
 
     public Casillero(String color) {
         this.color = color;
@@ -23,7 +24,7 @@ public class Casillero {
         return pieza;
     }
 
-    public void setEstadoCasillero(EstadoDeOcupacionCasillero estadoDeOcupacionCasillero) {
+    public void setEstadoDeOcupacion(EstadoDeOcupacionCasillero estadoDeOcupacionCasillero) {
         this.estadoDeOcupacionCasillero = estadoDeOcupacionCasillero;
     }
 

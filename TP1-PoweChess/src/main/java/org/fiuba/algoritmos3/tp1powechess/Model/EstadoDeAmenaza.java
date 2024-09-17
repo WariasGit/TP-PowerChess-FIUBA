@@ -18,31 +18,66 @@ public class EstadoDeAmenaza{
     }
 
     public int getNumeroDeAmenazas() {
-        return amenazas.size(); // No hay amenazas en un casillero no amenazado
+        return amenazas.size();
     }
 
     public void agregarAmenaza(Amenaza amenaza) {
         this.amenazas.add(amenaza);
     }
 
-
-    public int getNumeroDeAmenazasDistintoColor(String colorPieza) {
-        return 0; // No hay amenazas en un casillero no amenazado
+    public void agregarAmenazas(ArrayList<Amenaza> amenazas) {
+        this.amenazas.addAll(amenazas);
     }
 
-    public int getNumeroDeAmenazasMismoColor(String colorPieza) {
-        return 0; // No hay amenazas en un casillero no amenazado
+    public void removerTodasLasAmenazas() {
+        amenazas.clear();
     }
 
-    public ArrayList<int[]> getDireccionesDeAmenaza() {
-        return new ArrayList<>(); // No hay direcciones de amenaza
+    public int getNumeroDeAmenazasDistintoColor(String color) {
+        final int[] contadorAmenazasDistintoColor = {0};
+        amenazas.forEach(amenaza -> {
+            if (!amenaza.esDeColor(color)) {
+                contadorAmenazasDistintoColor[0]++;
+            }
+        });
+        return contadorAmenazasDistintoColor[0];
     }
 
-    public ArrayList<int[]> getDireccionesDeAmenazaDistintoColor(String colorPieza) {
-        return new ArrayList<>(); // No hay direcciones de amenaza
+    public int getNumeroDeAmenazasMismoColor(String color) {
+        final int[] contadorAmenazasMismoColor = {0};
+        amenazas.forEach(amenaza -> {
+            if (amenaza.esDeColor(color)) {
+                contadorAmenazasMismoColor[0]++;
+            }
+        });
+        return contadorAmenazasMismoColor[0];
     }
 
-    public ArrayList<int[]> getDireccionesDeAmenazaMismoColor(String colorPieza) {
-        return new ArrayList<>(); // No hay direcciones de amenaza
+    public ArrayList<Amenaza> getAmenazas() {
+        return this.amenazas;
+    }
+
+    public ArrayList<Amenaza> getAmenazasDistintoColor(String colorPieza) {
+        ArrayList<Amenaza> amenazasDistintoColor = new ArrayList<>();
+
+        this.amenazas.forEach(amenaza -> {
+            if (!amenaza.esDeColor(colorPieza)) {
+                amenazasDistintoColor.add(amenaza);
+            }
+        });
+
+        return amenazasDistintoColor;
+    }
+
+    public ArrayList<Amenaza> getAmenazasMismoColor(String color) {
+        ArrayList<Amenaza> amenazasMismoColor = new ArrayList<>();
+
+        this.amenazas.forEach(amenaza -> {
+            if (amenaza.esDeColor(color)) {
+                amenazasMismoColor.add(amenaza);
+            }
+        });
+
+        return amenazasMismoColor;
     }
 }
