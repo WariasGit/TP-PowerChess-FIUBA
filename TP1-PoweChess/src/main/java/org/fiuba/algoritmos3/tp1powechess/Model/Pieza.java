@@ -1,5 +1,7 @@
 package main.java.org.fiuba.algoritmos3.tp1powechess.Model;
 
+import java.util.ArrayList;
+
 public class Pieza {
     private String color;
     private TipoDePieza tipoDePieza;
@@ -19,6 +21,10 @@ public class Pieza {
 
     public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
         return tipoDePieza.esMovimientoValido(inicioX, inicioY, finX, finY);
+    }
+
+    public ArrayList<Amenaza> getAmenazasGeneradas(){
+        return tipoDePieza.getAmenazasGeneradas(this.color);
     }
 
 }

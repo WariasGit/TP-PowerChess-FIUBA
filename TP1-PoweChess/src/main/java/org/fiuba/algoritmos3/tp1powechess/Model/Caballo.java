@@ -15,14 +15,13 @@ public class Caballo implements TipoDePieza {
         return (difX == 2 && difY == 1) || (difX == 1 && difY == 2);
     }
 
-    public ArrayList<Amenaza> getAmenazasGeneradas(String color,int inicioX, int inicioY) {
+    public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
         ArrayList<Amenaza> amenazas = new ArrayList<>();
         int[][] direcciones = {
                 {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
                 {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
         };
 
-        // La Reina puede moverse a cualquier cantidad de casillas en línea recta
         int maxDistancia = getMaxDistanciaDeAmenaza();
 
         for (int[] direccion : direcciones) {

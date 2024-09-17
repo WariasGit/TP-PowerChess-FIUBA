@@ -3,28 +3,28 @@ package main.java.org.fiuba.algoritmos3.tp1powechess.Model;
 public class Casillero {
     private Pieza pieza;
     private String color;
-    private EstadoCasillero estadoCasillero;
+    private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
 
     public Casillero(String color) {
         this.color = color;
         this.pieza = null;
-        this.estadoCasillero = new CasilleroDesocupado();
+        this.estadoDeOcupacionCasillero = new EstadoDesocupado();
     }
 
     public String getColor() {
         return color;
     }
 
-    public EstadoCasillero getEstadoCasillero() {
-        return estadoCasillero;
+    public EstadoDeOcupacionCasillero getEstadoCasillero() {
+        return estadoDeOcupacionCasillero;
     }
 
     public Pieza getPieza() {
         return pieza;
     }
 
-    public void setEstadoCasillero(EstadoCasillero estadoCasillero) {
-        this.estadoCasillero = estadoCasillero;
+    public void setEstadoCasillero(EstadoDeOcupacionCasillero estadoDeOcupacionCasillero) {
+        this.estadoDeOcupacionCasillero = estadoDeOcupacionCasillero;
     }
 
     public void setPieza(Pieza pieza) {
@@ -36,7 +36,7 @@ public class Casillero {
     }
 
     public boolean estaOcupado(){
-        return estadoCasillero.estaOcupado();
+        return estadoDeOcupacionCasillero.estaOcupado();
     }
 
 
