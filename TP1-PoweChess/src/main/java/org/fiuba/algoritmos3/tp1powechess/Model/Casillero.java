@@ -1,4 +1,6 @@
-package main.java.org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model;
+
+import java.util.ArrayList;
 
 public class Casillero {
     private Pieza pieza;
@@ -10,6 +12,7 @@ public class Casillero {
         this.color = color;
         this.pieza = null;
         this.estadoDeOcupacionCasillero = new EstadoDesocupado();
+        this.estadoDeAmenaza = new EstadoDeAmenaza();
     }
 
     public String getColor() {
@@ -40,5 +43,39 @@ public class Casillero {
         return estadoDeOcupacionCasillero.estaOcupado();
     }
 
+    public void agregarAmenazas(ArrayList<Amenaza> amenazas){
+        this.estadoDeAmenaza.agregarAmenazas(amenazas);
+    }
 
+    public void removerTodasLasAmenazas(){
+        this.estadoDeAmenaza.removerTodasLasAmenazas();
+    }
+
+    public boolean estaAmenazado(){
+        return this.estadoDeAmenaza.estaAmenazado();
+    }
+
+    public int getNumeroDeAmenazas(){
+        return this.estadoDeAmenaza.getNumeroDeAmenazas();
+    }
+
+    public int getNumeroDeAmenazasMismoColor(String colorAmenaza){
+        return this.estadoDeAmenaza.getNumeroDeAmenazasMismoColor(colorAmenaza);
+    }
+
+    public int getNumeroDeAmenazasDistintoColor(String colorAmenaza){
+        return this.estadoDeAmenaza.getNumeroDeAmenazasDistintoColor(colorAmenaza);
+    }
+
+    public ArrayList<Amenaza> getAmenazas(){
+        return this.estadoDeAmenaza.getAmenazas();
+    }
+
+    public ArrayList<Amenaza> getAmenazasDistintoColor(String colorAmenaza){
+        return this.estadoDeAmenaza.getAmenazasDistintoColor(colorAmenaza);
+    }
+
+    public ArrayList<Amenaza> getAmenazasMismoColor(String colorAmenaza){
+        return this.estadoDeAmenaza.getAmenazasMismoColor(colorAmenaza);
+    }
 }

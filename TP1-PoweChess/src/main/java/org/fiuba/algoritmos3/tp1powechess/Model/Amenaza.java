@@ -1,4 +1,4 @@
-package main.java.org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model;
 
 public class Amenaza {
     private String color;
