@@ -6,13 +6,13 @@ public class Casillero {
     private Pieza pieza;
     private String color;
     private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
-    private EstadoDeAmenaza estadoDeAmenaza;
+    private GestorDeAmenazas gestorDeAmenazas;
 
     public Casillero(String color) {
         this.color = color;
         this.pieza = null;
         this.estadoDeOcupacionCasillero = new EstadoDesocupado();
-        this.estadoDeAmenaza = new EstadoDeAmenaza();
+        this.gestorDeAmenazas = new GestorDeAmenazas();
     }
 
     public String getColor() {
@@ -44,38 +44,38 @@ public class Casillero {
     }
 
     public void agregarAmenazas(ArrayList<Amenaza> amenazas){
-        this.estadoDeAmenaza.agregarAmenazas(amenazas);
+        this.gestorDeAmenazas.agregarAmenazas(amenazas);
     }
 
     public void removerTodasLasAmenazas(){
-        this.estadoDeAmenaza.removerTodasLasAmenazas();
+        this.gestorDeAmenazas.removerTodasLasAmenazas();
     }
 
     public boolean estaAmenazado(){
-        return this.estadoDeAmenaza.estaAmenazado();
+        return this.gestorDeAmenazas.estaAmenazado();
     }
 
     public int getNumeroDeAmenazas(){
-        return this.estadoDeAmenaza.getNumeroDeAmenazas();
+        return this.gestorDeAmenazas.getNumeroDeAmenazas();
     }
 
     public int getNumeroDeAmenazasMismoColor(String colorAmenaza){
-        return this.estadoDeAmenaza.getNumeroDeAmenazasMismoColor(colorAmenaza);
+        return this.gestorDeAmenazas.getNumeroDeAmenazasMismoColor(colorAmenaza);
     }
 
     public int getNumeroDeAmenazasDistintoColor(String colorAmenaza){
-        return this.estadoDeAmenaza.getNumeroDeAmenazasDistintoColor(colorAmenaza);
+        return this.gestorDeAmenazas.getNumeroDeAmenazasDistintoColor(colorAmenaza);
     }
 
     public ArrayList<Amenaza> getAmenazas(){
-        return this.estadoDeAmenaza.getAmenazas();
+        return this.gestorDeAmenazas.getAmenazas();
     }
 
     public ArrayList<Amenaza> getAmenazasDistintoColor(String colorAmenaza){
-        return this.estadoDeAmenaza.getAmenazasDistintoColor(colorAmenaza);
+        return this.gestorDeAmenazas.getAmenazasDistintoColor(colorAmenaza);
     }
 
     public ArrayList<Amenaza> getAmenazasMismoColor(String colorAmenaza){
-        return this.estadoDeAmenaza.getAmenazasMismoColor(colorAmenaza);
+        return this.gestorDeAmenazas.getAmenazasMismoColor(colorAmenaza);
     }
 }

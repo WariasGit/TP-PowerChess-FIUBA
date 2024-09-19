@@ -48,4 +48,15 @@ public class Amenaza {
         return this.cantidadCasilleros > 1;
     }
 
+    public boolean esIgualA(Amenaza otraAmenaza) {
+        if (this == otraAmenaza) return true;
+        if (otraAmenaza == null) return false;
+
+        // Comparar color, dirección y cantidad de casilleros
+        return this.color.equals(otraAmenaza.color) &&
+                this.cantidadCasilleros == otraAmenaza.cantidadCasilleros &&
+                this.direccion[0] == otraAmenaza.direccion[0] &&
+                this.direccion[1] == otraAmenaza.direccion[1];
+    }
+
 }
