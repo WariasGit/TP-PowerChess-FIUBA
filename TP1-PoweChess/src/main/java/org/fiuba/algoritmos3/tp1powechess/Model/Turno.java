@@ -5,19 +5,19 @@ public class Turno {
 
     public Turno() {
        //Turno no tiene por que conocer a los jugadores, y si o si inicia en blanco
-        this.turno = null;
+        this.turno = "blanco";
     }
 
-    public gestionarTurno() {
+    public void gestionarTurno() {
         //el primer turno va a ser blanco, porque es null
-        if (this.turno = 'blanco') {
-            this.turno = 'negro';
+        if (this.turno == "blanco") {
+            this.turno = "negro";
             return;
         }
-        this.turno = 'blanco';
+        this.turno = "blanco";
     }
 
-    public getTurno() {
+    public String getTurno() {
         return this.turno;
     }
 

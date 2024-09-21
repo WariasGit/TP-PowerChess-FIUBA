@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<GridPane fx:id="tableroGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+        <RowConstraints vgrow="SOMETIMES" maxHeight="75.0" minHeight="75.0" prefHeight="75.0" />
+    </rowConstraints>
+
+    <children>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="2" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+
+
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="6" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="0" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="1" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="2" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="3" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="4" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="5" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="6" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0000006e" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+        <StackPane GridPane.rowIndex="7" GridPane.columnIndex="7" onMouseClicked="#handleEventoClick">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0"/>
+            </children>
+        </StackPane>
+
+
+
+    </children>
+</GridPane>
+

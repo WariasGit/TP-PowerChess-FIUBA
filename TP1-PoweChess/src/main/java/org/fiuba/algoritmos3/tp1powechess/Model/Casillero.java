@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 public class Casillero {
     private Pieza pieza;
-    private String color;
+    private Configuracion.ColoresJugadores color;
     private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
     private EstadoDeAmenaza estadoDeAmenaza;
 
-    public Casillero(String color) {
+    public Casillero(Configuracion.ColoresJugadores color) {
         this.color = color;
         this.pieza = null;
         this.estadoDeOcupacionCasillero = new EstadoDesocupado();
         this.estadoDeAmenaza = new EstadoDeAmenaza();
     }
 
-    public String getColor() {
+    public Configuracion.ColoresJugadores getColor() {
         return color;
     }
 
@@ -35,7 +35,7 @@ public class Casillero {
         this.pieza = pieza;
     }
 
-    public void removePieza(Pieza pieza) {
+    public void removerPieza() {
         this.pieza = null;
     }
 
