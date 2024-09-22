@@ -1,18 +1,18 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
 public class Amenaza {
-    private String colorPieza;
+    private String color;
     private int[] direccion;
     private int cantidadCasilleros;
 
-    public Amenaza(String colorPieza, int[] direccion, int cantidadCasilleros) {
-        this.colorPieza = colorPieza;
+    public Amenaza(String color, int[] direccion, int cantidadCasilleros) {
+        this.color = color;
         this.direccion = direccion;
         this.cantidadCasilleros = cantidadCasilleros;
     }
 
-    public String getColorPieza() {
-        return colorPieza;
+    public String getColor() {
+        return color;
     }
 
     public int[] getDireccion() {
@@ -38,6 +38,25 @@ public class Amenaza {
         }
 
         return false; // Si la dirección no es válida
+    }
+
+    public boolean esDeColor(String color) {
+        return color.equals(this.color);
+    }
+
+    public boolean amenazaMasQueUnCasillero(){
+        return this.cantidadCasilleros > 1;
+    }
+
+    public boolean esIgualA(Amenaza otraAmenaza) {
+        if (this == otraAmenaza) return true;
+        if (otraAmenaza == null) return false;
+
+        // Comparar color, dirección y cantidad de casilleros
+        return this.color.equals(otraAmenaza.color) &&
+                this.cantidadCasilleros == otraAmenaza.cantidadCasilleros &&
+                this.direccion[0] == otraAmenaza.direccion[0] &&
+                this.direccion[1] == otraAmenaza.direccion[1];
     }
 
 }

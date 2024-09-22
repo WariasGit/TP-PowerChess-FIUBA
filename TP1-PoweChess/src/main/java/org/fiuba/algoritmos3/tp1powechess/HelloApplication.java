@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess;
+package main.java.org.fiuba.algoritmos3.tp1powechess;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

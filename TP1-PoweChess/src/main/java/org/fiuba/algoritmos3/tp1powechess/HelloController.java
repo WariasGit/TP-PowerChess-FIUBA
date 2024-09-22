@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess;
+package main.java.org.fiuba.algoritmos3.tp1powechess;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
