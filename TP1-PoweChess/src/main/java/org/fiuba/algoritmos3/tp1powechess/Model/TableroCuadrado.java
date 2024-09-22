@@ -1,5 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
+import java.util.ArrayList;
+
 public class TableroCuadrado {
     private Casillero[][] tablero;
     static private Integer dimensiones = 8;
@@ -23,6 +25,38 @@ public class TableroCuadrado {
     }
 
     public void setPieza(int row, int col, Pieza pieza) {
-        tablero[row][col].setPieza(pieza);
+        if (!esCoordenadaValida(row, col)) {
+            throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
+        }
+        Casillero casillero = getCasillero(row, col);
+        casillero.setPieza(pieza);
+
+        ArrayList<Amenaza> amenazasBloqueadas = casillero.getAmenazasBloqueadas();
+
+        for (Amenaza amenaza : amenazasBloqueadas) {
+            int[] direccion = amenaza.getDireccion();
+
+            // Calcular hasta dónde se extiende la amenaza
+            for (int i = 0; i < amenaza.getCantidadCasilleros(); i++) {
+                // Calcular nuevas coordenadas
+                int nuevaRow = row + (i + 1) * direccion[0]; // Se suma 1 para no afectar el casillero donde se colocó la pieza
+                int nuevaCol = col + (i + 1) * direccion[1];
+
+                // Verificar límites del tablero
+                if (esCoordenadaValida(nuevaRow, nuevaCol)) {
+                    Casillero casilleroAmenazado = getCasillero(nuevaRow, nuevaCol);
+                    casilleroAmenazado.bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
+                    if(casilleroAmenazado.estaOcupado()){
+                        break;
+                    }
+                } else {
+                    break; // Fuera de límites, detener el proceso
+                }
+            }
+        }
+    }
+
+    private boolean esCoordenadaValida(int row, int col) {
+        return row >= 0 && row < dimensiones && col >= 0 && col < dimensiones;
     }
 }

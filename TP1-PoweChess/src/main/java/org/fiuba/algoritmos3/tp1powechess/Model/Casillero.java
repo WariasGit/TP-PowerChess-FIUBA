@@ -67,6 +67,11 @@ public class Casillero {
         return !amenazasDistintoColor.isEmpty();
     }
 
+    public boolean estaActivamenteAmenazadoPorColorDistinto(String color) {
+        ArrayList<Amenaza> amenazasActivasDistintoColor = gestorDeAmenazas.obtenerAmenazasActivasDistintoColor(color);
+        return !amenazasActivasDistintoColor.isEmpty();
+    }
+
     public ArrayList<Amenaza> getAmenazasActivas(){
         return this.gestorDeAmenazas.getAmenazasActivas();
     }
@@ -94,6 +99,7 @@ public class Casillero {
     public ArrayList<Amenaza> getAmenazasActivasMismoColor(String colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasActivasPorColor(colorAmenaza);
     }
+
     public ArrayList<Amenaza> getAmenazasBloqueadasMismoColor(String colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasBloqueadasPorColor(colorAmenaza);
     }
@@ -102,11 +108,11 @@ public class Casillero {
         return this.gestorDeAmenazas.obtenerAmenazasTotalesPorColor(colorAmenaza);
     }
 
-    private void bloquearAmenazasQueSeExtiendenMasDeUnCasillero() {
+    public void bloquearAmenazasQueSeExtiendenMasDeUnCasillero() {
         gestorDeAmenazas.moverAmenazasActivasAmasDeUnCasilleroABloqueadas();
     }
 
-    private void desbloquearAmenazasBloqueadas() {
+    public void desbloquearAmenazasBloqueadas() {
         gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();
     }
 }
