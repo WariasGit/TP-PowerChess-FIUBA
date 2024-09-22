@@ -3,6 +3,7 @@ package org.fiuba.algoritmos3.tp1powechess.Model;
 public class Puntaje {
     private Jugador jugadorBlanco;
     private Jugador jugadorNegro;
+    private Ganador ganador
 
     public GestorDePuntaje(Jugador jugadorBlanco, Jugador jugadorNegro) {
         this.jugadorBlanco = jugadorBlanco;
