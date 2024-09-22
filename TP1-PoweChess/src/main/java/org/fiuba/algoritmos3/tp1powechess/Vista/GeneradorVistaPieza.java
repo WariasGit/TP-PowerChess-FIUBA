@@ -37,7 +37,7 @@ public class GeneradorVistaPieza {
     public ImageView crearVistaPieza(Pieza pieza) {
         Map<String,String> piezasEnColor = piezas.get(pieza.getColor());
         String path = piezasEnColor.get(pieza.getPieceType());
-        Image piezaImage = new Image(getClass().getResourceAsStream(path));
+        Image piezaImage = new Image(getClass().getResourceAsStream("/org/fiuba/algoritmos3/tp1powechess/" + path));
         ImageView vistaImagen = new ImageView();
         vistaImagen.setImage(piezaImage);
         return vistaImagen;

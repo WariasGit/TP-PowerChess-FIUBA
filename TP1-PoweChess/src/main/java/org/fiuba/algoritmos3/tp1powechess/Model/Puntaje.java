@@ -4,10 +4,13 @@ public class Puntaje {
     private Jugador jugadorBlanco;
     private Jugador jugadorNegro;
 
+    /*
     public GestorDePuntaje(Jugador jugadorBlanco, Jugador jugadorNegro) {
         this.jugadorBlanco = jugadorBlanco;
         this.jugadorNegro = jugadorNegro;
     }
+
+     */
 
     public Jugador determinarGanador() {
         if (jugadorBlanco.getPuntaje() > jugadorNegro.getPuntaje()) {

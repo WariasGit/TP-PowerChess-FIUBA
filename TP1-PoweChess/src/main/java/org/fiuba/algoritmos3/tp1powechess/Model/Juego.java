@@ -20,7 +20,7 @@ public class Juego {
         this.jugadorBlanco = jugadorBlanco;
         this.jugadorNegro = jugadorNegro;
         tablero = new TableroCuadrado();
-        //cargarPartida();
+        cargarPartida();
     }
 
     public void establecerTablas() {
