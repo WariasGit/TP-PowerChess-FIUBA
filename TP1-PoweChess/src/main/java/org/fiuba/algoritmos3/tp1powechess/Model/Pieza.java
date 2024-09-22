@@ -1,17 +1,19 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+
 import java.util.ArrayList;
 
 public class Pieza {
-    private String color;
+    private Configuracion.ColoresJugadores color;
     private TipoDePieza tipoDePieza;
 
-    public Pieza(String color, TipoDePieza tipoDePieza) {
+    public Pieza(Configuracion.ColoresJugadores color, TipoDePieza tipoDePieza) {
         this.color = color;
         this.tipoDePieza = tipoDePieza;
     }
 
-    public String getColor() {
+    public Configuracion.ColoresJugadores getColor() {
         return color;
     }
 
@@ -23,8 +25,11 @@ public class Pieza {
         return tipoDePieza.esMovimientoValido(inicioX, inicioY, finX, finY);
     }
 
+    /*
     public ArrayList<Amenaza> getAmenazasGeneradas(){
         return tipoDePieza.getAmenazasGeneradas(this.color);
     }
+
+     */
 
 }

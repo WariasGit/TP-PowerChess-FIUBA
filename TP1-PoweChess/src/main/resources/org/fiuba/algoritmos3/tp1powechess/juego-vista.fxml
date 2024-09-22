@@ -7,7 +7,8 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
+<?import javafx.scene.layout.AnchorPane?>
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="683.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
     <children>
         <VBox prefHeight="125.0" prefWidth="600.0" spacing="10.0">
             <children>
@@ -40,12 +41,8 @@
                 </HBox>
             </children>
         </VBox>
-
-        <!-- Inclusión del tablero desde otro archivo FXML -->
         <fx:include fx:id="tablero" source="tablero-vista.fxml" />
     </children>
-
-    <!-- Margen para los elementos del VBox -->
     <padding>
         <Insets left="10.0" right="10.0" />
     </padding>

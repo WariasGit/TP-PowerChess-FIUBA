@@ -9,7 +9,10 @@ import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.EventoCambioDeTurno;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Jugador;
-import org.fiuba.algoritmos3.tp1powechess.Model.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+
+import java.io.IOException;
 
 
 public class Main extends Application {
@@ -19,7 +22,7 @@ public class Main extends Application {
         Jugador j1 = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
         Jugador j2 = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
         Juego juego = new Juego(j1, j2);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("juego-vista.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
         VBox root;
         root = loader.load();
         ControladorJuego juegoController = loader.getController();

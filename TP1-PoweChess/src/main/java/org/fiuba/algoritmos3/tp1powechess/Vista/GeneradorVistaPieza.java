@@ -2,13 +2,12 @@ package org.fiuba.algoritmos3.tp1powechess.Vista;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.fiuba.algoritmos3.tp1powechess.Model.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
 
 import java.util.Map;
 
-import static org.fiuba.algoritmos3.tp1powechess.Model.Configuracion.ColoresJugadores;
-import static org.fiuba.algoritmos3.tp1powechess.Model.Configuracion.ColoresJugadores.*;
+import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJugadores;
+import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJugadores.*;
 
 public class GeneradorVistaPieza {
 

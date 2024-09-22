@@ -2,30 +2,39 @@ package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-//import org.fiuba.algoritmos3.tp1powechess.Model.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
-import org.fiuba.algoritmos3.tp1powechess.Model.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.vistaJuego;
 
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 
 public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
+
     @FXML
     public Rectangle jugador1_color;
+
     @FXML
     public Rectangle jugador2_color;
-    private Juego juego;
+
     @FXML
-    private ControladorTablero controladorTablero = new ControladorTablero();
+    public GridPane tablero;
+
+    private Juego juego;
+
+    @FXML
+    private ControladorTablero controladorTablero;
+
     @FXML
     private Label jugador1;
     @FXML
@@ -39,6 +48,12 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
             Map.entry(Configuracion.ColoresJugadores.BLANCO, Color.WHITE),
             Map.entry(Configuracion.ColoresJugadores.NEGRO, Color.BLACK)
     );
+
+    public void initialize() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ruta/a/tu/archivo/tablero.fxml"));
+        controladorTablero = loader.getController();
+    }
+
 
     public void setJuego(Juego juego) {
         this.juego = juego;

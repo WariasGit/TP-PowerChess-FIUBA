@@ -10,7 +10,6 @@ import org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Model.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Vista.GeneradorVistaPieza;
-//import org.fiuba.algoritmos3.tp1powechess.Vista.GeneradorVistaPieza;
 
 import java.util.Optional;
 
@@ -24,11 +23,7 @@ public class ControladorTablero {
 
     private Integer posicionOrigenColumna;
 
-    private StackPane[][] posiciones = null;
-
-    public void initialize() {
-        this.posiciones = new StackPane[8][8];
-    }
+    private final StackPane[][] posiciones = new StackPane[8][8];;
 
     public void setJuego(Juego juego) {
         this.juego = juego;
@@ -80,3 +75,4 @@ public class ControladorTablero {
         }
     }
 }
+

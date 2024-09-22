@@ -1,5 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+
 public class Jugador {
     private Configuracion.ColoresJugadores color;
     private String nombre;

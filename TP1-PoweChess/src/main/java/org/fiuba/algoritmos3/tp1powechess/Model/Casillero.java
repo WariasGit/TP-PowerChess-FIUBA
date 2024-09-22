@@ -1,5 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+
 import java.util.ArrayList;
 
 public class Casillero {
