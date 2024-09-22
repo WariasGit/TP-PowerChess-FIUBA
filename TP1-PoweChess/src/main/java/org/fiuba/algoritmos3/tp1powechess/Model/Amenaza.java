@@ -44,10 +44,6 @@ public class Amenaza {
         return color.equals(this.color);
     }
 
-    public boolean amenazaMasQueUnCasillero(){
-        return this.cantidadCasilleros > 1;
-    }
-
     public boolean esIgualA(Amenaza otraAmenaza) {
         if (this == otraAmenaza) return true;
         if (otraAmenaza == null) return false;
@@ -57,6 +53,14 @@ public class Amenaza {
                 this.cantidadCasilleros == otraAmenaza.cantidadCasilleros &&
                 this.direccion[0] == otraAmenaza.direccion[0] &&
                 this.direccion[1] == otraAmenaza.direccion[1];
+    }
+
+    public boolean seExtiendeMasAllaDe(int numeroDeCasilleros) {
+        return this.cantidadCasilleros > numeroDeCasilleros;
+    }
+
+    public boolean seExtiendeMenosOIgualA(int numeroDeCasilleros) {
+        return this.cantidadCasilleros <= numeroDeCasilleros;
     }
 
 }

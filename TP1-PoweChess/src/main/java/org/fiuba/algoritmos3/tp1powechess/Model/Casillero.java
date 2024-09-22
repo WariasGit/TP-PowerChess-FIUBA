@@ -33,49 +33,80 @@ public class Casillero {
 
     public void setPieza(Pieza pieza) {
         this.pieza = pieza;
+        this.setEstadoDeOcupacion(new EstadoOcupado());
+        this.bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
     }
 
     public void removePieza(Pieza pieza) {
         this.pieza = null;
+        this.setEstadoDeOcupacion(new EstadoDesocupado());
+        this.desbloquearAmenazasBloqueadas();
     }
 
     public boolean estaOcupado(){
         return estadoDeOcupacionCasillero.estaOcupado();
     }
 
-    public void agregarAmenazas(ArrayList<Amenaza> amenazas){
-        this.gestorDeAmenazas.agregarAmenazas(amenazas);
+    public void agregarAmenazas(ArrayList<Amenaza> amenazas) {
+        this.gestorDeAmenazas.agregarAmenazasActivas(amenazas);
+        if (this.estaOcupado()) {
+            bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
+        };
     }
 
-    public void removerTodasLasAmenazas(){
-        this.gestorDeAmenazas.removerTodasLasAmenazas();
+    public void removerLasSiguientesAmenazas(ArrayList<Amenaza> amenazasAEliminar){
+        this.gestorDeAmenazas.quitarAmenazasIguales(amenazasAEliminar);
     }
 
     public boolean estaAmenazado(){
-        return this.gestorDeAmenazas.estaAmenazado();
+        return this.gestorDeAmenazas.tieneAlMenosUnaAmenaza();
     }
 
-    public int getNumeroDeAmenazas(){
-        return this.gestorDeAmenazas.getNumeroDeAmenazas();
+    public boolean estaAmenazadoPorColorDistinto(String color) {
+        ArrayList<Amenaza> amenazasDistintoColor = gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
+        return !amenazasDistintoColor.isEmpty();
     }
 
-    public int getNumeroDeAmenazasMismoColor(String colorAmenaza){
-        return this.gestorDeAmenazas.getNumeroDeAmenazasMismoColor(colorAmenaza);
+    public ArrayList<Amenaza> getAmenazasActivas(){
+        return this.gestorDeAmenazas.getAmenazasActivas();
     }
 
-    public int getNumeroDeAmenazasDistintoColor(String colorAmenaza){
-        return this.gestorDeAmenazas.getNumeroDeAmenazasDistintoColor(colorAmenaza);
+    public ArrayList<Amenaza> getAmenazasBloqueadas(){
+        return this.gestorDeAmenazas.getAmenazasBloqueadas();
     }
 
     public ArrayList<Amenaza> getAmenazas(){
         return this.gestorDeAmenazas.getAmenazas();
     }
 
+    public ArrayList<Amenaza> getAmenazasActivasDistintoColor(String colorAmenaza){
+        return this.gestorDeAmenazas.obtenerAmenazasActivasDistintoColor(colorAmenaza);
+    }
+
+    public ArrayList<Amenaza> getAmenazasBloqueadasDistintoColor(String colorAmenaza){
+        return this.gestorDeAmenazas.obtenerAmenazasBloqueadasDistintoColor(colorAmenaza);
+    }
+
     public ArrayList<Amenaza> getAmenazasDistintoColor(String colorAmenaza){
-        return this.gestorDeAmenazas.getAmenazasDistintoColor(colorAmenaza);
+        return this.gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(colorAmenaza);
+    }
+
+    public ArrayList<Amenaza> getAmenazasActivasMismoColor(String colorAmenaza){
+        return this.gestorDeAmenazas.obtenerAmenazasActivasPorColor(colorAmenaza);
+    }
+    public ArrayList<Amenaza> getAmenazasBloqueadasMismoColor(String colorAmenaza){
+        return this.gestorDeAmenazas.obtenerAmenazasBloqueadasPorColor(colorAmenaza);
     }
 
     public ArrayList<Amenaza> getAmenazasMismoColor(String colorAmenaza){
-        return this.gestorDeAmenazas.getAmenazasMismoColor(colorAmenaza);
+        return this.gestorDeAmenazas.obtenerAmenazasTotalesPorColor(colorAmenaza);
+    }
+
+    private void bloquearAmenazasQueSeExtiendenMasDeUnCasillero() {
+        gestorDeAmenazas.moverAmenazasActivasAmasDeUnCasilleroABloqueadas();
+    }
+
+    private void desbloquearAmenazasBloqueadas() {
+        gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();
     }
 }
