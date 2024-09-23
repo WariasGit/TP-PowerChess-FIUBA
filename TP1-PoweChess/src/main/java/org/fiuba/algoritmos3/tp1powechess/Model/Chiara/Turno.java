@@ -1,23 +1,21 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
 
 public class Turno {
-    private String turno;
+    private Configuracion.ColoresJugadores color;
 
     public Turno() {
-       //Turno no tiene por que conocer a los jugadores, y si o si inicia en blanco
-        this.turno = null;
+        this.color = Configuracion.ColoresJugadores.BLANCO;
     }
 
-    public gestionarTurno() {
-        //el primer turno va a ser blanco, porque es null
-        if (this.turno = 'blanco') {
-            this.turno = 'negro';
+    public void gestionarTurno() {
+        if (this.turno == Configuracion.ColoresJugadores.BLANCO) {
+            this.turno = Configuracion.ColoresJugadores.NEGRO;
             return;
         }
-        this.turno = 'blanco';
+        this.turno = Configuracion.ColoresJugadores.BLANCO;
     }
 
-    public getTurno() {
+    public String getTurno() {
         return this.turno;
     }
 
