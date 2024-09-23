@@ -25,6 +25,41 @@ public class TableroCuadrado {
         return this.tablero[row][col];
     }
 
+    public Pieza moverPieza(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+        // Verificamos si las coordenadas son válidas
+        if (!esCoordenadaValida(rowInicial, colInicial)) {
+            throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
+        }
+
+        if (!esCoordenadaValida(rowFinal, colFinal)) {
+            throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
+        }
+
+        // Verificamos que el casillero inicial tenga una pieza
+        Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
+        Pieza piezaAMover = casilleroInicial.getPieza();
+        if (piezaAMover == null) {
+            throw new IllegalStateException("No hay una pieza en el casillero inicial.");
+        }
+
+        // Verificamos si el movimiento es válido para la pieza
+        if (!piezaAMover.esMovimientoValido(rowInicial, colInicial, rowFinal, colFinal)) {
+            throw new IllegalStateException("El movimiento no es válido para esta pieza.");
+        }
+
+        // Verificamos si el camino está desocupado
+        if (!caminoEstaDesocupado(rowInicial, colInicial, rowFinal, colFinal)) {
+            throw new IllegalStateException("El camino está bloqueado por otras piezas.");
+        }
+
+        // Movemos la pieza al nuevo casillero
+        Pieza piezaMovida = removePieza(rowInicial, colInicial);
+        Pieza piezaComida = setPieza(rowFinal, colFinal, piezaMovida);
+
+        // Devolvemos la pieza comida si hay alguna, o null si no había pieza en el destino
+        return piezaComida;
+    }
+
     public Pieza setPieza(int row, int col, Pieza piezaAColocar) {
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
@@ -174,4 +209,45 @@ public class TableroCuadrado {
         colocarPiezasBlancas();
         colocarPiezasNegras();
     }
+
+    public boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+        int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
+        int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
+
+        int filaActual = rowInicial + incrementoFila;
+        int colActual = colInicial + incrementoColumna;
+
+        // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
+        while (filaActual != rowFinal || colActual != colFinal) {
+            if (getCasillero(filaActual, colActual).estaOcupado()) {
+                return false;  // El camino está bloqueado
+            }
+
+            filaActual += incrementoFila;
+            colActual += incrementoColumna;
+        }
+
+        return true;  // El camino está libre
+    }
+
+    public boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+        int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
+        int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
+
+        int filaActual = rowInicial + incrementoFila;
+        int colActual = colInicial + incrementoColumna;
+
+        // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
+        while (filaActual != rowFinal || colActual != colFinal) {
+            if (getCasillero(filaActual, colActual).estaAmenazado()) {
+                return true;  // El camino está amenazado
+            }
+
+            filaActual += incrementoFila;
+            colActual += incrementoColumna;
+        }
+
+        return false;  // El camino no tiene amenazas
+    }
+
 }
