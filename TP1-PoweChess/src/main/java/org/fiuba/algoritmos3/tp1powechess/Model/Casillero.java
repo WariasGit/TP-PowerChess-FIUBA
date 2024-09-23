@@ -37,7 +37,7 @@ public class Casillero {
         this.bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
     }
 
-    public void removePieza(Pieza pieza) {
+    public void removePieza() {
         this.pieza = null;
         this.setEstadoDeOcupacion(new EstadoDesocupado());
         this.desbloquearAmenazasBloqueadas();
@@ -106,6 +106,10 @@ public class Casillero {
 
     public ArrayList<Amenaza> getAmenazasMismoColor(String colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasTotalesPorColor(colorAmenaza);
+    }
+
+    public ArrayList<Amenaza> obtenerAmenazasActivasQueSeExtiendenMasQueUnCasillero(){
+        return this.gestorDeAmenazas.obtenerAmenazasActivasQueSeExtiendenMasQue(1);
     }
 
     public void bloquearAmenazasQueSeExtiendenMasDeUnCasillero() {
