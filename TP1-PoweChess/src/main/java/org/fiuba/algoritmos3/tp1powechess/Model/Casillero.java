@@ -33,7 +33,9 @@ public class Casillero {
 
     public void setPieza(Pieza pieza) {
         this.pieza = pieza;
-        this.setEstadoDeOcupacion(new EstadoOcupado());
+        if(!this.estaOcupado()) {
+            this.setEstadoDeOcupacion(new EstadoOcupado());
+        }
         this.bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
     }
 
@@ -45,6 +47,13 @@ public class Casillero {
 
     public boolean estaOcupado(){
         return estadoDeOcupacionCasillero.estaOcupado();
+    }
+
+    public ArrayList<Amenaza> getAmenzasDePiezaActual(){
+        if(this.estaOcupado()){
+            return this.pieza.getAmenazasGeneradas();
+        }
+        return new ArrayList<Amenaza>();
     }
 
     public void agregarAmenazas(ArrayList<Amenaza> amenazas) {

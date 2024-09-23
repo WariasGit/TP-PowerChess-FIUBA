@@ -15,6 +15,10 @@ public class Pieza {
         return color;
     }
 
+    public boolean esDeColor(String color) {
+        return this.color.equals(color);
+    }
+
     public String getPieceType() {
         return tipoDePieza.getTipoDePieza();
     }
