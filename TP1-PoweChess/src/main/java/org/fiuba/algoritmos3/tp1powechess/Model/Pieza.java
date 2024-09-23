@@ -24,7 +24,11 @@ public class Pieza {
     }
 
     public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
-        return tipoDePieza.esMovimientoValido(inicioX, inicioY, finX, finY);
+        return tipoDePieza.movimientoEnDireccionDeMovimiento(inicioX, inicioY, finX, finY);
+    }
+
+    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
+        return tipoDePieza.movimientoEnDireccionDeAmenaza(inicioX, inicioY, finX, finY);
     }
 
     public ArrayList<Amenaza> getAmenazasGeneradas(){

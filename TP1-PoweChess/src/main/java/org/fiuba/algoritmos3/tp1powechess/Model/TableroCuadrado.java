@@ -180,7 +180,7 @@ public class TableroCuadrado {
         setPieza(7, 0, new Pieza(color, new Torre()));
         setPieza(7, 1, new Pieza(color, new Caballo()));
         setPieza(7, 2, new Pieza(color, new Alfil()));
-        setPieza(7, 3, new Pieza(color, new Reina()));
+        setPieza(7, 3, new Pieza(color, new Alfil()));
         setPieza(7, 4, new Pieza(color, new Rey()));
         setPieza(7, 5, new Pieza(color, new Alfil()));
         setPieza(7, 6, new Pieza(color, new Caballo()));
@@ -198,7 +198,7 @@ public class TableroCuadrado {
         setPieza(0, 0, new Pieza(color, new Torre()));
         setPieza(0, 1, new Pieza(color, new Caballo()));
         setPieza(0, 2, new Pieza(color, new Alfil()));
-        setPieza(0, 3, new Pieza(color, new Reina()));
+        setPieza(0, 3, new Pieza(color, new Alfil()));
         setPieza(0, 4, new Pieza(color, new Rey()));
         setPieza(0, 5, new Pieza(color, new Alfil()));
         setPieza(0, 6, new Pieza(color, new Caballo()));

@@ -4,27 +4,52 @@ import java.util.ArrayList;
 
 public class Reina implements TipoDePieza {
 
+    private final ArrayList<int[]> direccionesDeMovimiento;
+    private final ArrayList<int[]> direccionesDeAmenaza;
+
+    public Reina() {
+        // Inicializamos las direcciones de movimiento
+        direccionesDeMovimiento = new ArrayList<>();
+        direccionesDeMovimiento.add(new int[]{1, 0});   // Derecha
+        direccionesDeMovimiento.add(new int[]{-1, 0});  // Izquierda
+        direccionesDeMovimiento.add(new int[]{0, 1});   // Arriba
+        direccionesDeMovimiento.add(new int[]{0, -1});  // Abajo
+        direccionesDeMovimiento.add(new int[]{1, 1});   // Diagonal derecha arriba
+        direccionesDeMovimiento.add(new int[]{-1, 1});  // Diagonal izquierda arriba
+        direccionesDeMovimiento.add(new int[]{1, -1});  // Diagonal derecha abajo
+        direccionesDeMovimiento.add(new int[]{-1, -1}); // Diagonal izquierda abajo
+
+        // Para la Reina, las direcciones de movimiento y de amenaza son las mismas
+        direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
+    }
+
     public String getTipoDePieza() {
         return "Reina";
     }
 
-    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
-        int difX = Math.abs(finX - inicioX);
-        int difY = Math.abs(finY - inicioY);
+    public boolean movimientoEnDireccionDeMovimiento(int inicioX, int inicioY, int finX, int finY) {
+        int difX = finX - inicioX;
+        int difY = finY - inicioY;
 
-        return (inicioX == finX || inicioY == finY || difX == difY);
+        // Verificamos si la dirección está entre las permitidas
+        return esDireccionDeMovimientoValida(difX, difY);
+    }
+
+    public boolean movimientoEnDireccionDeAmenaza(int inicioX, int inicioY, int finX, int finY) {
+        for (int[] direccion : direccionesDeAmenaza) {
+            Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
+            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
         ArrayList<Amenaza> amenazas = new ArrayList<>();
-        int[][] direcciones = {
-                {1, 0}, {-1, 0}, {0, 1}, {0, -1},   // Direcciones horizontales y verticales
-                {1, 1}, {-1, 1}, {1, -1}, {-1, -1}  // Direcciones diagonales
-        };
-
         int maxDistancia = getMaxDistanciaDeAmenaza();
 
-        for (int[] direccion : direcciones) {
+        for (int[] direccion : direccionesDeAmenaza) {
             amenazas.add(new Amenaza(color, direccion, maxDistancia));
         }
 
@@ -32,6 +57,22 @@ public class Reina implements TipoDePieza {
     }
 
     public int getMaxDistanciaDeAmenaza() {
-        return Integer.MAX_VALUE;
+        return Integer.MAX_VALUE;  // La Reina no tiene límite de casilleros
+    }
+
+    public ArrayList<int[]> getDireccionesDeMovimiento() {
+        return new ArrayList<int[]> (direccionesDeMovimiento);
+    }
+
+    // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas
+    private boolean esDireccionDeMovimientoValida(int difX, int difY) {
+        for (int[] direccion : direccionesDeMovimiento) {
+            if ((direccion[0] == 0 && difX == 0 && difY * direccion[1] > 0) ||  // Movimiento vertical
+                    (direccion[1] == 0 && difY == 0 && difX * direccion[0] > 0) ||  // Movimiento horizontal
+                    (direccion[0] != 0 && direccion[1] != 0 && difX * direccion[1] == difY * direccion[0])) {  // Movimiento diagonal proporcional
+                return true;
+            }
+        }
+        return false;
     }
 }
