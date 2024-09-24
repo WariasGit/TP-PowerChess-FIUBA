@@ -58,7 +58,7 @@ public class Caballo implements TipoDePieza {
     public int getMaxDistanciaDeAmenaza() {
         return 1;  // El caballo solo puede amenazar en las casillas adyacentes a su movimiento en "L"
     }
-    
+
     public ArrayList<int[]> getDireccionesDeMovimiento() {
         return new ArrayList<>(this.direccionesDeMovimiento);
     }
