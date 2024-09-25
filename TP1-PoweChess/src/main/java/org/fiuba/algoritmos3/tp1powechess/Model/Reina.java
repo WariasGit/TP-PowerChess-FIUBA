@@ -2,32 +2,33 @@ package org.fiuba.algoritmos3.tp1powechess.Model;
 
 import java.util.ArrayList;
 
-public class Reina implements TipoDePieza {
+public class Reina extends Pieza {
 
-    private final ArrayList<int[]> direccionesDeMovimiento;
-    private final ArrayList<int[]> direccionesDeAmenaza;
+    public Reina(String color) {
+        super(color);
 
-    public Reina() {
+        this.maxDistanciaDeAmenaza = Integer.MAX_VALUE;
+
         // Inicializamos las direcciones de movimiento
-        direccionesDeMovimiento = new ArrayList<>();
-        direccionesDeMovimiento.add(new int[]{1, 0});   // Derecha
-        direccionesDeMovimiento.add(new int[]{-1, 0});  // Izquierda
-        direccionesDeMovimiento.add(new int[]{0, 1});   // Arriba
-        direccionesDeMovimiento.add(new int[]{0, -1});  // Abajo
-        direccionesDeMovimiento.add(new int[]{1, 1});   // Diagonal derecha arriba
-        direccionesDeMovimiento.add(new int[]{-1, 1});  // Diagonal izquierda arriba
-        direccionesDeMovimiento.add(new int[]{1, -1});  // Diagonal derecha abajo
-        direccionesDeMovimiento.add(new int[]{-1, -1}); // Diagonal izquierda abajo
+        this.direccionesDeMovimiento = new ArrayList<>();
+        this.direccionesDeMovimiento.add(new int[]{1, 0});   // Derecha
+        this.direccionesDeMovimiento.add(new int[]{-1, 0});  // Izquierda
+        this.direccionesDeMovimiento.add(new int[]{0, 1});   // Arriba
+        this.direccionesDeMovimiento.add(new int[]{0, -1});  // Abajo
+        this.direccionesDeMovimiento.add(new int[]{1, 1});   // Diagonal derecha arriba
+        this.direccionesDeMovimiento.add(new int[]{-1, 1});  // Diagonal izquierda arriba
+        this.direccionesDeMovimiento.add(new int[]{1, -1});  // Diagonal derecha abajo
+        this.direccionesDeMovimiento.add(new int[]{-1, -1}); // Diagonal izquierda abajo
 
         // Para la Reina, las direcciones de movimiento y de amenaza son las mismas
-        direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
+        this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
     }
 
     public String getTipoDePieza() {
         return "Reina";
     }
 
-    public boolean movimientoEnDireccionDeMovimiento(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
 
@@ -35,7 +36,7 @@ public class Reina implements TipoDePieza {
         return esDireccionDeMovimientoValida(difX, difY);
     }
 
-    public boolean movimientoEnDireccionDeAmenaza(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
@@ -43,25 +44,6 @@ public class Reina implements TipoDePieza {
             }
         }
         return false;
-    }
-
-    public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
-        ArrayList<Amenaza> amenazas = new ArrayList<>();
-        int maxDistancia = getMaxDistanciaDeAmenaza();
-
-        for (int[] direccion : direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(color, direccion, maxDistancia));
-        }
-
-        return amenazas;
-    }
-
-    public int getMaxDistanciaDeAmenaza() {
-        return Integer.MAX_VALUE;  // La Reina no tiene límite de casilleros
-    }
-
-    public ArrayList<int[]> getDireccionesDeMovimiento() {
-        return new ArrayList<int[]> (direccionesDeMovimiento);
     }
 
     // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas

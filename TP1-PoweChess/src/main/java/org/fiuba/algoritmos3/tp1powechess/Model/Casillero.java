@@ -39,10 +39,12 @@ public class Casillero {
         this.bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
     }
 
-    public void removePieza() {
+    public Pieza removePieza() {
+        Pieza piezaAux = this.pieza;
         this.pieza = null;
         this.setEstadoDeOcupacion(new EstadoDesocupado());
         this.desbloquearAmenazasBloqueadas();
+        return piezaAux;
     }
 
     public boolean estaOcupado(){

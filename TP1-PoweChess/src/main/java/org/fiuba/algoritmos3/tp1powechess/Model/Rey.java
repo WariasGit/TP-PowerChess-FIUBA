@@ -2,12 +2,14 @@ package org.fiuba.algoritmos3.tp1powechess.Model;
 
 import java.util.ArrayList;
 
-public class Rey implements TipoDePieza {
+public class Rey extends Pieza {
 
-    private final ArrayList<int[]> direccionesDeMovimiento;
-    private final ArrayList<int[]> direccionesDeAmenaza;
+    public Rey(String color) {
 
-    public Rey() {
+        super(color);
+
+        this.maxDistanciaDeAmenaza = 1;
+
         // Inicializamos las direcciones de movimiento del Rey (una casilla en cualquier dirección)
         direccionesDeMovimiento = new ArrayList<>();
         direccionesDeMovimiento.add(new int[]{1, 0});  // Derecha
@@ -27,7 +29,7 @@ public class Rey implements TipoDePieza {
         return "Rey";
     }
 
-    public boolean movimientoEnDireccionDeMovimiento(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
 
@@ -35,7 +37,7 @@ public class Rey implements TipoDePieza {
         return esDireccionDeMovimientoValida(difX, difY);
     }
 
-    public boolean movimientoEnDireccionDeAmenaza(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
 
@@ -54,30 +56,7 @@ public class Rey implements TipoDePieza {
         return false;
     }
 
-
-    public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
-        ArrayList<Amenaza> amenazas = new ArrayList<>();
-        int maxDistancia = getMaxDistanciaDeAmenaza();
-
-        // Generar amenazas en todas las direcciones de amenaza
-        for (int[] direccion : direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(color, direccion, maxDistancia));
-        }
-
-        return amenazas;
-    }
-
-
-    public int getMaxDistanciaDeAmenaza() {
-        return 1;  // El Rey solo puede amenazar en casillas adyacentes
-    }
-
-
-    public ArrayList<int[]> getDireccionesDeMovimiento() {
-        return new ArrayList<>(direccionesDeMovimiento);
-    }
-
-    // Método privado que verifica si la dirección del movimiento es válida
+    // Metodo privado que verifica si la dirección del movimiento es válida
     private boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             if (direccion[0] == difX && direccion[1] == difY) {

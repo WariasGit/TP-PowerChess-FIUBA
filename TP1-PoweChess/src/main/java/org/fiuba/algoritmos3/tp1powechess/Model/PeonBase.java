@@ -2,14 +2,13 @@ package org.fiuba.algoritmos3.tp1powechess.Model;
 
 import java.util.ArrayList;
 
-public abstract class PeonBase implements TipoDePieza {
-    private boolean fueMovido;  // Indica si el peón se ha movido
+public abstract class PeonBase extends Pieza {
 
-    private final ArrayList<int[]> direccionesDeMovimiento;
-    private final ArrayList<int[]> direccionesDeAmenaza;
+    public PeonBase(String color) {
 
-    public PeonBase() {
-        this.fueMovido = false;  // Inicialmente, el peón no se ha movido
+        super(color);
+
+        this.maxDistanciaDeAmenaza = 1;
 
         // Definimos las direcciones de movimiento del peón
         direccionesDeMovimiento = new ArrayList<>();
@@ -26,19 +25,19 @@ public abstract class PeonBase implements TipoDePieza {
         return "Peon";
     }
 
-    public boolean movimientoEnDireccionDeMovimiento(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
 
         // Verificamos si la dirección está entre las direcciones de movimiento permitidas
         if (esDireccionDeMovimientoValida(difX, difY)) {
-            this.fueMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
+            this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
             return true;
         }
         return false;
     }
 
-    public boolean movimientoEnDireccionDeAmenaza(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
@@ -48,32 +47,13 @@ public abstract class PeonBase implements TipoDePieza {
         return false;
     }
 
-    public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
-        ArrayList<Amenaza> amenazas = new ArrayList<>();
-        int maxDistancia = getMaxDistanciaDeAmenaza();
-
-        for (int[] direccion : direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(color, direccion, maxDistancia));
-        }
-
-        return amenazas;
-    }
-
-    public int getMaxDistanciaDeAmenaza() {
-        return 1;  // El peón solo puede amenazar en una casilla diagonal
-    }
-
-    public ArrayList<int[]> getDireccionesDeMovimiento() {
-        return direccionesDeMovimiento;
-    }
-
     // Meetodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    private boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    protected boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             // Solo debe moverse hacia adelante (sin cambiar la X)
             if (direccion[0] == difX && direccion[1] == difY) {
                 // El peón puede moverse 1 o 2 casillas adelante solo si no ha sido movido
-                return (!fueMovido || direccion[1] != 2 * getDireccion());
+                return (!this.seHaMovido || direccion[1] != 2 * getDireccion());
             }
         }
         return false;

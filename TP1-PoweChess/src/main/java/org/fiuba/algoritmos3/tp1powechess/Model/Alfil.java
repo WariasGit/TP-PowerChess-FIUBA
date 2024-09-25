@@ -2,12 +2,14 @@ package org.fiuba.algoritmos3.tp1powechess.Model;
 
 import java.util.ArrayList;
 
-public class Alfil implements TipoDePieza {
+public class Alfil extends Pieza {
 
-    private final ArrayList<int[]> direccionesDeMovimiento;
-    private final ArrayList<int[]> direccionesDeAmenaza;
+    public Alfil(String color) {
 
-    public Alfil() {
+        super(color);
+
+        this.maxDistanciaDeAmenaza = Integer.MAX_VALUE;
+
         // Inicializamos las direcciones de movimiento
         direccionesDeMovimiento = new ArrayList<>();
         direccionesDeMovimiento.add(new int[]{1, 1});   // Diagonal derecha arriba
@@ -23,7 +25,7 @@ public class Alfil implements TipoDePieza {
         return "Alfil";
     }
 
-    public boolean movimientoEnDireccionDeMovimiento(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
 
@@ -31,7 +33,7 @@ public class Alfil implements TipoDePieza {
         return esDireccionDeMovimientoValida(difX, difY);
     }
 
-    public boolean movimientoEnDireccionDeAmenaza(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
@@ -39,25 +41,6 @@ public class Alfil implements TipoDePieza {
             }
         }
         return false;
-    }
-
-    public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
-        ArrayList<Amenaza> amenazas = new ArrayList<>();
-        int maxDistancia = getMaxDistanciaDeAmenaza();
-
-        for (int[] direccion : direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(color, direccion, maxDistancia));
-        }
-
-        return amenazas;
-    }
-
-    public int getMaxDistanciaDeAmenaza() {
-        return Integer.MAX_VALUE;  // La Reina no tiene límite de casilleros
-    }
-
-    public ArrayList<int[]> getDireccionesDeMovimiento() {
-        return new ArrayList<int[]> (direccionesDeMovimiento);
     }
 
     // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas

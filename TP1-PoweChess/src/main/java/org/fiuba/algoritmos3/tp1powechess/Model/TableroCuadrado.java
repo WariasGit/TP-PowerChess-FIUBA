@@ -173,36 +173,36 @@ public class TableroCuadrado {
         // Colocación de peones blancos
         String color = "blanco";
         for (int col = 0; col < dimensiones; col++) {
-            setPieza(6, col, new Pieza(color, new PeonBlanco()));
+            setPieza(6, col, new PeonAscendente(color));
         }
 
         // Colocación de piezas mayores blancas
-        setPieza(7, 0, new Pieza(color, new Torre()));
-        setPieza(7, 1, new Pieza(color, new Caballo()));
-        setPieza(7, 2, new Pieza(color, new Alfil()));
-        setPieza(7, 3, new Pieza(color, new Alfil()));
-        setPieza(7, 4, new Pieza(color, new Rey()));
-        setPieza(7, 5, new Pieza(color, new Alfil()));
-        setPieza(7, 6, new Pieza(color, new Caballo()));
-        setPieza(7, 7, new Pieza(color, new Torre()));
+        setPieza(7, 0, new Torre(color));
+        setPieza(7, 1, new Caballo(color));
+        setPieza(7, 2, new Alfil(color));
+        setPieza(7, 3, new Reina(color));
+        setPieza(7, 4, new Rey(color));
+        setPieza(7, 5, new Alfil(color));
+        setPieza(7, 6, new Caballo(color));
+        setPieza(7, 7, new Torre(color));
     }
 
     private void colocarPiezasNegras() {
         // Colocación de peones blancos
         String color = "negro";
         for (int col = 0; col < dimensiones; col++) {
-            setPieza(1, col, new Pieza(color, new PeonNegro()));
+            setPieza(1, col, new PeonDescendente(color));
         }
 
         // Colocación de piezas mayores blancas
-        setPieza(0, 0, new Pieza(color, new Torre()));
-        setPieza(0, 1, new Pieza(color, new Caballo()));
-        setPieza(0, 2, new Pieza(color, new Alfil()));
-        setPieza(0, 3, new Pieza(color, new Alfil()));
-        setPieza(0, 4, new Pieza(color, new Rey()));
-        setPieza(0, 5, new Pieza(color, new Alfil()));
-        setPieza(0, 6, new Pieza(color, new Caballo()));
-        setPieza(0, 7, new Pieza(color, new Torre()));
+        setPieza(0, 0, new Torre(color));
+        setPieza(0, 1, new Caballo(color));
+        setPieza(0, 2, new Alfil(color));
+        setPieza(0, 3, new Reina(color));
+        setPieza(0, 4, new Rey(color));
+        setPieza(0, 5, new Alfil(color));
+        setPieza(0, 6, new Caballo(color));
+        setPieza(0, 7, new Torre(color));
     }
 
     private void colocarPiezasIniciales() {
@@ -210,7 +210,7 @@ public class TableroCuadrado {
         colocarPiezasNegras();
     }
 
-    public boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    private boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
 
@@ -230,7 +230,7 @@ public class TableroCuadrado {
         return true;  // El camino está libre
     }
 
-    public boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    private boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
 

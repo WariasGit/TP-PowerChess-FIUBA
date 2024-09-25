@@ -2,12 +2,14 @@ package org.fiuba.algoritmos3.tp1powechess.Model;
 
 import java.util.ArrayList;
 
-public class Caballo implements TipoDePieza {
+public class Caballo extends Pieza {
 
-    private final ArrayList<int[]> direccionesDeMovimiento;
-    private final ArrayList<int[]> direccionesDeAmenaza;
+    public Caballo(String color) {
 
-    public Caballo() {
+        super(color);
+
+        this.maxDistanciaDeAmenaza = 1;
+
         // Inicializamos las direcciones de movimiento (movimiento en "L")
         this.direccionesDeMovimiento = new ArrayList<>();
         this.direccionesDeMovimiento.add(new int[]{2, 1});
@@ -27,7 +29,7 @@ public class Caballo implements TipoDePieza {
         return "Caballo";
     }
 
-    public boolean movimientoEnDireccionDeMovimiento(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
         int difX = Math.abs(finX - inicioX);
         int difY = Math.abs(finY - inicioY);
 
@@ -35,32 +37,12 @@ public class Caballo implements TipoDePieza {
         return esDireccionDeMovimientoValida(difX, difY);
     }
 
-    public boolean movimientoEnDireccionDeAmenaza(int inicioX, int inicioY, int finX, int finY) {
+    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
 
         // Verificar si alguna dirección de amenaza es válida para el movimiento actual
         return esAmenazaValida(inicioX, inicioY, finX, finY);
-    }
-
-    public ArrayList<Amenaza> getAmenazasGeneradas(String color) {
-        ArrayList<Amenaza> amenazas = new ArrayList<>();
-        int maxDistancia = getMaxDistanciaDeAmenaza();
-
-        // Generar amenazas en todas las direcciones de amenaza
-        for (int[] direccion : this.direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(color, direccion, maxDistancia));
-        }
-
-        return amenazas;
-    }
-
-    public int getMaxDistanciaDeAmenaza() {
-        return 1;  // El caballo solo puede amenazar en las casillas adyacentes a su movimiento en "L"
-    }
-
-    public ArrayList<int[]> getDireccionesDeMovimiento() {
-        return new ArrayList<>(this.direccionesDeMovimiento);
     }
 
     // Metodo privado que verifica si la dirección del movimiento es válida
