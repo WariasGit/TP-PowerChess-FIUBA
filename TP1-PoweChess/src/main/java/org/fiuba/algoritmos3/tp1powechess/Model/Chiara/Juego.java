@@ -1,5 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Model;
-import org.fiuba.algoritmos3.tp1powechess.Model.Turno;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Juego {
     private Configuracion.EstadoJuego estado;
