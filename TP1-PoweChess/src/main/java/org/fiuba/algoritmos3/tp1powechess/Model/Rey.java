@@ -23,6 +23,8 @@ public class Rey extends Pieza {
 
         // Para el Rey, las direcciones de movimiento y de amenaza son las mismas
         direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
+
+        this.tipoDeEnroque = new EnrocableSiNoSeHaMovido(this);
     }
 
     public String getTipoDePieza() {

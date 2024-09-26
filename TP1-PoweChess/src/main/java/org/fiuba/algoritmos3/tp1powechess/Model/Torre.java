@@ -21,7 +21,7 @@ public class Torre extends Pieza {
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
 
         // Al crear una Torre le asignamos su estrategia de enroque
-        this.tipoDeEnroque = new SiEnrocable();
+        this.tipoDeEnroque = new EnrocableSiNoSeHaMovido(this);
     }
 
     public String getTipoDePieza() {

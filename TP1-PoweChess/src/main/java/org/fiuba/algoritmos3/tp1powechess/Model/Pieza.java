@@ -38,7 +38,7 @@ public abstract class Pieza {
     }
 
     public boolean puedeEnrocar() {
-        return tipoDeEnroque.puedeEnrocar() && !seHaMovido;
+        return tipoDeEnroque.puedeEnrocar();
     }
 
     public abstract boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY);
