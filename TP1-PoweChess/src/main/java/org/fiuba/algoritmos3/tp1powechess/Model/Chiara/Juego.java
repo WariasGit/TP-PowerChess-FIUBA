@@ -25,16 +25,6 @@ public class Juego {
         this.ganador = null;
     }
 
-    /*
-    public void  finalizarJuego() {
-        if (this.estado == Configuracion.EstadoJuego.TABLAS) {
-            //empate
-        }
-        this.estado = Configuracion.EstadoJuego.FINALIZADO;
-        Jugador ganador = gestionarPuntaje.determinarGanador();
-       //si es null, termina en empate
-    }
-    */
 
     public Jugador getJugadorBlancas() {
         return jugadorBlanco;

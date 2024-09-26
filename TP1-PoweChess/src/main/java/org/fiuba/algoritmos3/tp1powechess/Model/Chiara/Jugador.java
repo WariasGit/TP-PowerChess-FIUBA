@@ -5,35 +5,25 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class Jugador {
     private Configuracion.ColoresJugadores color;
     private String nombre;
-    private int puntaje;
 
     public Jugador(Configuracion.ColoresJugadores color, String nombre) {
         this.color = color;
         this.nombre = nombre;
-        this.puntaje = 0;
     }
-
-    public void setPuntaje(int puntaje) {
-        this.puntaje = puntaje;
-    }
-
-    /*public boolean aceptarTablas() {
-        //devuelve los datos enviados por la vista, seleccionado por usuario
-    }*/
 
     public void rendirse() {
+        return
     }
 
-    public String getNombre() {
-        return nombre;
+    public void ofrecerTablas() {
     }
 
-    public Configuracion.ColoresJugadores getColor() {
-        return color;
+    public void setNombre(string nombre) {
+        this.nombre = nombre;
     }
 
-    public int getPuntaje() {
-        return puntaje;
+    public void setColor(Configuracion.ColoresJugadores color) {
+        this.color = color;
     }
-}
+
 
