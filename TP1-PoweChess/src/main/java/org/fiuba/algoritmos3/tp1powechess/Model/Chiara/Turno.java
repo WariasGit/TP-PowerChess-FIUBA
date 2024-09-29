@@ -3,22 +3,21 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 
 public class Turno {
-    private Configuracion.ColoresJugadores color;
+    private List<Jugador> jugadores;
+    private int turnoActual;
 
-    public Turno() {
-        this.color = Configuracion.ColoresJugadores.BLANCO;
+    public Turno(List<Jugadores> jugadores) {
+        this.jugadores = jugadores;
+        this.turnoActual = ;
     }
 
     public void gestionarTurno() {
-        if (this.turno == Configuracion.ColoresJugadores.BLANCO) {
-            this.turno = Configuracion.ColoresJugadores.NEGRO;
-            return;
-        }
-        this.turno = Configuracion.ColoresJugadores.BLANCO;
+        turnoActual = (turnoActual + 1) % jugadores.size();
     }
 
-    public String getTurno() {
-        return this.turno;
+    public Jugador getTurno() {
+        return jugadores.get(turnoActual);
     }
 
+    public Jugador getOponente() { return jugadores.get(turnoActual-1)}
 }

@@ -3,28 +3,33 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Juego {
     private Configuracion.EstadoJuego estado;
-    private Jugador jugadorBlanco;
-    private Jugador jugadorNegro;
-    //private Puntaje gestionarPuntaje;
+    private List<Jugador> jugadores;
     private Turno turno;
-    private Jugador ganador;
     private TableroCuadrado tablero;
+    private Jugador ganador;
 
 
-    public Juego(Jugador jugadorBlanco, Jugador jugadorNegro) throws IOException {
+    public Juego(List<Jugador> jugadores) throws IOException {
         this.estado = Configuracion.EstadoJuego.ACTIVO;
         turno = new Turno();
-        this.jugadorBlanco = jugadorBlanco;
-        this.jugadorNegro = jugadorNegro;
+        this.jugadores = jugadores;
         tablero = new TableroCuadrado();
         cargarPartida();
     }
 
-    public void establecerTablas() {
-        this.estado = Configuracion.EstadoJuego.TABLAS;
-        this.ganador = null;
+    public boolean verificarRendido() {
+        if getJugadorActual().getEstado() == RENDIDO {
+            this.ganador = turno.getOponente();
+            return true;
+        }
+        return false;
     }
 
+    public void gestionarTablas() {
+        if getJugadorActual().getEstado() == TABLAS {
+            return turno.getOponente().aceptarTablas();
+        }
+    }
 
     public Jugador getJugadorBlancas() {
         return jugadorBlanco;
@@ -36,11 +41,7 @@ public class Juego {
 
     //Esto hay que cambiarlo
     public Jugador getJugadorActual() {
-        if(turno.getTurno() == "blanco"){
-            return jugadorBlanco;
-        }else {
-            return jugadorNegro;
-        }
+            turno.getTurno()
     }
 
     public TableroCuadrado getTablero() {

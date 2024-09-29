@@ -15,11 +15,11 @@ public class Configuracion {
         FINALIZADO
     }
 
-    public static enum EstadoJuego {
-    TABLAS,
-    BLANCO,
-    NEGRO,
-}
+    public static enum EstadoJugador {
+        RENDIDO,
+        TABLAS,
+    }
+
 
     private final static Map<Character, Pieza> mapaPiezas = new HashMap<>();
 
