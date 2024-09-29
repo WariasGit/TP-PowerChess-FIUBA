@@ -7,6 +7,7 @@ public class Juego {
     private Turno turno;
     private TableroCuadrado tablero;
     private Jugador ganador;
+    private List<Pieza> piezasEnJuego;
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
@@ -18,7 +19,7 @@ public class Juego {
     }
 
     public boolean verificarRendido() {
-        if getJugadorActual().getEstado() == RENDIDO {
+        if getJugadorActual().estaRendido() {
             this.ganador = turno.getOponente();
             return true;
         }
@@ -26,7 +27,7 @@ public class Juego {
     }
 
     public void gestionarTablas() {
-        if getJugadorActual().getEstado() == TABLAS {
+        if getJugadorActual().ofrecioTablas() {
             return turno.getOponente().aceptarTablas();
         }
     }
@@ -51,13 +52,25 @@ public class Juego {
     //Esto es provisorio, para probar algunas cosas
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         Pieza pieza = tablero.getCasillero(origenFila, origenColumna).getPieza();
+        Pieza piezaAmenzada = tablero.getCasillero(origenFila, origenColumna).getPieza();
+
+        if (piezaAmenzada != null) {
+            this.getOponente().setPiezasPerdidas(piezaAmenzada);
+
+        }
+
         tablero.setPieza(destinoFila, destinoColumna, pieza);
         tablero.removerPieza(origenFila, origenColumna);
+
         return true;
     }
 
     public void cambiarTurno() {
         turno.gestionarTurno();
+    }
+
+    public void terminarPartida() {
+        return this.ganador;
     }
 
 

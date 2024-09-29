@@ -81,7 +81,6 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
         this.jugadorActual.setText("Jugador actual: " + juego.getJugadorActual().getNombre());
     }
 
-
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {
         vistaJuego.mostrarConfirmacionCierre(windowEvent);
     }
