@@ -21,7 +21,13 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         Jugador j1 = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
         Jugador j2 = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
-        Juego juego = new Juego(j1, j2);
+
+        //Pongo el blanco primero en la lista
+        List<Jugador> jugadores = Arrays.asList(j1, j2);
+        jugadores.sort((j1, j2) -> j1.getColor().equals("blanco") ? -1 : 1);
+
+    }
+        Juego Ajedrez = new Juego(jugadores);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
         VBox root;
         root = loader.load();

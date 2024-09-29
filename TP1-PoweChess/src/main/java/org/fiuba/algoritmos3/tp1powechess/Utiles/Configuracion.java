@@ -10,7 +10,6 @@ public class Configuracion {
 
     public static enum EstadoJuego {
         ACTIVO,
-        TABLAS,
         JAQUE_MATE,
         FINALIZADO
     }
@@ -19,7 +18,6 @@ public class Configuracion {
         RENDIDO,
         TABLAS,
     }
-
 
     private final static Map<Character, Pieza> mapaPiezas = new HashMap<>();
 

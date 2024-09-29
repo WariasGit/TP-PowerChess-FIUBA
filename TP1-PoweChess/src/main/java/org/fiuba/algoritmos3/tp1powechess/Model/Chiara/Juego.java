@@ -56,7 +56,6 @@ public class Juego {
         return true;
     }
 
-    //Provisorio
     public void cambiarTurno() {
         turno.gestionarTurno();
     }
