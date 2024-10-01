@@ -15,7 +15,7 @@ public class TableroCuadrado {
         for (int row = 0; row < dimensiones; row++) {
             for (int col = 0; col < dimensiones; col++) {
                   String color = (row + col) % 2 == 0 ? "Blanco" : "Negro";
-                  tablero[row][col] = new Casillero(color);
+                  tablero[row][col] = new Casillero(color, new CoordenadaCartesiana2D(row,col));
             }
             colocarPiezasIniciales();
         }
