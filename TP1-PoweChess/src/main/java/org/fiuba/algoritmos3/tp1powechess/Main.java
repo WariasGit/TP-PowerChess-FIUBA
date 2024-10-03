@@ -34,7 +34,7 @@ public class Main extends Application {
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
         root.addEventHandler(EventoCambioDeTurno.CAMBIO_DE_TURNO_EVENT, juegoController);
-        Scene scene = new Scene(root, 640, 700);
+        Scene scene = new Scene(root, 900, 750);
         stage.setScene(scene);
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);
         stage.show();

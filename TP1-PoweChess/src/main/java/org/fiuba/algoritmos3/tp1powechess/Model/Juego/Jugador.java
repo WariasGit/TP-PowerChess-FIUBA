@@ -14,6 +14,7 @@ public class Jugador {
         this.color = color;
         this.nombre = nombre;
         this.estado = null;
+        this.piezasEnJuego = null;
         this.piezasPerdidas = null;
     }
 

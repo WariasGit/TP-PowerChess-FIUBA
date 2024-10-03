@@ -33,6 +33,10 @@ public class Juego {
         return false;
     }
 
+    private Jugador getJugadorActual() {
+        return turno.getTurno();
+    }
+
     /* Esto lo comento porque voy a tratar de implementarlo de otra forma
     public void gestionarTablas() {
         if(getJugadorActual().ofrecioTablas()) {
@@ -50,10 +54,7 @@ public class Juego {
         return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
     }
 
-    //Esto hay que cambiarlo
-    public Jugador getJugadorActual() {
-            return turno.getTurno();
-    }
+    public String getNombreJugadorActual() {return turno.getTurno().getNombre();}
 
     public TableroCuadrado getTablero() {
         return tablero;
