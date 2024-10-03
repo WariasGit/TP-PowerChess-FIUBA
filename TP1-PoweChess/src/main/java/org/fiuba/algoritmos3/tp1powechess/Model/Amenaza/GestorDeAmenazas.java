@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Amenaza;
 
 import java.util.ArrayList;
 

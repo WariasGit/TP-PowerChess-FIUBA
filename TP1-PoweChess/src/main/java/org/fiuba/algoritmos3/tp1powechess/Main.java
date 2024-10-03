@@ -7,12 +7,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.EventoCambioDeTurno;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main extends Application {
@@ -22,17 +23,16 @@ public class Main extends Application {
         Jugador j1 = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
         Jugador j2 = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
 
-        //Pongo el blanco primero en la lista
-        List<Jugador> jugadores = Arrays.asList(j1, j2);
-        jugadores.sort((j1, j2) -> j1.getColor().equals("blanco") ? -1 : 1);
+        List<Jugador> jugadores = new ArrayList<>();
+        jugadores.add(j1); // Añade el jugador blanco primero
+        jugadores.add(j2); // Añade el jugador negro después
 
-    }
         Juego Ajedrez = new Juego(jugadores);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
         VBox root;
         root = loader.load();
         ControladorJuego juegoController = loader.getController();
-        juegoController.setJuego(juego);
+        juegoController.setJuego(Ajedrez);
         root.addEventHandler(EventoCambioDeTurno.CAMBIO_DE_TURNO_EVENT, juegoController);
         Scene scene = new Scene(root, 640, 700);
         stage.setScene(scene);

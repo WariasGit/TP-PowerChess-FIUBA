@@ -1,13 +1,17 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
 
 public class Caballo extends Pieza {
 
-    public Caballo(String color) {
+    public Caballo(Configuracion.ColoresJugadores color) {
 
         super(color);
-
+        this.tipoDePieza = Constantes.CABALLO;
         this.maxDistanciaDeAmenaza = 1;
 
         // Inicializamos las direcciones de movimiento (movimiento en "L")
@@ -61,7 +65,7 @@ public class Caballo extends Pieza {
 
         for (int[] direccion : this.direccionesDeAmenaza) {
             // Crear la amenaza en la dirección dada
-            Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
 
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {

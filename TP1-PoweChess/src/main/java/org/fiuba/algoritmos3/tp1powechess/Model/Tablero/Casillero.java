@@ -1,7 +1,8 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
-
+package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
+import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.*;
+import org.fiuba.algoritmos3.tp1powechess.Model.Estado.*;
 import java.util.ArrayList;
 
 public class Casillero {
@@ -43,7 +44,7 @@ public class Casillero {
         this.bloquearAmenazasQueSeExtiendenMasDeUnCasillero();
     }
 
-    public Pieza removePieza() {
+    public Pieza removerPieza() {
         Pieza piezaAux = this.pieza;
         this.pieza = null;
         this.setEstadoDeOcupacion(new EstadoDesocupado());

@@ -1,5 +1,12 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+
+import java.io.*;
+import java.util.List;
+import java.util.Optional;
 
 public class Juego {
     private Configuracion.EstadoJuego estado;
@@ -12,66 +19,62 @@ public class Juego {
 
     public Juego(List<Jugador> jugadores) throws IOException {
         this.estado = Configuracion.EstadoJuego.ACTIVO;
-        turno = new Turno();
         this.jugadores = jugadores;
+        turno = new Turno(jugadores);
         tablero = new TableroCuadrado();
         cargarPartida();
     }
 
     public boolean verificarRendido() {
-        if getJugadorActual().estaRendido() {
+        if (getJugadorActual().estaRendido()) {
             this.ganador = turno.getOponente();
             return true;
         }
         return false;
     }
 
+    /* Esto lo comento porque voy a tratar de implementarlo de otra forma
     public void gestionarTablas() {
-        if getJugadorActual().ofrecioTablas() {
+        if(getJugadorActual().ofrecioTablas()) {
             return turno.getOponente().aceptarTablas();
         }
     }
 
-    public Jugador getJugadorBlancas() {
-        return jugadorBlanco;
+     */
+
+    public String getNombreJugadorBlancas() {
+        return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
     }
 
-    public Jugador getJugadorNegras() {
-        return jugadorNegro;
+    public String getNombreJugadorNegras() {
+        return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
     }
 
     //Esto hay que cambiarlo
     public Jugador getJugadorActual() {
-            turno.getTurno()
+            return turno.getTurno();
     }
 
     public TableroCuadrado getTablero() {
         return tablero;
     }
 
-    //Esto es provisorio, para probar algunas cosas
+    //Si esto funciona bien, se queda asi
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
-        Pieza pieza = tablero.getCasillero(origenFila, origenColumna).getPieza();
-        Pieza piezaAmenzada = tablero.getCasillero(origenFila, origenColumna).getPieza();
-
-        if (piezaAmenzada != null) {
-            this.getOponente().setPiezasPerdidas(piezaAmenzada);
-
+        try {
+            Optional<Optional<Pieza>> pieza = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+            return false;
         }
-
-        tablero.setPieza(destinoFila, destinoColumna, pieza);
-        tablero.removerPieza(origenFila, origenColumna);
-
-        return true;
     }
 
     public void cambiarTurno() {
         turno.gestionarTurno();
     }
 
-    public void terminarPartida() {
-        return this.ganador;
-    }
+    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
 
     /*Implemento los metodos "leerArchivoFen" y "setearPiezasDesdeFEN"
@@ -114,7 +117,7 @@ public class Juego {
             } else {
                 Pieza pieza = Configuracion.getPieza(caracter);
                 if (pieza != null) {
-                    tablero.setPieza(fila, columna, pieza);
+                    tablero.setPiezaInicial(fila, columna, pieza);
                 }
                 columna++;
             }

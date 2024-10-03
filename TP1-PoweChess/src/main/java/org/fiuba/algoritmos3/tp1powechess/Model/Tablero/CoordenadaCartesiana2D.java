@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
 
 public class CoordenadaCartesiana2D extends Coordenada {
 

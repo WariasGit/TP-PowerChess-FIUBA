@@ -1,9 +1,8 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
-
+package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
+import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.*;
 import java.util.Optional;
-
 import java.util.ArrayList;
 
 public class TableroCuadrado {
@@ -29,7 +28,11 @@ public class TableroCuadrado {
         return this.tablero[row][col];
     }
 
-    public Pieza moverPieza(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    public Optional<Pieza> getPieza(Integer i, Integer j) {
+        return Optional.ofNullable(tablero[i][j].getPieza());
+    }
+
+    public Optional<Optional<Pieza>> moverPieza(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         // Verificamos si las coordenadas son válidas
         if (!esCoordenadaValida(rowInicial, colInicial)) {
             throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
@@ -58,13 +61,13 @@ public class TableroCuadrado {
 
         // Movemos la pieza al nuevo casillero
         Pieza piezaMovida = removePieza(rowInicial, colInicial);
-        Pieza piezaComida = setPieza(rowFinal, colFinal, piezaMovida);
+        Optional<Pieza> piezaComida = setPieza(rowFinal, colFinal, piezaMovida);
 
         // Devolvemos la pieza comida si hay alguna, o null si no había pieza en el destino
-        return piezaComida;
+        return Optional.ofNullable(piezaComida);
     }
 
-    public Pieza setPieza(int row, int col, Pieza piezaAColocar) {
+    public Optional<Pieza> setPieza(int row, int col, Pieza piezaAColocar) {
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }
@@ -76,7 +79,6 @@ public class TableroCuadrado {
             // Actualizamos las amenazas de la pieza existente antes de reemplazarla
             quitarAmenazasDesdeCoordenadasHastaLimiteUOcupado(casillero.getAmenzasDePiezaActual(), row, col);
             casillero.setPieza(piezaAColocar);
-
         }
         else {
             casillero.setPieza(piezaAColocar);
@@ -87,7 +89,7 @@ public class TableroCuadrado {
         // Actualizamos las amenazas generadas por la nueva pieza
         agregarAmenazasDesdeCoordenadasHastaLimiteUOcupado(casillero.getAmenzasDePiezaActual(),row, col);
 
-        return piezaComida;
+        return Optional.ofNullable(piezaComida);
     }
 
     public Pieza removePieza(int row, int col) {
@@ -101,13 +103,11 @@ public class TableroCuadrado {
             return null;
         }
 
-        Pieza piezaARemover = casillero.getPieza();
+        // Remover la pieza del casillero. El metodo del casillero devuelve la pieza que se elimina
+        Pieza piezaARemover = casillero.removerPieza();
 
         // Actualizar las amenazas de la pieza a remover (solo las activas)
         quitarAmenazasDesdeCoordenadasHastaLimiteUOcupado(piezaARemover.getAmenazasGeneradas(), row, col);
-
-        // Remover la pieza del casillero
-        casillero.removePieza();
 
         //Actualizamos las amenazas que anteriormente estaban bloqueadas
         ArrayList<Amenaza> amenazasAExtender = casillero.obtenerAmenazasActivasQueSeExtiendenMasQueUnCasillero();
@@ -173,47 +173,6 @@ public class TableroCuadrado {
         }
     }
 
-    private void colocarPiezasBlancas() {
-        // Colocación de peones blancos
-        String color = "blanco";
-        for (int col = 0; col < dimensiones; col++) {
-            setPieza(6, col, new PeonAscendente(color));
-        }
-
-        // Colocación de piezas mayores blancas
-        setPieza(7, 0, new Torre(color));
-        setPieza(7, 1, new Caballo(color));
-        setPieza(7, 2, new Alfil(color));
-        setPieza(7, 3, new Reina(color));
-        setPieza(7, 4, new Rey(color));
-        setPieza(7, 5, new Alfil(color));
-        setPieza(7, 6, new Caballo(color));
-        setPieza(7, 7, new Torre(color));
-    }
-
-    private void colocarPiezasNegras() {
-        // Colocación de peones blancos
-        String color = "negro";
-        for (int col = 0; col < dimensiones; col++) {
-            setPieza(1, col, new PeonDescendente(color));
-        }
-
-        // Colocación de piezas mayores blancas
-        setPieza(0, 0, new Torre(color));
-        setPieza(0, 1, new Caballo(color));
-        setPieza(0, 2, new Alfil(color));
-        setPieza(0, 3, new Reina(color));
-        setPieza(0, 4, new Rey(color));
-        setPieza(0, 5, new Alfil(color));
-        setPieza(0, 6, new Caballo(color));
-        setPieza(0, 7, new Torre(color));
-    }
-
-    private void colocarPiezasIniciales() {
-        colocarPiezasBlancas();
-        colocarPiezasNegras();
-    }
-
     private boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
@@ -254,23 +213,63 @@ public class TableroCuadrado {
         return false;  // El camino no tiene amenazas
     }
 
-    public void setPieza(int row, int col, Pieza pieza) {
+    public void setPiezaInicial(int row, int col, Pieza pieza) {
         tablero[row][col].setPieza(pieza);
     }
-
-
-    public void removerPieza(int fila, int columna) {tablero[fila][columna].removerPieza();}
 
     public Integer getDimension() {
         return dimensiones;
     }
 
-    public Optional<Pieza> getPieza(Integer i, Integer j) {
-        return Optional.ofNullable(tablero[i][j].getPieza());
-    }
-
-
     public boolean casilleroLibre(Integer i, Integer j) {
         return getPieza(i,j).isEmpty();
     }
+
 }
+
+
+    /*
+    private void colocarPiezasIniciales() {
+        colocarPiezasBlancas();
+        colocarPiezasNegras();
+    }
+     */
+
+    /*
+    private void colocarPiezasBlancas() {
+        // Colocación de peones blancos
+        String color = "blanco";
+        for (int col = 0; col < dimensiones; col++) {
+            setPieza(6, col, new PeonAscendente(color));
+        }
+        // Colocación de piezas mayores blancas
+        setPieza(7, 0, new Torre(color));
+        setPieza(7, 1, new Caballo(color));
+        setPieza(7, 2, new Alfil(color));
+        setPieza(7, 3, new Reina(color));
+        setPieza(7, 4, new Rey(color));
+        setPieza(7, 5, new Alfil(color));
+        setPieza(7, 6, new Caballo(color));
+        setPieza(7, 7, new Torre(color));
+    }
+     */
+
+    /*
+    private void colocarPiezasNegras() {
+        // Colocación de peones blancos
+        String color = "negro";
+        for (int col = 0; col < dimensiones; col++) {
+            setPieza(1, col, new PeonDescendente(color));
+        }
+
+        // Colocación de piezas mayores blancas
+        setPieza(0, 0, new Torre(color));
+        setPieza(0, 1, new Caballo(color));
+        setPieza(0, 2, new Alfil(color));
+        setPieza(0, 3, new Reina(color));
+        setPieza(0, 4, new Rey(color));
+        setPieza(0, 5, new Alfil(color));
+        setPieza(0, 6, new Caballo(color));
+        setPieza(0, 7, new Torre(color));
+    }
+     */

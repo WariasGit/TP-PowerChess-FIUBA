@@ -1,6 +1,7 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
-import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
 import java.util.List;
+
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Turno {
     private List<Jugador> jugadores;
@@ -8,7 +9,7 @@ public class Turno {
 
     public Turno(List<Jugador> jugadores) {
         this.jugadores = jugadores;
-        this.turnoActual = 0;
+        this.turnoActual = Configuracion.Jugadores.BLANCAS;
     }
 
     public void gestionarTurno() {
@@ -23,3 +24,4 @@ public class Turno {
         int oponenteIndex = (turnoActual - 1 + jugadores.size()) % jugadores.size();
         return jugadores.get(oponenteIndex);
     }
+}

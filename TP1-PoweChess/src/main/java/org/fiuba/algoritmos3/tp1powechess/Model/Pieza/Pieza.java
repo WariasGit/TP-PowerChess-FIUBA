@@ -1,5 +1,8 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
 
+import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.Enrocable;
+import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.NoEnrocable;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ public abstract class Pieza {
     protected Enrocable tipoDeEnroque;
     protected ArrayList<int[]> direccionesDeMovimiento;
     protected ArrayList<int[]> direccionesDeAmenaza;
+    protected String tipoDePieza;
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
@@ -65,4 +69,7 @@ public abstract class Pieza {
         return new ArrayList<int[]> (direccionesDeMovimiento);
     }
 
+    public String getTipoDePieza() {
+        return tipoDePieza;
+    }
 }

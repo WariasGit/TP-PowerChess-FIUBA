@@ -2,28 +2,23 @@ package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Model.TableroCuadrado;
+import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.GeneradorVistaPieza;
 import org.fiuba.algoritmos3.tp1powechess.Vista.vistaJuego;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -67,10 +62,10 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
 
     public void setJuego(Juego juego) {
         this.juego = juego;
-        this.jugador1.setText(juego.getJugadorBlancas().getNombre());
-        this.jugador2.setText(juego.getJugadorNegras().getNombre());
-        this.jugador1_color.setFill(colores.get(juego.getJugadorBlancas().getColor()));
-        this.jugador2_color.setFill(colores.get(juego.getJugadorNegras().getColor()));
+        this.jugador1.setText(juego.getNombreJugadorBlancas());
+        this.jugador2.setText(juego.getNombreJugadorNegras());
+        this.jugador1_color.setFill(colores.get(Configuracion.ColoresJugadores.BLANCO));
+        this.jugador2_color.setFill(colores.get(Configuracion.ColoresJugadores.NEGRO));
         this.jugadorActual.setText("Jugador actual: " + juego.getJugadorActual().getNombre());
         cargarPiezas();
     }
@@ -91,23 +86,27 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
         Integer columna = GridPane.getColumnIndex(stackPane);
         Integer i = fila != null ? fila : 0;
         Integer j = columna != null ? columna : 0;
+
         if (this.posicionOrigenFila == null && this.posicionOrigenColumna == null) {
-            // Origen ocupado
+            System.out.println("Primer clic");
             if (this.juego.getTablero().casilleroLibre(i,j)) {
+                System.out.println("Tocaste un espacio vacio");
                 return;
             }
+            System.out.println("Tocaste una pieza");
             this.posicionOrigenFila = i;
             this.posicionOrigenColumna = j;
-        } else {
-            // Destino libre
-            if (this.juego.getTablero().getPieza(i, j).isPresent()) {
-                return;
-            }
+        }
+        else {
+            System.out.println("Segundo clic");
             Boolean resultado = this.juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, i, j);
             if (resultado) {
                 ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
                 this.posiciones[i][j].getChildren().add(imageView);
                 tableroGrid.fireEvent(new EventoCambioDeTurno());
+            }
+            else{
+                System.out.println("Movimiento invalido, se muestra la vista del error");
             }
             this.posicionOrigenFila = null;
             this.posicionOrigenColumna = null;

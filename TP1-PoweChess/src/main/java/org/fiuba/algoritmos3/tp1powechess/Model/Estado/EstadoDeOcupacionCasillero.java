@@ -1,6 +1,5 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Estado;
 
-import java.util.ArrayList;
 
 public interface EstadoDeOcupacionCasillero {
     boolean estaOcupado();

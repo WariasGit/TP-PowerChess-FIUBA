@@ -1,17 +1,19 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Amenaza;
+
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Amenaza {
-    private String color;
+    private Configuracion.ColoresJugadores color;
     private int[] direccion;
     private int cantidadCasilleros;
 
-    public Amenaza(String color, int[] direccion, int cantidadCasilleros) {
+    public Amenaza(Configuracion.ColoresJugadores color, int[] direccion, int cantidadCasilleros) {
         this.color = color;
         this.direccion = direccion;
         this.cantidadCasilleros = cantidadCasilleros;
     }
 
-    public String getColor() {
+    public Configuracion.ColoresJugadores getColor() {
         return color;
     }
 

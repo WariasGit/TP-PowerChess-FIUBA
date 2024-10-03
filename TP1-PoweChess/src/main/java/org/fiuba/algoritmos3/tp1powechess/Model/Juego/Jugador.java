@@ -1,46 +1,36 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import java.util.List;
 
 public class Jugador {
     private Configuracion.ColoresJugadores color;
     private String nombre;
     private Configuracion.EstadoJugador estado;
-    private int piezasEnJuego;
+    private List<Pieza> piezasEnJuego;
     private List<Pieza> piezasPerdidas;
 
     public Jugador(Configuracion.ColoresJugadores color, String nombre) {
         this.color = color;
         this.nombre = nombre;
         this.estado = null;
-        this.piezasEnJuego = 16;
         this.piezasPerdidas = null;
     }
 
     public void rendirse() {
-        this.estado = RENDIDO;
+        this.estado = Configuracion.EstadoJugador.RENDIDO;
     }
 
     public boolean estaRendido() {
-        return this.estado == RENDIDO;
+        return this.estado == Configuracion.EstadoJugador.RENDIDO;
     }
 
     public boolean OfrecioTablas() {
-        return this.estado == TABLAS;
+        return this.estado == Configuracion.EstadoJugador.TABLAS;
     }
 
     public void ofrecerTablas() {
-        this.estado = TABLAS;
-    }
-
-    public boolean aceptarTablas() {
-        alert.setHeaderText("El oponente propuso tablas");
-        alert.setContentText("¿Aceptas las tablas?");
-        Optional<ButtonType> resultado = alert.showAndWait();
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            return true;
-        } else {
-            return false;
-        }
+        this.estado = Configuracion.EstadoJugador.TABLAS;
     }
 
     public void setPiezasEnJuego(Pieza pieza) {
@@ -51,11 +41,10 @@ public class Jugador {
 
     public void setPiezasPerdidas(Pieza pieza) {
              piezasPerdidas.add(pieza);
-             this.piezasEnJuego--;
-        }
+             piezasEnJuego.remove(pieza);
     }
 
-    public void setNombre(string nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -65,11 +54,12 @@ public class Jugador {
 
     public void setEstado(Configuracion.EstadoJugador estado) { this.estado = estado; }
 
-    public void getEstado() { return this.estado; }
+    public Configuracion.EstadoJugador getEstado() { return this.estado; }
 
-    public void getPiezasEnJuego() { return this.piezasEnJuego; }
+    public int getPiezasEnJuego() { return this.piezasEnJuego.size(); }
 
-
+    public String getNombre() { return this.nombre; }
+    public Configuracion.ColoresJugadores getColor() { return this.color; }
 }
 
 

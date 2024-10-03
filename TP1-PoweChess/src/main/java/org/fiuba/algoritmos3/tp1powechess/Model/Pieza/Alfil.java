@@ -1,13 +1,17 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
 
 public class Alfil extends Pieza {
 
-    public Alfil(String color) {
+    public Alfil(Configuracion.ColoresJugadores color) {
 
         super(color);
-
+        this.tipoDePieza = Constantes.ALFIL;
         this.maxDistanciaDeAmenaza = Integer.MAX_VALUE;
 
         // Inicializamos las direcciones de movimiento
@@ -35,7 +39,7 @@ public class Alfil extends Pieza {
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 return true;
             }

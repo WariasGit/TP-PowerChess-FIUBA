@@ -1,13 +1,18 @@
-package org.fiuba.algoritmos3.tp1powechess.Model;
+package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.EnrocableSiNoSeHaMovido;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
 
 public class Rey extends Pieza {
 
-    public Rey(String color) {
+    public Rey(Configuracion.ColoresJugadores color) {
 
         super(color);
-
+        this.tipoDePieza = Constantes.REY;
         this.maxDistanciaDeAmenaza = 1;
 
         // Inicializamos las direcciones de movimiento del Rey (una casilla en cualquier dirección)
@@ -45,7 +50,7 @@ public class Rey extends Pieza {
 
         // Verificamos si la dirección está entre las permitidas para las amenazas
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza("color", direccion, getMaxDistanciaDeAmenaza());
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
 
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
