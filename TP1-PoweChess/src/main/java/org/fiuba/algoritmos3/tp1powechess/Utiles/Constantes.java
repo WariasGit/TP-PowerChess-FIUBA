@@ -18,4 +18,10 @@ public class Constantes {
     public static String TITULO_TABLAS = "Confirmación de tablas";
     public static String ENCABEZADO_TABLAS = " ha decidido ofrecer tablas";
     public static String PREGUNTA_TABLAS = "¿Estás seguro de que deseas aceptar tablas?";
+    public static String TITULO_ABANDONO = "Confirmación de abandono";
+    public static String ENCABEZADO_ABANDONO = "Vas a abandonar la partida";
+    public static String PREGUNTA_ABANDONO = ", ¿Estás seguro de que deseas abandonar la partida?";
+
+    public static int COORDENADA_FILA = 0;
+    public static int COORDENADA_COLUMNA = 1;
 }

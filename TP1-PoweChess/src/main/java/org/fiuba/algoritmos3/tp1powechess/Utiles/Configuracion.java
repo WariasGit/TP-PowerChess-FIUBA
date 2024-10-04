@@ -13,12 +13,14 @@ public class Configuracion {
     public static enum ColoresJugadores {BLANCO, NEGRO};
 
     public static enum EstadoJuego {
+        EN_JUEGO,
         ACTIVO,
         JAQUE_MATE,
-        FINALIZADO
+        FINALIZADO,
+        TABLAS
     }
 
-    public static enum EstadoJugador {RENDIDO, TABLAS}
+    public static enum EstadoJugador {RENDIDO, ACTIVO}
 
     public static class Jugadores {
         public static final int BLANCAS = 0;

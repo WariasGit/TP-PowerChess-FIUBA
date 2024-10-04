@@ -23,4 +23,9 @@ public class VistaJuego {
         String encabezado = NombreJugador + Constantes.ENCABEZADO_TABLAS;
         return (vistaAlerta.mostrarAlertaEvento(Constantes.TITULO_TABLAS, encabezado, Constantes.PREGUNTA_TABLAS));
     }
+
+    public Boolean mostrarConfirmacionAbandono(String nombreJugadorActual) {
+        String pregunta = nombreJugadorActual + Constantes.PREGUNTA_ABANDONO;
+        return (vistaAlerta.mostrarAlertaEvento(Constantes.TITULO_ABANDONO, Constantes.ENCABEZADO_ABANDONO, pregunta));
+    }
 }

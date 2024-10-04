@@ -64,14 +64,23 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
     }
 
     public void gestionarTablas(){
+        String NombreJugadorTablas = juego.getNombreJugadorActual();
         tablero.fireEvent(new EventoCambioDeTurno());
-        Boolean continuar = vistaJuego.mostrarConfirmacionTablas(juego.getNombreJugadorActual());
+        Boolean continuar = vistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
-            System.out.println("Aceptaron tablas");
-            //juego.gestionarTablas();
+            tablero.fireEvent(new EventoTablas());
         }
         else {
             tablero.fireEvent(new EventoCambioDeTurno());
+        }
+    }
+
+    public void gestionarAbandono(){
+        Boolean continuar = vistaJuego.mostrarConfirmacionAbandono(juego.getNombreJugadorActual());
+        if(continuar){
+            System.out.println(juego.getNombreJugadorActual() + " se ha rendido.");
+
+            juego.gestionarRendicion();
         }
     }
 
