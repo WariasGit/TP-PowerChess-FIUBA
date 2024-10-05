@@ -50,9 +50,9 @@ public class Jugador {
     }
 
     public void setPiezasPerdidas(Pieza pieza) {
-             piezasPerdidas.add(pieza);
-             this.piezasEnJuego--;
-        }
+        piezasPerdidas.add(pieza);
+        this.piezasEnJuego--;
+    }
     }
 
     public void setNombre(string nombre) {

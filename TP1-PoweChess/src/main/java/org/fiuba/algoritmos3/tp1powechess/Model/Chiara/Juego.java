@@ -40,7 +40,6 @@ public class Juego {
         return jugadorNegro;
     }
 
-    //Esto hay que cambiarlo
     public Jugador getJugadorActual() {
             turno.getTurno()
     }
@@ -49,7 +48,6 @@ public class Juego {
         return tablero;
     }
 
-    //Esto es provisorio, para probar algunas cosas
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         Pieza pieza = tablero.getCasillero(origenFila, origenColumna).getPieza();
         Pieza piezaAmenzada = tablero.getCasillero(origenFila, origenColumna).getPieza();
@@ -58,7 +56,6 @@ public class Juego {
             this.getOponente().setPiezasPerdidas(piezaAmenzada);
 
         }
-
         tablero.setPieza(destinoFila, destinoColumna, pieza);
         tablero.removerPieza(origenFila, origenColumna);
 
