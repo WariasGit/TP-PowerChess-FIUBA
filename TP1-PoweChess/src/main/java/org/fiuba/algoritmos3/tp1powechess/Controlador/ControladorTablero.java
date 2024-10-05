@@ -9,11 +9,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
 import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
+
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ControladorTablero {
@@ -97,8 +102,7 @@ public class ControladorTablero {
         System.out.println("Tocaste una pieza");
         aplicarColorCasillero(fila, columna);
         Optional<Pieza> piezaActual = juego.getPiezaActual(fila, columna);
-        mostrarMovimientosPosibles(piezaActual);
-        mostrarCasillerosAmenazados(piezaActual);
+        mostrarMovimientosPosibles(piezaActual, fila, columna);
         guardarPosicionOrigen(fila, columna);
     }
 
@@ -128,8 +132,6 @@ public class ControladorTablero {
         this.posicionOrigenColumna = null;
     }
 
-
-
     private void aplicarColorCasillero(Integer fila, Integer columna) {
         vistaTablero.pintarCasilleroSeleccionado(fila, columna);
     }
@@ -138,12 +140,34 @@ public class ControladorTablero {
         vistaTablero.pintarCasilleroColorOriginal(fila, columna);
     }
 
-    private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual){
-        piezaActual.ifPresent(pieza -> vistaTablero.mostrarMovimientosPosibles(pieza));
+    private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual, int fila, int columna) {
+        if(piezaActual.isPresent()){
+            Pieza pieza = piezaActual.get();
+            if (Objects.equals(pieza.getTipoDePieza(), Constantes.PEON)) {
+                //TODO: Implementar
+            } else{
+                ArrayList<int[]> listaPosicionesPosibles = new ArrayList<>();
+                obtenerPosicionesCasillero(pieza, listaPosicionesPosibles, fila, columna);
+                vistaTablero.mostrarMovimientosPosibles(listaPosicionesPosibles);
+                //vistaTablero.mostrarCasillerosAmenazados(listaPosicionesPosibles);
+            }
+
+        }
 
     }
 
-    private void mostrarCasillerosAmenazados(Optional<Pieza> piezaActual){
-        piezaActual.ifPresent(pieza -> vistaTablero.mostrarCasillerosAmenazados(pieza));
+    private void obtenerPosicionesCasillero(Pieza piezaActual, ArrayList<int[]> lista_posiciones, int fila, int columna){
+        for(Amenaza amenaza: piezaActual.getAmenazasGeneradas()){
+            int[] direccion = amenaza.getDireccion();
+            int cantidadCasilleros = amenaza.getCantidadCasilleros();
+            for(int i = 1; i <= cantidadCasilleros; i++){
+                int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA] * i, columna + direccion[Constantes.COORDENADA_COLUMNA] * i};
+                lista_posiciones.add(nuevaPosicion);
+            }
+        }
+    }
+
+    private void mostrarCasillerosAmenazados(ArrayList<int[]> lista_posiciones){
+        //TODO: Implementar
     }
 }

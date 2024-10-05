@@ -7,7 +7,5 @@ public class PeonAscendente extends PeonBase {
         super(color);
     }
 
-    protected int getDireccion() {
-        return 1;
-    }
+    protected int getDireccion() {return -1;}
 }

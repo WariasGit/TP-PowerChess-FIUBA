@@ -8,6 +8,6 @@ public class PeonDescendente extends PeonBase {
     }
 
     protected int getDireccion() {
-        return -1;
+        return 1;
     }
 }

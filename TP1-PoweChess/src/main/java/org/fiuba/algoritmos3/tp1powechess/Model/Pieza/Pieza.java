@@ -3,6 +3,7 @@ import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
 
 import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.Enrocable;
 import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.NoEnrocable;
+import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
@@ -72,4 +73,5 @@ public abstract class Pieza {
     public String getTipoDePieza() {
         return tipoDePieza;
     }
+
 }

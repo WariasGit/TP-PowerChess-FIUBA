@@ -16,10 +16,10 @@ public class Alfil extends Pieza {
 
         // Inicializamos las direcciones de movimiento
         direccionesDeMovimiento = new ArrayList<>();
-        direccionesDeMovimiento.add(new int[]{1, 1});   // Diagonal derecha arriba
-        direccionesDeMovimiento.add(new int[]{-1, 1});  // Diagonal izquierda arriba
-        direccionesDeMovimiento.add(new int[]{1, -1});  // Diagonal derecha abajo
-        direccionesDeMovimiento.add(new int[]{-1, -1}); // Diagonal izquierda abajo
+        direccionesDeMovimiento.add(new int[]{-1, 1});   // Diagonal derecha arriba
+        direccionesDeMovimiento.add(new int[]{-1, -1});  // Diagonal izquierda arriba
+        direccionesDeMovimiento.add(new int[]{1, 1});  // Diagonal derecha abajo
+        direccionesDeMovimiento.add(new int[]{1, -1}); // Diagonal izquierda abajo
 
         // Para el Alfil, las direcciones de movimiento y de amenaza son las mismas
         direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);

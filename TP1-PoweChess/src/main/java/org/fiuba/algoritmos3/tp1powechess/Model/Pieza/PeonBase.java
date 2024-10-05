@@ -17,8 +17,8 @@ public abstract class PeonBase extends Pieza {
 
         // Definimos las direcciones de movimiento del peón
         direccionesDeMovimiento = new ArrayList<>();
-        direccionesDeMovimiento.add(new int[]{0, getDireccion()});   // Movimiento hacia adelante
-        direccionesDeMovimiento.add(new int[]{0, 2 * getDireccion()}); // Movimiento inicial doble
+        direccionesDeMovimiento.add(new int[]{getDireccion(), 0});   // Movimiento hacia adelante
+        direccionesDeMovimiento.add(new int[]{2 * getDireccion(), 0}); // Movimiento inicial doble
 
         // Definimos las direcciones de amenaza
         direccionesDeAmenaza = new ArrayList<>();

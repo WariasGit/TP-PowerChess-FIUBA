@@ -16,11 +16,11 @@ public class Rey extends Pieza {
         this.maxDistanciaDeAmenaza = 1;
 
         // Inicializamos las direcciones de movimiento del Rey (una casilla en cualquier dirección)
-        direccionesDeMovimiento = new ArrayList<>();
-        direccionesDeMovimiento.add(new int[]{1, 0});  // Derecha
-        direccionesDeMovimiento.add(new int[]{-1, 0}); // Izquierda
-        direccionesDeMovimiento.add(new int[]{0, 1});  // Arriba
-        direccionesDeMovimiento.add(new int[]{0, -1}); // Abajo
+        this.direccionesDeMovimiento = new ArrayList<>();
+        this.direccionesDeMovimiento.add(new int[]{0, 1});   // Derecha
+        this.direccionesDeMovimiento.add(new int[]{0, -1});  // Izquierda
+        this.direccionesDeMovimiento.add(new int[]{-1, 0});   // Arriba
+        this.direccionesDeMovimiento.add(new int[]{1, 0});  // Abajo
         direccionesDeMovimiento.add(new int[]{1, 1});  // Diagonal derecha arriba
         direccionesDeMovimiento.add(new int[]{-1, 1}); // Diagonal izquierda arriba
         direccionesDeMovimiento.add(new int[]{1, -1}); // Diagonal derecha abajo

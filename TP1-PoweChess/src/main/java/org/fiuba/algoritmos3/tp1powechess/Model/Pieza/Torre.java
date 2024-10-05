@@ -17,10 +17,10 @@ public class Torre extends Pieza {
 
         // Inicializamos las direcciones de movimiento
         this.direccionesDeMovimiento = new ArrayList<>();
-        this.direccionesDeMovimiento.add(new int[]{1, 0});   // Derecha
-        this.direccionesDeMovimiento.add(new int[]{-1, 0});  // Izquierda
-        this.direccionesDeMovimiento.add(new int[]{0, 1});   // Arriba
-        this.direccionesDeMovimiento.add(new int[]{0, -1});  // Abajo
+        this.direccionesDeMovimiento.add(new int[]{0, 1});   // Derecha
+        this.direccionesDeMovimiento.add(new int[]{0, -1});  // Izquierda
+        this.direccionesDeMovimiento.add(new int[]{-1, 0});   // Arriba
+        this.direccionesDeMovimiento.add(new int[]{1, 0});  // Abajo
 
         // Para la Torre, las direcciones de movimiento y de amenaza son las mismas
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);

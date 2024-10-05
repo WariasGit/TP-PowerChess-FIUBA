@@ -14,14 +14,14 @@ public class Reina extends Pieza {
 
         // Inicializamos las direcciones de movimiento
         this.direccionesDeMovimiento = new ArrayList<>();
-        this.direccionesDeMovimiento.add(new int[]{1, 0});   // Derecha
-        this.direccionesDeMovimiento.add(new int[]{-1, 0});  // Izquierda
-        this.direccionesDeMovimiento.add(new int[]{0, 1});   // Arriba
-        this.direccionesDeMovimiento.add(new int[]{0, -1});  // Abajo
-        this.direccionesDeMovimiento.add(new int[]{1, 1});   // Diagonal derecha arriba
-        this.direccionesDeMovimiento.add(new int[]{-1, 1});  // Diagonal izquierda arriba
-        this.direccionesDeMovimiento.add(new int[]{1, -1});  // Diagonal derecha abajo
-        this.direccionesDeMovimiento.add(new int[]{-1, -1}); // Diagonal izquierda abajo
+        this.direccionesDeMovimiento.add(new int[]{0, 1});   // Derecha
+        this.direccionesDeMovimiento.add(new int[]{0, -1});  // Izquierda
+        this.direccionesDeMovimiento.add(new int[]{-1, 0});   // Arriba
+        this.direccionesDeMovimiento.add(new int[]{1, 0});  // Abajo
+        this.direccionesDeMovimiento.add(new int[]{-1, 1});   // Diagonal derecha arriba
+        this.direccionesDeMovimiento.add(new int[]{-1, -1});  // Diagonal izquierda arriba
+        this.direccionesDeMovimiento.add(new int[]{1, 1});  // Diagonal derecha abajo
+        this.direccionesDeMovimiento.add(new int[]{1, -1}); // Diagonal izquierda abajo
 
         // Para la Reina, las direcciones de movimiento y de amenaza son las mismas
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
