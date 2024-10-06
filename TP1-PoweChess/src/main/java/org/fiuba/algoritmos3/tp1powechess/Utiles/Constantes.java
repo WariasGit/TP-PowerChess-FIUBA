@@ -24,4 +24,12 @@ public class Constantes {
 
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;
+    public static int MAXIMA_DISTANCIA = 8;
+    public static int MINIMA_DISTANCIA = 1;
+    public static int CERO_EN_FILA = 0;
+    public static int CERO_EN_COLUMNA = 0;
+    public static int UNO_EN_FILA = 1;
+    public static int UNO_EN_COLUMNA = 1;
+    public static int DOS_EN_FILA = 2;
+    public static int DOS_EN_COLUMNA = 2;
 }

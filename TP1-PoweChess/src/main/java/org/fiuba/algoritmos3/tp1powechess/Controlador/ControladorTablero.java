@@ -9,16 +9,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 
 public class ControladorTablero {
@@ -27,7 +25,7 @@ public class ControladorTablero {
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
     private final StackPane[][] posiciones = new StackPane[8][8];
-    private VistaTablero vistaTablero = new VistaTablero(posiciones);
+    private final VistaTablero vistaTablero = new VistaTablero(posiciones);
 
 
     public void initialize() {
@@ -85,39 +83,42 @@ public class ControladorTablero {
         int fila = getGridIndex(GridPane.getRowIndex(stackPane));
         int columna = getGridIndex(GridPane.getColumnIndex(stackPane));
         System.out.println("Click en: " + fila + ", " + columna);
-
-        if (esPrimeraSeleccion()) {
-            manejarPrimerClick(fila, columna);
+        Optional<Pieza> piezaActual = juego.getPiezaActual(fila, columna);
+        if(esPrimeraSeleccion()) {
+            System.out.println("Cuenta como primer click");
+            manejarPrimerClick(piezaActual, fila, columna);
         } else {
+            System.out.println("Cuenta como segundo click");
             manejarSegundoClick(fila, columna);
+            quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
             limpiarSeleccion();
+            quitarMovimientosPosibles();
         }
+
     }
 
-    private void manejarPrimerClick(int fila, int columna) {
-        if (juego.esCasilleroLibre(fila, columna)) {
-            System.out.println("Tocaste un espacio vacio");
-            return;
+    private void manejarPrimerClick(Optional<Pieza> piezaActual ,int fila, int columna) {
+        if(piezaActual.isPresent()){
+            System.out.println("Tocaste una pieza");
+            aplicarColorCasillero(fila, columna);
+            mostrarMovimientosPosibles(piezaActual);
+            guardarPosicionOrigen(fila, columna);    //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
         }
-        System.out.println("Tocaste una pieza");
-        aplicarColorCasillero(fila, columna);
-        Optional<Pieza> piezaActual = juego.getPiezaActual(fila, columna);
-        mostrarMovimientosPosibles(piezaActual, fila, columna);
-        guardarPosicionOrigen(fila, columna);
     }
 
     private void manejarSegundoClick(int fila, int columna) {
         boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
         if (movimientoValido) {
             moverPieza(fila, columna);
+            juego.actualizarMovimientosPieza(fila, columna);
             tableroGrid.fireEvent(new EventoCambioDeTurno());
         } else {
             System.out.println("Movimiento invalido, se muestra la vista del error");
         }
-        quitarColorCasillero(fila, columna);
     }
 
     private void moverPieza(int fila, int columna) {
+        System.out.println("Moviendo pieza");
         ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
         this.posiciones[fila][columna].getChildren().add(imageView);
     }
@@ -136,39 +137,24 @@ public class ControladorTablero {
         vistaTablero.pintarCasilleroSeleccionado(fila, columna);
     }
 
-    private void quitarColorCasillero(Integer fila, Integer columna) {
+    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {
         vistaTablero.pintarCasilleroColorOriginal(fila, columna);
     }
 
-    private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual, int fila, int columna) {
+    private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual) {
         if(piezaActual.isPresent()){
             Pieza pieza = piezaActual.get();
-            ArrayList<int[]> listaPosicionesPosibles = new ArrayList<>();
-            obtenerPosicionesCasillero(pieza, listaPosicionesPosibles, fila, columna);
-            vistaTablero.mostrarMovimientosPosibles(listaPosicionesPosibles);
-
-        }
-
-    }
-
-    private void obtenerPosicionesCasillero(Pieza piezaActual, ArrayList<int[]> lista_posiciones, int fila, int columna){
-        for(Amenaza amenaza: piezaActual.getAmenazasGeneradas()){
-            int[] direccion = amenaza.getDireccion();
-            int cantidadCasilleros = amenaza.getCantidadCasilleros();
-            for(int i = 1; i <= cantidadCasilleros; i++){
-                int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA] * i, columna + direccion[Constantes.COORDENADA_COLUMNA] * i};
-                lista_posiciones.add(nuevaPosicion);
+            System.out.println("Movimientos posibles:");
+            for (int[] posicion : pieza.getMovimientosPosibles()) {
+                int fila = posicion[0];  // Accede a la fila
+                int columna = posicion[1];  // Accede a la columna
+                System.out.println("Posición posible: (" + fila + ", " + columna + ")");
             }
-        }
-        if (Objects.equals(piezaActual.getTipoDePieza(), Constantes.PEON)) {
-            for (int[] direccion : piezaActual.getDireccionesDeMovimiento()) {
-                int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA], columna + direccion[Constantes.COORDENADA_COLUMNA]};
-                lista_posiciones.add(nuevaPosicion);
-            }
+            vistaTablero.mostrarMovimientosPosibles(pieza.getMovimientosPosibles());
         }
     }
 
-    private void mostrarCasillerosAmenazados(ArrayList<int[]> lista_posiciones){
-        //TODO: Implementar
+    private void quitarMovimientosPosibles() {
+        vistaTablero.limpiarCasillerosPintados();
     }
 }
