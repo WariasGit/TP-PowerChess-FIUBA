@@ -26,13 +26,16 @@ public class Jugador {
         return this.estado == Configuracion.EstadoJugador.RENDIDO;
     }
 
+    /*
     public boolean OfrecioTablas() {
-        return this.estado == Configuracion.EstadoJugador.TABLAS;
+        return this.estado == Configuracion.EstadoJuego.TABLAS;
     }
 
     public void ofrecerTablas() {
-        this.estado = Configuracion.EstadoJugador.TABLAS;
+        this.estado = Configuracion.EstadoJuego.TABLAS;
     }
+
+     */
 
     public void setPiezasEnJuego(Pieza pieza) {
         if (!this.piezasEnJuego.contains(pieza)) {

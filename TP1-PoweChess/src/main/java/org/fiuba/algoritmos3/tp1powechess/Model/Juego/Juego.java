@@ -1,4 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
 import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
@@ -13,38 +14,31 @@ public class Juego {
     private List<Jugador> jugadores;
     private Turno turno;
     private TableroCuadrado tablero;
-    private Jugador ganador;
+    private String ganador;
     private List<Pieza> piezasEnJuego;
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
-        this.estado = Configuracion.EstadoJuego.ACTIVO;
+        this.estado = Configuracion.EstadoJuego.EN_JUEGO;
         this.jugadores = jugadores;
         turno = new Turno(jugadores);
         tablero = new TableroCuadrado();
         cargarPartida();
     }
 
-    public boolean verificarRendido() {
-        if (getJugadorActual().estaRendido()) {
-            this.ganador = turno.getOponente();
-            return true;
-        }
-        return false;
+    public void gestionarJaqueMate() {
+        ganador = turno.getNombreTurno();
+        estado = Configuracion.EstadoJuego.FINALIZADO;
     }
 
-    private Jugador getJugadorActual() {
-        return turno.getTurno();
-    }
-
-    /* Esto lo comento porque voy a tratar de implementarlo de otra forma
     public void gestionarTablas() {
-        if(getJugadorActual().ofrecioTablas()) {
-            return turno.getOponente().aceptarTablas();
-        }
+        estado = Configuracion.EstadoJuego.TABLAS;
     }
 
-     */
+    public void gestionarRendicion() {
+        terminarPartida();
+        ganador = turno.getNombreOponente();
+    }
 
     public String getNombreJugadorBlancas() {
         return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
@@ -56,14 +50,12 @@ public class Juego {
 
     public String getNombreJugadorActual() {return turno.getTurno().getNombre();}
 
-    public TableroCuadrado getTablero() {
-        return tablero;
-    }
+    public TableroCuadrado getTablero() {return tablero;}
 
     //Si esto funciona bien, se queda asi
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         try {
-            Optional<Optional<Pieza>> pieza = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+            Pieza pieza = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
             return true;
         } catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
@@ -71,9 +63,7 @@ public class Juego {
         }
     }
 
-    public void cambiarTurno() {
-        turno.gestionarTurno();
-    }
+    public void cambiarTurno() {turno.gestionarTurno();}
 
     public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
@@ -130,5 +120,12 @@ public class Juego {
         setearPiezasDesdeFEN(linea);
     }
 
+    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
+        return tablero.getPieza(i, j);
+    }
+
+    public boolean esCasilleroLibre(int fila, int columna) {
+        return tablero.casilleroLibre(fila, columna);
+    }
 }
 

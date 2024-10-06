@@ -143,14 +143,9 @@ public class ControladorTablero {
     private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual, int fila, int columna) {
         if(piezaActual.isPresent()){
             Pieza pieza = piezaActual.get();
-            if (Objects.equals(pieza.getTipoDePieza(), Constantes.PEON)) {
-                //TODO: Implementar
-            } else{
-                ArrayList<int[]> listaPosicionesPosibles = new ArrayList<>();
-                obtenerPosicionesCasillero(pieza, listaPosicionesPosibles, fila, columna);
-                vistaTablero.mostrarMovimientosPosibles(listaPosicionesPosibles);
-                //vistaTablero.mostrarCasillerosAmenazados(listaPosicionesPosibles);
-            }
+            ArrayList<int[]> listaPosicionesPosibles = new ArrayList<>();
+            obtenerPosicionesCasillero(pieza, listaPosicionesPosibles, fila, columna);
+            vistaTablero.mostrarMovimientosPosibles(listaPosicionesPosibles);
 
         }
 
@@ -162,6 +157,12 @@ public class ControladorTablero {
             int cantidadCasilleros = amenaza.getCantidadCasilleros();
             for(int i = 1; i <= cantidadCasilleros; i++){
                 int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA] * i, columna + direccion[Constantes.COORDENADA_COLUMNA] * i};
+                lista_posiciones.add(nuevaPosicion);
+            }
+        }
+        if (Objects.equals(piezaActual.getTipoDePieza(), Constantes.PEON)) {
+            for (int[] direccion : piezaActual.getDireccionesDeMovimiento()) {
+                int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA], columna + direccion[Constantes.COORDENADA_COLUMNA]};
                 lista_posiciones.add(nuevaPosicion);
             }
         }

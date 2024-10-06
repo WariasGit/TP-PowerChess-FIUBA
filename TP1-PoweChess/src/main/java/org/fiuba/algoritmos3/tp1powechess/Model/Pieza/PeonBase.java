@@ -22,7 +22,7 @@ public abstract class PeonBase extends Pieza {
 
         // Definimos las direcciones de amenaza
         direccionesDeAmenaza = new ArrayList<>();
-        direccionesDeAmenaza.add(new int[]{1, getDireccion()});  // Captura diagonal derecha
+        direccionesDeAmenaza.add(new int[]{getDireccion(),1});  // Captura diagonal derecha
         direccionesDeAmenaza.add(new int[]{-1, getDireccion()}); // Captura diagonal izquierda
     }
 

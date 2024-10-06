@@ -24,4 +24,12 @@ public class Turno {
         int oponenteIndex = (turnoActual - 1 + jugadores.size()) % jugadores.size();
         return jugadores.get(oponenteIndex);
     }
+
+    public String getNombreOponente() {
+        return getOponente().getNombre();
+    }
+
+    public String getNombreTurno() {
+        return getTurno().getNombre();
+    }
 }
