@@ -1,6 +1,8 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoConSalto;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoRey;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -31,6 +33,8 @@ public class Caballo extends Pieza {
 
         // Inicializamos las direcciones de amenaza (puede ser distinto en el futuro)
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
+
+        this.estrategiaDeMovimiento = new MovimientoConSalto();
     }
 
     public String getTipoDePieza() {

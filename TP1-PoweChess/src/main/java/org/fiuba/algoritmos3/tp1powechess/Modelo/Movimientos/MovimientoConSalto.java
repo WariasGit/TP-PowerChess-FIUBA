@@ -9,19 +9,19 @@ public class MovimientoConSalto implements EstrategiaDeMovimiento {
     public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
         Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
 
-        Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getX(),coordenadaInicial.getY());
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
+        Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());
+        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
 
         Pieza piezaAMover = casilleroInicial.getPieza();
         Pieza piezaAComer = casilleroFinal.getPieza();
 
         if (!casilleroFinal.estaOcupado()){
-            if(piezaAMover.esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY())){
+            if(piezaAMover.esDireccionDeMovimientoValida(diferenciasCoordenadas.getRow(), diferenciasCoordenadas.getCol())){
                 piezaAMover.marcarComoMovida();
                 return true;
             };
         } else if (!piezaAComer.esDelMismoColorQue(piezaAMover)) {
-            if(piezaAMover.esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
+            if(piezaAMover.esCapturaValida(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())){
                 piezaAMover.marcarComoMovida();
                 return true;
             };

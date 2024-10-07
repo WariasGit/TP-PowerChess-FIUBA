@@ -68,11 +68,11 @@ public class Rey extends Pieza implements Enrocable {
         return false;
     }
 
-    public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado) {
-        tableroCuadrado.setPieza(7,6,this);
+    public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado,int row) {
+        tableroCuadrado.setPieza(row,6,this);
     }
 
-    public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado) {
-        tableroCuadrado.setPieza(7,2,this);
+    public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado,int row) {
+        tableroCuadrado.setPieza(row,2,this);
     }
 }

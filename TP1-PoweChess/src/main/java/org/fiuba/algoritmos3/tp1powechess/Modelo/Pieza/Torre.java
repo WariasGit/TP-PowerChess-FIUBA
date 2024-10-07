@@ -57,11 +57,11 @@ public class Torre extends Pieza implements Enrocable {
         return false;
     }
 
-    public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado) {
-        tableroCuadrado.setPieza(7,5,this);
+    public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado, int row) {
+        tableroCuadrado.setPieza(row,5,this);
     }
 
-    public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado) {
-        tableroCuadrado.setPieza(7,3,this);
+    public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado, int row) {
+        tableroCuadrado.setPieza(row,3,this);
     }
 }
