@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -20,9 +21,11 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
     private Juego juego;
     private VistaJuego vistaJuego = new VistaJuego();
     private ControladorTablero controladorTablero;
-    @FXML GridPane tablero;
-    @FXML public Rectangle jugador1_color;
-    @FXML public Rectangle jugador2_color;
+    private ControladorPoderes controladorPoderes;
+    @FXML private VBox poderes;
+    @FXML private GridPane tablero;
+    @FXML private Rectangle jugador1_color;
+    @FXML private Rectangle jugador2_color;
     @FXML private Label jugador1;
     @FXML private Label jugador2;
     @FXML private Label jugadorActual;
@@ -36,6 +39,14 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
         } catch(IOException e) {
             System.out.println("Error al cargar el controlador del tablero");
         }
+        try {
+            FXMLLoader childLoader = new FXMLLoader(getClass().getResource("/org/fiuba/algoritmos3/tp1powechess/poderes-vista.fxml"));
+            Parent poderesNode = childLoader.load();
+            poderes.getChildren().add(poderesNode);
+            controladorPoderes = childLoader.getController();
+        } catch(IOException e) {
+            System.out.println("Error al cargar el controlador de los poderes");
+        }
     }
 
     public void setJuego(Juego juego) {
@@ -46,6 +57,7 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
         this.jugador2_color.setFill(colores.get(Configuracion.ColoresJugadores.NEGRO));
         this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
         controladorTablero.setJuego(juego);
+        controladorPoderes.setJuego(juego.getJugadores());
     }
 
     private static final Map<Configuracion.ColoresJugadores, Color> colores = Map.ofEntries(

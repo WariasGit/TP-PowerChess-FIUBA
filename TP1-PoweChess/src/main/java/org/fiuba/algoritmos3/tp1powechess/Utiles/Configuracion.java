@@ -20,6 +20,11 @@ public class Configuracion {
         TABLAS
     }
 
+    public static class TamanioVentana{
+        public static final double ANCHO = 900;
+        public static final double ALTO = 750;
+    }
+
     public static enum EstadoJugador {RENDIDO, ACTIVO}
 
     public static class Jugadores {

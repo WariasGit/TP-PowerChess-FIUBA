@@ -24,8 +24,8 @@ public class Main extends Application {
         Jugador j2 = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
 
         List<Jugador> jugadores = new ArrayList<>();
-        jugadores.add(j1); // Añade el jugador blanco primero
-        jugadores.add(j2); // Añade el jugador negro después
+        jugadores.add(j1);
+        jugadores.add(j2);
 
         Juego Ajedrez = new Juego(jugadores);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
@@ -34,7 +34,7 @@ public class Main extends Application {
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
         root.addEventHandler(EventoCambioDeTurno.CAMBIO_DE_TURNO_EVENT, juegoController);
-        Scene scene = new Scene(root, 900, 750);
+        Scene scene = new Scene(root, Configuracion.TamanioVentana.ANCHO, Configuracion.TamanioVentana.ALTO);
         stage.setScene(scene);
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);
         stage.show();

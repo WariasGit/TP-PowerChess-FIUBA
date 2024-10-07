@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class ControladorTablero {
-    @FXML public GridPane tableroGrid;
+    @FXML private GridPane tableroGrid;
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vboxPoderes" alignment="TOP_CENTER" prefHeight="50" prefWidth="250.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorPoderes">
+    <children>
+        <VBox alignment="CENTER_LEFT">
+            <children>
+                <Label prefHeight="50" prefWidth="150.0" text="Jugador Negras" />
+            <FlowPane fx:id="poderesNegras" prefHeight="200.0" prefWidth="200.0" />
+            </children>
+            <VBox.margin>
+                <Insets bottom="50.0" top="50.0" />
+            </VBox.margin>
+            <padding>
+                <Insets left="5.0" />
+            </padding>
+        </VBox>
+        <VBox alignment="CENTER_LEFT">
+            <children>
+                <Label prefHeight="50" prefWidth="150" text="Jugador Blancas" />
+            <FlowPane fx:id="poderesBlancas" prefHeight="200.0" prefWidth="200.0" />
+            </children>
+            <VBox.margin>
+                <Insets bottom="50.0" top="50.0" />
+            </VBox.margin>
+            <padding>
+                <Insets left="5.0" />
+            </padding>
+        </VBox>
+    </children>
+</VBox>

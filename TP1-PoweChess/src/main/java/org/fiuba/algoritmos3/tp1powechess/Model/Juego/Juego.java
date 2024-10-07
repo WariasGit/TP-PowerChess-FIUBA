@@ -6,14 +6,15 @@ import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Juego {
     private Configuracion.EstadoJuego estado;
-    private List<Jugador> jugadores;
-    private Turno turno;
-    private TableroCuadrado tablero;
+    private final List<Jugador> jugadores;
+    private final Turno turno;
+    private final TableroCuadrado tablero;
     private String ganador;
     private List<Pieza> piezasEnJuego;
 
@@ -126,6 +127,10 @@ public class Juego {
 
     public boolean esCasilleroLibre(int fila, int columna) {
         return tablero.casilleroLibre(fila, columna);
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return new ArrayList<>(jugadores);
     }
 }
 
