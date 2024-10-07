@@ -9,10 +9,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoCambioDeTurno;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoEstadoPartida;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
+import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPrimaria;
 import java.io.IOException;
 import java.util.Map;
 
@@ -72,27 +75,14 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {
-        vistaJuego.mostrarConfirmacionCierre(windowEvent);
+        VistaPrimaria.mostrarConfirmacionCierre(windowEvent);
     }
 
-    public void gestionarTablas(){
-        String NombreJugadorTablas = juego.getNombreJugadorActual();
-        tablero.fireEvent(new EventoCambioDeTurno());
-        Boolean continuar = vistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
-        if(continuar){
-            tablero.fireEvent(new EventoTablas());
-        }
-        else {
-            tablero.fireEvent(new EventoCambioDeTurno());
-        }
+    public void guardarPartida(){
+        //juego.guardar();
     }
 
-    public void gestionarAbandono(){
-        Boolean continuar = vistaJuego.mostrarConfirmacionAbandono(juego.getNombreJugadorActual());
-        if(continuar){
-            System.out.println(juego.getNombreJugadorActual() + " se ha rendido.");
-            //juego.gestionarRendicion();
-        }
+    public void volverAlMenu(){
+        //
     }
-
 }

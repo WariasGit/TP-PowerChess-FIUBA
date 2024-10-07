@@ -15,8 +15,6 @@ public class Juego {
     private final List<Jugador> jugadores;
     private final Turno turno;
     private final TableroCuadrado tablero;
-    private String ganador;
-    private List<Pieza> piezasEnJuego;
 
 
     public Juego(List<Jugador> jugadores) throws IOException {

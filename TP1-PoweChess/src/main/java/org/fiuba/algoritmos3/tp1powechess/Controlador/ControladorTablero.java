@@ -9,11 +9,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoCambioDeTurno;
 import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
 import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
 
@@ -26,7 +27,7 @@ public class ControladorTablero {
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
-    private final StackPane[][] posiciones = new StackPane[8][8];
+    private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
     private VistaTablero vistaTablero = new VistaTablero(posiciones);
 
 

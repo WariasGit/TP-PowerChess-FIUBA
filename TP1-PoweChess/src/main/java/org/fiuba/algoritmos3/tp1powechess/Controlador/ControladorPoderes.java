@@ -6,18 +6,27 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoCambioDeTurno;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoEstadoPartida;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPoderes;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class ControladorPoderes {
     @FXML public FlowPane poderesNegras;
     @FXML public FlowPane poderesBlancas;
     @FXML VBox vboxPoderes;
+    @FXML private Button botonOfrecerTablasNegras;
+    @FXML private Button botonRendirseNegras;
+    @FXML private Button botonOfrecerTablasBlancas;
+    @FXML private Button botonRendirseBlancas;
     private ArrayList<Jugador> JugadoresActuales;
-    private VistaPoderes vistaPoderes = new VistaPoderes();
 
     public void setJuego(ArrayList<Jugador> Jugadores) {
         JugadoresActuales = Jugadores;
@@ -35,7 +44,6 @@ public class ControladorPoderes {
         for(Integer poder: jugador.getListaPoderes()){
             Button botonPoder = new Button("Poder: " + poder);
             botonPoder.setOnAction(event -> {
-                pruebaPoder();
             });
             poderesBlancas.getChildren().add(botonPoder);
         }
@@ -46,13 +54,33 @@ public class ControladorPoderes {
         for(Integer poder: jugador.getListaPoderes()){
             Button botonPoder = new Button("Poder: " + poder);
             botonPoder.setOnAction(event -> {
-                pruebaPoder();
             });
             poderesNegras.getChildren().add(botonPoder);
         }
     }
 
-    private void pruebaPoder(){
-        System.out.println("Usando el poder: ");
+    public void gestionarTablas(javafx.event.ActionEvent actionEvent){
+        String NombreJugadorTablas = "";
+        Button boton = (Button) actionEvent.getSource();
+        if (boton == botonOfrecerTablasNegras) {
+            NombreJugadorTablas = Constantes.NOMBRE_NEGRAS;
+        } else if (boton == botonOfrecerTablasBlancas) {
+            NombreJugadorTablas = Constantes.NOMBRE_BLANCAS;
+        }
+        vboxPoderes.fireEvent(new EventoCambioDeTurno());
+        Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
+        if(continuar){
+            vboxPoderes.fireEvent(new EventoEstadoPartida(EventoEstadoPartida.TABLAS_ACEPTADAS_EVENT));
+        }
+        else {
+            vboxPoderes.fireEvent(new EventoCambioDeTurno());
+        }
+    }
+
+    public void gestionarAbandono(javafx.event.ActionEvent actionEvent){
+        Boolean continuar = VistaJuego.mostrarConfirmacionAbandono();
+        if(continuar){
+            //juego.gestionarRendicion();
+        }
     }
 }

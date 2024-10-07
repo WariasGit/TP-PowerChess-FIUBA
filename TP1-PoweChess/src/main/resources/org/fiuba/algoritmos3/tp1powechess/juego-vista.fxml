@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -12,13 +12,29 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
     <children>
-        <Label alignment="CENTER" prefHeight="89.0" prefWidth="600.0" text="PowerChess">
-            <font>
-                <Font size="25.0" />
-            </font>
-        </Label>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+              <Label alignment="CENTER" prefHeight="54.0" prefWidth="757.0" text="PowerChess">
+                  <font>
+                      <Font size="25.0" />
+                  </font>
+               <padding>
+                  <Insets left="90.0" />
+               </padding>
+              </Label>
+            <MenuButton mnemonicParsing="false" text="MENU">
+              <items>
+                <MenuItem mnemonicParsing="false" text="MENU PRIINCIPAL" onAction="#volverAlMenu"/>
+                <MenuItem mnemonicParsing="false" text="GUARDAR PARTIDA" onAction="#guardarPartida" />
+              </items>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </MenuButton>
+         </children>
+      </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="18.0" prefWidth="384.0" spacing="20.0">
             <children>
             <HBox prefHeight="100.0" prefWidth="600.0">
@@ -41,12 +57,6 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ButtonBar buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
-                    <buttons>
-                        <Button fx:id="botonOfrecerTablas" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarTablas" text="Ofrecer Tablas" />
-                        <Button fx:id="botonRendirse" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarAbandono" text="Rendirse" />
-                    </buttons>
-                  </ButtonBar>
                </children>
             </HBox>
             </children>

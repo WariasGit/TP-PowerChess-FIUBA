@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Controlador;
+package org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos;
 
 import javafx.event.Event;
 import javafx.event.EventType;

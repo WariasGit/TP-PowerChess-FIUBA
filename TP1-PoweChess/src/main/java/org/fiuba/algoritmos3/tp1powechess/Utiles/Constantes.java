@@ -2,7 +2,7 @@ package org.fiuba.algoritmos3.tp1powechess.Utiles;
 
 public class Constantes {
     public static final String RUTA_JUEGO_FXML = "/org/fiuba/algoritmos3/tp1powechess/juego-vista.fxml";
-    public static final String RUTA_TABLERO_FXML = "tablero-vista.fxml";
+    public static final String RUTA_INICIO_FXML = "/org/fiuba/algoritmos3/tp1powechess/inicio-vista.fxml";
     public static final String RUTA_ARCHIVO_INICIO_FEN = "FEN_inicio_partida.txt";
 
     public static String REY = "Rey";
@@ -20,7 +20,10 @@ public class Constantes {
     public static String PREGUNTA_TABLAS = "¿Estás seguro de que deseas aceptar tablas?";
     public static String TITULO_ABANDONO = "Confirmación de abandono";
     public static String ENCABEZADO_ABANDONO = "Vas a abandonar la partida";
-    public static String PREGUNTA_ABANDONO = ", ¿Estás seguro de que deseas abandonar la partida?";
+    public static String PREGUNTA_ABANDONO = "¿Estás seguro de que deseas abandonar la partida?";
+
+    public static String NOMBRE_BLANCAS = "BLANCAS";
+    public static String NOMBRE_NEGRAS = "NEGRAS";
 
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;

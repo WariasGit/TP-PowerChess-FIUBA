@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class TableroCuadrado {
     private Casillero[][] tablero;
-    static private Integer dimensiones = 8;
+    static private Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
 
     public TableroCuadrado() {
         tablero = new Casillero[dimensiones][dimensiones];
@@ -20,7 +20,6 @@ public class TableroCuadrado {
                 Configuracion.ColoresJugadores color = (row + col) % 2 == 0 ? Configuracion.ColoresJugadores.BLANCO : Configuracion.ColoresJugadores.NEGRO;
                   tablero[row][col] = new Casillero(color, new CoordenadaCartesiana2D(row,col));
             }
-            //colocarPiezasIniciales();
         }
     }
 
@@ -41,7 +40,6 @@ public class TableroCuadrado {
         if (!esCoordenadaValida(rowFinal, colFinal)) {
             throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
         }
-
         // Verificamos que el casillero inicial tenga una pieza
         Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
         Pieza piezaAMover = casilleroInicial.getPieza();
@@ -217,54 +215,8 @@ public class TableroCuadrado {
         tablero[row][col].setPieza(pieza);
     }
 
-    public Integer getDimension() {
-        return dimensiones;
-    }
-
     public boolean casilleroLibre(Integer i, Integer j) {
         return getPieza(i,j).isEmpty();
-    }
-
-    private void colocarPiezasIniciales() {
-        colocarPiezasBlancas();
-        colocarPiezasNegras();
-    }
-
-
-
-    private void colocarPiezasBlancas() {
-        // Colocación de peones blancos
-        for (int col = 0; col < dimensiones; col++) {
-            setPieza(6, col, new PeonAscendente(Configuracion.ColoresJugadores.BLANCO));
-        }
-        // Colocación de piezas mayores blancas
-        setPieza(7, 0, new Torre(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 1, new Caballo(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 2, new Alfil(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 3, new Reina(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 4, new Rey(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 5, new Alfil(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 6, new Caballo(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 7, new Torre(Configuracion.ColoresJugadores.BLANCO));
-    }
-
-
-
-    private void colocarPiezasNegras() {
-        // Colocación de peones negros
-        for (int col = 0; col < dimensiones; col++) {
-            setPieza(1, col, new PeonDescendente(Configuracion.ColoresJugadores.NEGRO));
-        }
-
-        // Colocación de piezas mayores negras
-        setPieza(0, 0, new Torre(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 1, new Caballo(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 2, new Alfil(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 3, new Reina(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 4, new Rey(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 5, new Alfil(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 6, new Caballo(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 7, new Torre(Configuracion.ColoresJugadores.NEGRO));
     }
 
 }

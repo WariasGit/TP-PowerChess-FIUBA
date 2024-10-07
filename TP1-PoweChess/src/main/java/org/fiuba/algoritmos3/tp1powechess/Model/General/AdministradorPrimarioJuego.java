@@ -1,11 +1,13 @@
 package org.fiuba.algoritmos3.tp1powechess.Model.General;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.EventoCambioDeTurno;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoCambioDeTurno;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoEstadoPartida;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -15,18 +17,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdministradorPrimarioJuego {
+public class AdministradorPrimarioJuego implements EventHandler<EventoEstadoPartida> {
     Jugador jugadorBlancas;
     Jugador jugadorNegras;
     Juego Ajedrez;
+    String NombreJugadorBlancas;
+    String NombreJugadorNegras;
     private Stage stage;
 
     public AdministradorPrimarioJuego(Stage stage) {
         this.stage = stage;
     }
 
+    @Override
+    public void handle(EventoEstadoPartida evento) {
+        if (evento.getEventType().equals(EventoEstadoPartida.INICIAR_JUEGO)){
+            try {
+                iniciarJuego();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
-    public void iniciarJuego() throws IOException {
+
+    private void iniciarJuego() throws IOException {
         this.jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
         this.jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
         List<Jugador> jugadores = new ArrayList<>();

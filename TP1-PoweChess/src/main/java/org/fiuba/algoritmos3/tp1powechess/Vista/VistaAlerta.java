@@ -6,7 +6,7 @@ import java.util.Optional;
 import javafx.stage.WindowEvent;
 
 public class VistaAlerta {
-    public Boolean mostrarAlertaEvento(String titulo, String encabezado, String pregunta) {
+    public static Boolean mostrarAlertaEvento(String titulo, String encabezado, String pregunta) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(titulo);
         alert.setHeaderText(encabezado);
