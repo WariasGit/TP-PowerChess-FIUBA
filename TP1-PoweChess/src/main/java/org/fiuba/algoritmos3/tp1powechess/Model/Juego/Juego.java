@@ -27,19 +27,7 @@ public class Juego {
         cargarPartida();
     }
 
-    public void gestionarJaqueMate() {
-        ganador = turno.getNombreTurno();
-        estado = Configuracion.EstadoJuego.FINALIZADO;
-    }
 
-    public void gestionarTablas() {
-        estado = Configuracion.EstadoJuego.TABLAS;
-    }
-
-    public void gestionarRendicion() {
-        terminarPartida();
-        ganador = turno.getNombreOponente();
-    }
 
     public String getNombreJugadorBlancas() {
         return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();

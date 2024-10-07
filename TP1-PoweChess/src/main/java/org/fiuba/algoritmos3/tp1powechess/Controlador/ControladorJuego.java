@@ -91,8 +91,7 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
         Boolean continuar = vistaJuego.mostrarConfirmacionAbandono(juego.getNombreJugadorActual());
         if(continuar){
             System.out.println(juego.getNombreJugadorActual() + " se ha rendido.");
-
-            juego.gestionarRendicion();
+            //juego.gestionarRendicion();
         }
     }
 
