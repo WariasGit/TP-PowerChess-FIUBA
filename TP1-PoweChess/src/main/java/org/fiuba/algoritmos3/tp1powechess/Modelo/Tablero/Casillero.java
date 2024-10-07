@@ -7,14 +7,12 @@ import java.util.ArrayList;
 
 public class Casillero {
     private Pieza pieza;
-    private Coordenada coordenada;
     private Configuracion.ColoresJugadores color;
     private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
     private GestorDeAmenazas gestorDeAmenazas;
 
-    public Casillero(Configuracion.ColoresJugadores color, Coordenada coordenada) {
+    public Casillero(Configuracion.ColoresJugadores color) {
         this.color = color;
-        this.coordenada = coordenada;
         this.pieza = null;
         this.estadoDeOcupacionCasillero = new EstadoDesocupado();
         this.gestorDeAmenazas = new GestorDeAmenazas();

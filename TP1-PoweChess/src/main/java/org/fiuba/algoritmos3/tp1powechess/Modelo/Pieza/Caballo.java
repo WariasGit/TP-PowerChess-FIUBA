@@ -1,6 +1,9 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -34,12 +37,17 @@ public class Caballo extends Pieza {
         return "Caballo";
     }
 
-    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
-        int difX = Math.abs(finX - inicioX);
-        int difY = Math.abs(finY - inicioY);
+    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado) {
+        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
 
-        // Verificamos si la dirección está entre las permitidas
-        return esDireccionDeMovimientoValida(difX, difY);
+        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
+
+        if (!casilleroFinal.estaOcupado()){
+            return esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY());
+        } else if (!casilleroFinal.getPieza().esDelMismoColorQue(this)) {
+            return esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY());
+        }
+        return false;
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {

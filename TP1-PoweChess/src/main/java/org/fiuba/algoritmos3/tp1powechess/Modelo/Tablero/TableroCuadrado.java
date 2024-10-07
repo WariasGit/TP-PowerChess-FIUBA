@@ -18,7 +18,7 @@ public class TableroCuadrado {
         for (int row = 0; row < dimensiones; row++) {
             for (int col = 0; col < dimensiones; col++) {
                 Configuracion.ColoresJugadores color = (row + col) % 2 == 0 ? Configuracion.ColoresJugadores.BLANCO : Configuracion.ColoresJugadores.NEGRO;
-                  tablero[row][col] = new Casillero(color, new CoordenadaCartesiana2D(row,col));
+                  tablero[row][col] = new Casillero(color);
             }
         }
     }
@@ -48,14 +48,12 @@ public class TableroCuadrado {
             throw new IllegalStateException("No hay una pieza en el casillero inicial.");
         }
 
-        // Verificamos si el movimiento es válido para la pieza
-        if (!piezaAMover.esMovimientoValido(rowInicial, colInicial, rowFinal, colFinal)) {
-            throw new IllegalStateException("El movimiento no es válido para esta pieza.");
-        }
+        Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
+        Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);
 
-        // Verificamos si el camino está desocupado
-        if (!caminoEstaDesocupado(rowInicial, colInicial, rowFinal, colFinal)) {
-            throw new IllegalStateException("El camino está bloqueado por otras piezas.");
+        // Verificamos si el movimiento es válido para la pieza
+        if (!piezaAMover.esMovimientoValido(coordenadaInicial, coordenadaFinal, this)) {
+            throw new IllegalStateException("El movimiento no es válido para esta pieza.");
         }
 
         // Movemos la pieza al nuevo casillero
@@ -172,7 +170,7 @@ public class TableroCuadrado {
         }
     }
 
-    private boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    public boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
 
@@ -192,7 +190,7 @@ public class TableroCuadrado {
         return true;  // El camino está libre
     }
 
-    private boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    public boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
 

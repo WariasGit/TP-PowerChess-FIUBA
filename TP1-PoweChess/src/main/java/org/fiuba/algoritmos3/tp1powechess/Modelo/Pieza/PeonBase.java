@@ -1,6 +1,9 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -24,14 +27,21 @@ public abstract class PeonBase extends Pieza {
         return "Peon";
     }
 
-    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
+    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado) {
+        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
 
-        // Verificamos si la dirección está entre las direcciones de movimiento permitidas
-        if (esDireccionDeMovimientoValida(difX, difY)) {
-            this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
-            return true;
+        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
+
+        if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
+            if(esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY())){
+                this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
+                return true;
+            };
+        } else if (!casilleroFinal.getPieza().esDelMismoColorQue(this) && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())) {
+            if(esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
+                this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
+                return true;
+            };
         }
         return false;
     }

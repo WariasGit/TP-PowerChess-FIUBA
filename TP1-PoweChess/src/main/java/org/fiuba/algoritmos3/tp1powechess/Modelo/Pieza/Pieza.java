@@ -4,6 +4,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.NoEnrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -40,8 +42,8 @@ public abstract class Pieza implements Movible {
         this.seHaMovido = true;
     }
 
-    public boolean esDeColor(String color) {
-        return this.color.equals(color);
+    public boolean esDelMismoColorQue(Pieza otraPieza){
+        return this.color.equals(otraPieza.color);
     }
 
     public void setEstrategiaEnroque(Enrocable enroque) {
@@ -52,7 +54,7 @@ public abstract class Pieza implements Movible {
         return tipoDeEnroque.puedeEnrocar();
     }
 
-    public abstract boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY);
+    public abstract boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado);
 
     public abstract boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY);
 
