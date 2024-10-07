@@ -27,25 +27,6 @@ public abstract class PeonBase extends Pieza {
         return "Peon";
     }
 
-    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado) {
-        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
-
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
-
-        if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
-            if(esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY())){
-                this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
-                return true;
-            };
-        } else if (!casilleroFinal.getPieza().esDelMismoColorQue(this) && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())) {
-            if(esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
-                this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
-                return true;
-            };
-        }
-        return false;
-    }
-
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
@@ -57,7 +38,7 @@ public abstract class PeonBase extends Pieza {
     }
 
     // Meetodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    protected boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             // Solo debe moverse hacia adelante (sin cambiar la X)
             if (direccion[0] == difX && direccion[1] == difY) {

@@ -37,19 +37,6 @@ public class Caballo extends Pieza {
         return "Caballo";
     }
 
-    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado) {
-        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
-
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
-
-        if (!casilleroFinal.estaOcupado()){
-            return esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY());
-        } else if (!casilleroFinal.getPieza().esDelMismoColorQue(this)) {
-            return esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY());
-        }
-        return false;
-    }
-
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
@@ -59,7 +46,7 @@ public class Caballo extends Pieza {
     }
 
     // Metodo privado que verifica si la dirección del movimiento es válida
-    private boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : this.direccionesDeMovimiento) {
             if (direccion[0] == difX && direccion[1] == difY) {
                 return true;

@@ -4,6 +4,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.NoEnrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -17,7 +19,7 @@ public abstract class Pieza implements Movible {
     protected Configuracion.ColoresJugadores color;
     protected boolean seHaMovido;
     protected int maxDistanciaDeAmenaza;
-    protected Enrocable tipoDeEnroque;
+    protected EstrategiaDeMovimiento estrategiaDeMovimiento;
     protected ArrayList<int[]> direccionesDeMovimiento;
     protected ArrayList<int[]> direccionesDeAmenaza;
     protected ArrayList<int[]> movimientosPosibles;
@@ -27,7 +29,7 @@ public abstract class Pieza implements Movible {
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
         this.seHaMovido = false;
-        this.tipoDeEnroque = new NoEnrocable();
+        this.estrategiaDeMovimiento = new MovimientoNormal();
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -46,15 +48,11 @@ public abstract class Pieza implements Movible {
         return this.color.equals(otraPieza.color);
     }
 
-    public void setEstrategiaEnroque(Enrocable enroque) {
-        this.tipoDeEnroque = enroque;
-    }
+    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
+        return  this.estrategiaDeMovimiento.esMovimientoValido(coordenadaInicial, coordenadaFinal, tableroCuadrado);
+    };
 
-    public boolean puedeEnrocar() {
-        return tipoDeEnroque.puedeEnrocar();
-    }
-
-    public abstract boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado);
+    public abstract boolean esDireccionDeMovimientoValida(int difX, int difY);
 
     public abstract boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY);
 

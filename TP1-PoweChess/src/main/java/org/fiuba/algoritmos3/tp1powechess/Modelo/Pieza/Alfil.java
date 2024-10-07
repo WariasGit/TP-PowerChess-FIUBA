@@ -33,19 +33,6 @@ public class Alfil extends Pieza {
         return "Alfil";
     }
 
-    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado) {
-        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
-
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
-
-        if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
-            return esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY());
-        } else if (!casilleroFinal.getPieza().esDelMismoColorQue(this) && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())) {
-            return esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY());
-        }
-        return false;
-    }
-
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
@@ -57,7 +44,7 @@ public class Alfil extends Pieza {
     }
 
     // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    private boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             if (direccion[0] != 0 && direccion[1] != 0 && difX * direccion[1] == difY * direccion[0]) {  // Movimiento diagonal proporcional
                 return true;

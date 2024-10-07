@@ -1,6 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoRey;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -33,28 +34,11 @@ public class Rey extends Pieza {
         // Para el Rey, las direcciones de movimiento y de amenaza son las mismas
         direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
 
-        this.tipoDeEnroque = new EnrocableSiNoSeHaMovido(this);
+        this.estrategiaDeMovimiento = new MovimientoRey();
     }
 
     public String getTipoDePieza() {
         return "Rey";
-    }
-
-    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado) {
-        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
-
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getX(),coordenadaFinal.getY());
-
-        if(casilleroFinal.estaAmenazadoPorColorDistinto(String.valueOf(this.color))){
-            return false;
-        }
-
-        if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
-            return esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY());
-        } else if (!casilleroFinal.getPieza().esDelMismoColorQue(this) && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())) {
-            return esCapturaValida(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY());
-        }
-        return false;
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
@@ -77,7 +61,7 @@ public class Rey extends Pieza {
     }
 
     // Metodo privado que verifica si la dirección del movimiento es válida
-    private boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             if (direccion[0] == difX && direccion[1] == difY) {
                 return true;
