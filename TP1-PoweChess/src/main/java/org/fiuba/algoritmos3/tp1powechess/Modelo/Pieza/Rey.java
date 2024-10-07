@@ -1,17 +1,15 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoRey;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.EnrocableSiNoSeHaMovido;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
 
-public class Rey extends Pieza {
+public class Rey extends Pieza implements Enrocable {
 
     public Rey(Configuracion.ColoresJugadores color) {
 
@@ -68,5 +66,13 @@ public class Rey extends Pieza {
             }
         }
         return false;
+    }
+
+    public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado) {
+        tableroCuadrado.setPieza(7,6,this);
+    }
+
+    public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado) {
+        tableroCuadrado.setPieza(7,2,this);
     }
 }

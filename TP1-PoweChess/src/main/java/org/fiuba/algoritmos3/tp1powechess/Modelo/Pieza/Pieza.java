@@ -1,8 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.NoEnrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
@@ -12,7 +10,6 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public abstract class Pieza implements Movible {
