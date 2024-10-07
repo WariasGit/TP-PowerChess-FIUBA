@@ -15,6 +15,11 @@ public class MovimientoTorre implements EstrategiaDeMovimiento {
         Pieza piezaAMover = casilleroInicial.getPieza();
         Pieza piezaAComer = casilleroFinal.getPieza();
 
+        if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,3))){
+            coordenadaFinal.setX(7);
+            coordenadaFinal.setY(5);
+        }
+        
         if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getX(),coordenadaInicial.getY(),coordenadaFinal.getX(),coordenadaFinal.getY())){
             if(piezaAMover.esDireccionDeMovimientoValida(diferenciasCoordenadas.getX(), diferenciasCoordenadas.getY())){
                 piezaAMover.marcarComoMovida();
