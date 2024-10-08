@@ -15,46 +15,30 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
         Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
 
         Pieza piezaAMover = casilleroInicial.getPieza();
-        Pieza piezaAComer = casilleroFinal.getPieza();
 
-        if(casilleroFinal.estaAmenazadoPorColorDistinto(String.valueOf(piezaAMover.getColor()))){
-            return false;
+        if (esMovimientoValido(piezaAMover,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
+            return moverPiezaYCapturarSiEsNecesario(piezaAMover, coordenadaInicial, coordenadaFinal, tableroCuadrado);
         }
 
+        return null; // Movimiento no válido
+    }
 
-        if(tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol()) && !tableroCuadrado.caminoEstaAmenazado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol()) && !piezaAMover.seHaMovido()){
-            if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,2)) || diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),3))){
-                coordenadaFinal.setRow(coordenadaInicial.getRow());
-                coordenadaFinal.setCol(6);
-                Torre torre = (Torre) tableroCuadrado.getCasillero(coordenadaInicial.getRow(),7).getPieza();
-                if(!torre.seHaMovido()){
-                    torre.enrocarSegunEnroqueDerecho(tableroCuadrado,coordenadaInicial.getRow());
-                    torre.marcarComoMovida();
-                    piezaAMover.marcarComoMovida();
-                    return true;
-                }
-            } else if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,-2)) || diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),-4))){
-                coordenadaFinal.setRow(coordenadaInicial.getRow());
-                coordenadaFinal.setCol(2);
-                Torre torre = (Torre) tableroCuadrado.getCasillero(coordenadaInicial.getRow(),0).getPieza();
-                if(!torre.seHaMovido()){
-                    torre.enrocarSegunEnroqueIzquierdo(tableroCuadrado,coordenadaInicial.getRow());
-                    torre.marcarComoMovida();
-                    piezaAMover.marcarComoMovida();
-                    return true;
-                }
-            }
-        } else if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())){
-            if(piezaAMover.esDireccionDeMovimientoValida(diferenciasCoordenadas.getRow(), diferenciasCoordenadas.getCol())){
-                piezaAMover.marcarComoMovida();
-                return true;
-            };
-        } else if (!piezaAComer.esDelMismoColorQue(piezaAMover) && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())) {
-            if(piezaAMover.esCapturaValida(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())) {
-                piezaAMover.marcarComoMovida();
-                return true;
-            };
-        }
-        return false;
-    };
+    private boolean esMovimientoValido(Pieza pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {
+        // Verificar si es un movimiento simple o una captura
+        boolean esMovimientoNormal = !casilleroFinal.estaOcupado() && pieza.esDireccionDeMovimientoValida(diferencias.getRow(), diferencias.getCol());
+        boolean esCaptura = casilleroFinal.estaOcupado() && !casilleroFinal.getPieza().esDelMismoColorQue(pieza) &&
+                pieza.esCapturaValida(diferencias.getRow(), diferencias.getCol(), diferencias.getRow(), diferencias.getCol());
+
+        return (esMovimientoNormal || esCaptura) && tablero.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol());
+    }
+
+    private Pieza moverPiezaYCapturarSiEsNecesario(Pieza piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
+        piezaAMover.marcarComoMovida();
+
+        // Remover la pieza del casillero inicial
+        tablero.removePieza(coordenadaInicial);
+
+        // Colocar la pieza en el casillero final
+        return tablero.setPieza(coordenadaFinal, piezaAMover); // Devuelve la pieza capturada si la hubiera, sino null
+    }
 }

@@ -14,38 +14,30 @@ public class MovimientoTorre implements EstrategiaDeMovimiento {
         Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
 
         Pieza piezaAMover = casilleroInicial.getPieza();
-        Pieza piezaAComer = casilleroFinal.getPieza();
 
-        if(tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol()) && !tableroCuadrado.caminoEstaAmenazado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol()) && !piezaAMover.seHaMovido()){
-            Rey rey = (Rey) tableroCuadrado.getCasillero(0,4).getPieza();
-            if(!rey.seHaMovido()){
-                if(diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),-3))){
-                    coordenadaFinal.setRow(coordenadaInicial.getRow());
-                    coordenadaFinal.setCol(5);
-                    rey.enrocarSegunEnroqueDerecho(tableroCuadrado,coordenadaInicial.getRow());
-                    rey.marcarComoMovida();
-                    piezaAMover.marcarComoMovida();
-                    return true;
-                } else if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,3))){
-                    coordenadaFinal.setRow(coordenadaInicial.getRow());
-                    coordenadaFinal.setCol(3);
-                    rey.enrocarSegunEnroqueIzquierdo(tableroCuadrado,coordenadaInicial.getRow());
-                    rey.marcarComoMovida();
-                    piezaAMover.marcarComoMovida();
-                    return true;
-                }
-            }
-        } else if (!casilleroFinal.estaOcupado() && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())){
-            if(piezaAMover.esDireccionDeMovimientoValida(diferenciasCoordenadas.getRow(), diferenciasCoordenadas.getCol())){
-                piezaAMover.marcarComoMovida();
-                return true;
-            };
-        } else if (!piezaAComer.esDelMismoColorQue(piezaAMover) && tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())) {
-            if(piezaAMover.esCapturaValida(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol())) {
-                piezaAMover.marcarComoMovida();
-                return true;
-            };
+        if (esMovimientoValido(piezaAMover,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
+            return moverPiezaYCapturarSiEsNecesario(piezaAMover, coordenadaInicial, coordenadaFinal, tableroCuadrado);
         }
-        return false;
-    };
+
+        return null; // Movimiento no válido
+    }
+
+    private boolean esMovimientoValido(Pieza pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {
+        // Verificar si es un movimiento simple o una captura
+        boolean esMovimientoNormal = !casilleroFinal.estaOcupado() && pieza.esDireccionDeMovimientoValida(diferencias.getRow(), diferencias.getCol());
+        boolean esCaptura = casilleroFinal.estaOcupado() && !casilleroFinal.getPieza().esDelMismoColorQue(pieza) &&
+                pieza.esCapturaValida(diferencias.getRow(), diferencias.getCol(), diferencias.getRow(), diferencias.getCol());
+
+        return (esMovimientoNormal || esCaptura) && tablero.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol());
+    }
+
+    private Pieza moverPiezaYCapturarSiEsNecesario(Pieza piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
+        piezaAMover.marcarComoMovida();
+
+        // Remover la pieza del casillero inicial
+        tablero.removePieza(coordenadaInicial);
+
+        // Colocar la pieza en el casillero final
+        return tablero.setPieza(coordenadaFinal, piezaAMover); // Devuelve la pieza capturada si la hubiera, sino null
+    }
 }
