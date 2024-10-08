@@ -6,6 +6,7 @@ module org.fiuba.algoritmos3.tp1powechess {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
+    requires javafx.media;
 
     opens org.fiuba.algoritmos3.tp1powechess.Controlador to javafx.fxml;
     exports org.fiuba.algoritmos3.tp1powechess;

@@ -28,6 +28,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     String NombreJugadorNegras;
     ControladorPrimario controladorPrimario;
     private Stage stage;
+    Reproductor reproductor = new Reproductor();
 
     public AdministradorPrimarioJuego(Stage stage) {
         this.stage = stage;
@@ -64,6 +65,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
     private void iniciarVentanaJuego() throws IOException {
+        reproductor.reproducirMusicaJuego();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
         VBox root;
         root = loader.load();
@@ -78,6 +80,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
     public void iniciarVentanaPrincipal() throws IOException {
+        reproductor.reproducirMusicaMenu();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_INICIO_FXML));
         Pane root = loader.load();
         this.controladorPrimario = loader.getController();
