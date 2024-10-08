@@ -7,7 +7,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 
 public class MovimientoTorre implements EstrategiaDeMovimiento {
-    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
+    public Pieza ejecutarMovimientoSiEsValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
         Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
 
         Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());

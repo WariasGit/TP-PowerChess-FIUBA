@@ -45,8 +45,8 @@ public abstract class Pieza implements Movible {
         return this.color.equals(otraPieza.color);
     }
 
-    public boolean esMovimientoValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
-        return  this.estrategiaDeMovimiento.esMovimientoValido(coordenadaInicial, coordenadaFinal, tableroCuadrado);
+    public Pieza ejecutarMovimientoSegunEstrategia(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
+        return  this.estrategiaDeMovimiento.ejecutarMovimientoSiEsValido(coordenadaInicial, coordenadaFinal, tableroCuadrado);
     };
 
     public abstract boolean esDireccionDeMovimientoValida(int difX, int difY);

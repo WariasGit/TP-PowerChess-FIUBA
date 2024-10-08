@@ -43,28 +43,24 @@ public class TableroCuadrado {
 
         // Verificamos que el casillero inicial tenga una pieza
         Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
-        Pieza piezaAMover = casilleroInicial.getPieza();
-        if (piezaAMover == null) {
-            throw new IllegalStateException("No hay una pieza en el casillero inicial.");
+
+        if (!casilleroInicial.estaOcupado()) {
+            throw new IllegalArgumentException("No hay ninguna pieza en el casillero inicial.");
         }
+
+        Pieza piezaAMover = casilleroInicial.getPieza();
 
         Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);
 
         // Verificamos si el movimiento es válido para la pieza
-        if (!piezaAMover.esMovimientoValido(coordenadaInicial, coordenadaFinal, this)) {
-            throw new IllegalStateException("El movimiento no es válido para esta pieza.");
-        }
 
-        // Movemos la pieza al nuevo casillero
-        Pieza piezaMovida = removePieza(rowInicial, colInicial);
-        Pieza piezaComida = setPieza(rowFinal, colFinal, piezaMovida);
-
-        // Devolvemos la pieza comida si hay alguna, o null si no había pieza en el destino
-        return piezaComida;
+        return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
 
-    public Pieza setPieza(int row, int col, Pieza piezaAColocar) {
+    public Pieza setPieza(Coordenada2D coordenada, Pieza piezaAColocar) {
+        int row = coordenada.getRow();
+        int col = coordenada.getCol();
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }
@@ -89,7 +85,9 @@ public class TableroCuadrado {
         return piezaComida;
     }
 
-    public Pieza removePieza(int row, int col) {
+    public Pieza removePieza(Coordenada2D coordenada) {
+        int row = coordenada.getRow();
+        int col = coordenada.getCol();
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }

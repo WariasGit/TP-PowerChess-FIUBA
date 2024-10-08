@@ -3,6 +3,7 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoRey;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
@@ -69,10 +70,10 @@ public class Rey extends Pieza implements Enrocable {
     }
 
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado,int row) {
-        tableroCuadrado.setPieza(row,6,this);
+        tableroCuadrado.setPieza(new Coordenada2D(row,6),this);
     }
 
     public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado,int row) {
-        tableroCuadrado.setPieza(row,2,this);
+        tableroCuadrado.setPieza(new Coordenada2D(row,2),this);
     }
 }
