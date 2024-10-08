@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoCambioDeTurno;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
@@ -111,7 +111,7 @@ public class ControladorTablero {
         boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
         if (movimientoValido) {
             moverPieza(fila, columna);
-            tableroGrid.fireEvent(new EventoCambioDeTurno());
+            tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         } else {
             System.out.println("Movimiento invalido, se muestra la vista del error");
         }

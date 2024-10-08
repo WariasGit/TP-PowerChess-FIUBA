@@ -2,20 +2,14 @@ package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoCambioDeTurno;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoEstadoPartida;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
-import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPoderes;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class ControladorPoderes {
@@ -67,13 +61,13 @@ public class ControladorPoderes {
         } else if (boton == botonOfrecerTablasBlancas) {
             NombreJugadorTablas = Constantes.NOMBRE_BLANCAS;
         }
-        vboxPoderes.fireEvent(new EventoCambioDeTurno());
+        vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
-            vboxPoderes.fireEvent(new EventoEstadoPartida(EventoEstadoPartida.TABLAS_ACEPTADAS_EVENT));
+            vboxPoderes.fireEvent(new EventoJuego(EventoJuego.TABLAS_ACEPTADAS_EVENT));
         }
         else {
-            vboxPoderes.fireEvent(new EventoCambioDeTurno());
+            vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         }
     }
 
