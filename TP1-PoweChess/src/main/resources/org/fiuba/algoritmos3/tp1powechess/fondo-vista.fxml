@@ -15,88 +15,12 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
-<Pane fx:id="panePrincipal" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
+<Pane prefHeight="750.0" prefWidth="900.0" >
    <children>
       <ImageView fitHeight="765.0" fitWidth="900.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@imagenes/fondo_inicio.jpg" />
+            <Image url="@imagenes/fondo.jpg" />
          </image>
       </ImageView>
-
-      <VBox fx:id="contenedor" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" >
-         <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="54.0" prefWidth="757.0" text="PowerChess">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                     <padding>
-                        <Insets left="90.0" />
-                     </padding>
-                  </Label>
-                  <MenuButton mnemonicParsing="false" text="MENU">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="MENU PRIINCIPAL" onAction="#volverAlMenu"/>
-                        <MenuItem mnemonicParsing="false" text="GUARDAR PARTIDA" onAction="#guardarPartida" />
-                     </items>
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </MenuButton>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="18.0" prefWidth="384.0" spacing="20.0">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="600.0">
-                     <children>
-                        <Label fx:id="jugador1" prefHeight="18.0" text="">
-                           <HBox.margin>
-                              <Insets left="10.0" right="5.0" />
-                           </HBox.margin></Label>
-                        <Rectangle fx:id="jugador1_color" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="17.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
-                        <Label fx:id="jugador2" prefHeight="18.0" text="">
-                           <HBox.margin>
-                              <Insets left="20.0" right="5.0" />
-                           </HBox.margin></Label>
-                        <Rectangle fx:id="jugador2_color" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="17.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
-                        <Label fx:id="jugadorActual" prefHeight="18.0" prefWidth="110.0" text="">
-                           <HBox.margin>
-                              <Insets left="20.0" right="10.0" />
-                           </HBox.margin></Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <GridPane fx:id="tablero" alignment="CENTER_LEFT" maxHeight="700" maxWidth="700" minHeight="650" minWidth="650" prefHeight="600" prefWidth="600">
-                     <columnConstraints>
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                     </rowConstraints></GridPane>
-                  <VBox fx:id="poderes" alignment="TOP_CENTER" prefHeight="50" prefWidth="250.0">
-                     <HBox.margin>
-                        <Insets bottom="50.0" top="100.0" />
-                     </HBox.margin>
-                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-                     </padding></VBox>
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets left="10.0" right="10.0" />
-         </padding>
-      </VBox>
-
    </children>
 </Pane>

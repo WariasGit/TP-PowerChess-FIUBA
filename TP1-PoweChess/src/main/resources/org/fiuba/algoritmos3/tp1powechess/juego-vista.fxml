@@ -12,9 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<VBox fx:id="contenedor" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
+<VBox fx:id="contenedor" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" spacing="10.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego">
     <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -26,10 +24,10 @@
                   <Insets left="90.0" />
                </padding>
               </Label>
-            <MenuButton mnemonicParsing="false" text="MENU">
+            <MenuButton mnemonicParsing="false" text="MENU" styleClass="menu-button">
               <items>
-                <MenuItem mnemonicParsing="false" text="MENU PRIINCIPAL" onAction="#volverAlMenu"/>
-                <MenuItem mnemonicParsing="false" text="GUARDAR PARTIDA" onAction="#guardarPartida" />
+                <MenuItem mnemonicParsing="false" onAction="#volverAlMenu" text="MENU PRIINCIPAL" />
+                <MenuItem mnemonicParsing="false" onAction="#guardarPartida" text="GUARDAR PARTIDA" />
               </items>
                <font>
                   <Font size="10.0" />
@@ -51,14 +49,10 @@
                         <Insets left="20.0" right="5.0" />
                      </HBox.margin></Label>
                       <Rectangle fx:id="jugador2_color" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="17.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
-                      <Label fx:id="jugadorActual" prefHeight="18.0" prefWidth="110.0" text="">
+                      <Label fx:id="jugadorActual" prefHeight="18.0" prefWidth="150.0" text="">
                      <HBox.margin>
                         <Insets left="20.0" right="10.0" />
                      </HBox.margin></Label>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
                </children>
             </HBox>
             </children>
