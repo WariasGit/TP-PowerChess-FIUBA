@@ -23,7 +23,7 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
 
 
         if(tableroCuadrado.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol()) && !tableroCuadrado.caminoEstaAmenazado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol()) && !piezaAMover.seHaMovido()){
-            if(diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),2)) || diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),3))){
+            if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,2)) || diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),3))){
                 coordenadaFinal.setRow(coordenadaInicial.getRow());
                 coordenadaFinal.setCol(6);
                 Torre torre = (Torre) tableroCuadrado.getCasillero(coordenadaInicial.getRow(),7).getPieza();
