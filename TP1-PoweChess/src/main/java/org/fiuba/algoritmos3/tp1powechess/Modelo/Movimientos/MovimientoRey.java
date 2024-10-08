@@ -29,6 +29,8 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
                 Torre torre = (Torre) tableroCuadrado.getCasillero(coordenadaInicial.getRow(),7).getPieza();
                 if(!torre.seHaMovido()){
                     torre.enrocarSegunEnroqueDerecho(tableroCuadrado,coordenadaInicial.getRow());
+                    torre.marcarComoMovida();
+                    piezaAMover.marcarComoMovida();
                     return true;
                 }
             } else if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,-2)) || diferenciasCoordenadas.esIgual(new Coordenada2D(coordenadaInicial.getRow(),-4))){
@@ -37,6 +39,8 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
                 Torre torre = (Torre) tableroCuadrado.getCasillero(coordenadaInicial.getRow(),0).getPieza();
                 if(!torre.seHaMovido()){
                     torre.enrocarSegunEnroqueIzquierdo(tableroCuadrado,coordenadaInicial.getRow());
+                    torre.marcarComoMovida();
+                    piezaAMover.marcarComoMovida();
                     return true;
                 }
             }

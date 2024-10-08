@@ -23,11 +23,15 @@ public class MovimientoTorre implements EstrategiaDeMovimiento {
                     coordenadaFinal.setRow(coordenadaInicial.getRow());
                     coordenadaFinal.setCol(5);
                     rey.enrocarSegunEnroqueDerecho(tableroCuadrado,coordenadaInicial.getRow());
+                    rey.marcarComoMovida();
+                    piezaAMover.marcarComoMovida();
                     return true;
                 } else if(diferenciasCoordenadas.esIgual(new Coordenada2D(0,3))){
                     coordenadaFinal.setRow(coordenadaInicial.getRow());
                     coordenadaFinal.setCol(3);
                     rey.enrocarSegunEnroqueIzquierdo(tableroCuadrado,coordenadaInicial.getRow());
+                    rey.marcarComoMovida();
+                    piezaAMover.marcarComoMovida();
                     return true;
                 }
             }
