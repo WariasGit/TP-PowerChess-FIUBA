@@ -22,10 +22,12 @@ public class Constantes {
     public static String ENCABEZADO_ABANDONO = "Vas a abandonar la partida";
     public static String PREGUNTA_ABANDONO = ", ¿Estás seguro de que deseas abandonar la partida?";
 
+    public static int INDICE_MOVIMIENTO_DOBLE = 1;
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;
     public static int MAXIMA_DISTANCIA = 8;
     public static int MINIMA_DISTANCIA = 1;
+
     public static int CERO_EN_FILA = 0;
     public static int CERO_EN_COLUMNA = 0;
     public static int UNO_EN_FILA = 1;

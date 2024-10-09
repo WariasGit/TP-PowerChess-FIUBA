@@ -3,6 +3,7 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Movible;
 import java.util.ArrayList;
 
 public interface Movible {
-    public void actualizarMovimientosPosibles(int fila, int columna);
+    public void setMovimientosPosibles(ArrayList<int[]> movimientosPosibles);
     public ArrayList<int[]> getMovimientosPosibles();
+    public void limpiarListaMovimientosPosibles();
 }

@@ -1,9 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -47,6 +44,16 @@ public abstract class PeonBase extends Pieza {
             }
         }
         return false;
+    }
+
+    public void quitarMovimientoDoblePeon() {
+        if (seHaMovido() && tieneMovimientoDoble()) {
+            direccionesDeMovimiento.remove(Constantes.INDICE_MOVIMIENTO_DOBLE);
+        }
+    }
+
+    private boolean tieneMovimientoDoble(){
+        return direccionesDeMovimiento.size() > Constantes.INDICE_MOVIMIENTO_DOBLE;
     }
 
     // Metodo abstracto para obtener la dirección de movimiento del peón (positivo o negativo según el color)

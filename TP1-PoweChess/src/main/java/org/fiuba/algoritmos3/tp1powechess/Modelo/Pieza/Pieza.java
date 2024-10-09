@@ -20,13 +20,13 @@ public abstract class Pieza implements Movible {
     protected ArrayList<int[]> direccionesDeMovimiento;
     protected ArrayList<int[]> direccionesDeAmenaza;
     protected ArrayList<int[]> movimientosPosibles;
-
     protected String tipoDePieza;
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
         this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
+        this.seHaMovido = false;
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -76,27 +76,14 @@ public abstract class Pieza implements Movible {
         return tipoDePieza;
     }
 
-    public void actualizarMovimientosPosibles(int fila, int columna){
-        for(Amenaza amenaza: getAmenazasGeneradas()){
-            int[] direccion = amenaza.getDireccion();
-            int cantidadCasilleros = amenaza.getCantidadCasilleros();
-            for(int i = 1; i <= cantidadCasilleros; i++){
-                int[] nuevaPosicion = {fila + direccion[0] * i, columna + direccion[1] * i};
-                movimientosPosibles.add(nuevaPosicion);
-            }
-        }
-        if (Objects.equals(tipoDePieza, Constantes.PEON)) {
-            for (int[] direccion : direccionesDeMovimiento) {
-                int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA], columna + direccion[Constantes.COORDENADA_COLUMNA]};
-                movimientosPosibles.add(nuevaPosicion);
-            }
-        }
+    public void setMovimientosPosibles(ArrayList<int[]> movimientosPosibles){
+        limpiarListaMovimientosPosibles();
+        this.movimientosPosibles = new ArrayList<int[]>(movimientosPosibles);
     }
 
     public ArrayList<int[]> getMovimientosPosibles(){
         return new ArrayList<int[]>(movimientosPosibles);
     }
-
 
     public void limpiarListaMovimientosPosibles() {
         this.movimientosPosibles.clear();

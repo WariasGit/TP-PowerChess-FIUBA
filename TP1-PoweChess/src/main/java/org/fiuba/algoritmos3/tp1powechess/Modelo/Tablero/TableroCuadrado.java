@@ -2,6 +2,9 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+
+import java.lang.constant.Constable;
 import java.util.Optional;
 import java.util.ArrayList;
 
@@ -220,6 +223,76 @@ public class TableroCuadrado {
 
     public boolean casilleroLibre(Integer i, Integer j) {
         return getPieza(i,j).isEmpty();
+    }
+
+    public void actualizarMovimientosPieza(int fila, int columna) {
+        Optional<Pieza> pieza = getPieza(fila, columna);
+        pieza.ifPresent(value -> filtrarAmenazasYPosiciones(fila, columna, value));
+    }
+
+    private void filtrarAmenazasYPosiciones(int fila, int columna, Pieza piezaActual) {
+        if (piezaActual.getTipoDePieza().equals(Constantes.PEON)) {
+            filtrarAmenazasYPosicionesPeon(fila, columna, piezaActual);
+        } else {
+            filtrarAmenazasYPosicionesGenerales(fila, columna, piezaActual);
+        }
+    }
+
+    private void filtrarAmenazasYPosicionesPeon(int fila, int columna, Pieza peon){
+        PeonBase peonBase = (PeonBase) peon;
+        peonBase.quitarMovimientoDoblePeon();
+        ArrayList<Amenaza> amenazas = peon.getAmenazasGeneradas();
+        ArrayList<int[]> movimientos = peon.getDireccionesDeMovimiento();
+        ArrayList<int[]> posicionesValidas = new ArrayList<>();
+        for (Amenaza amenaza : amenazas) {
+            int[] direccion = amenaza.getDireccion();
+            int maxCasilleros = amenaza.getCantidadCasilleros();
+            int nuevaFila = fila + direccion[0] * peon.getMaxDistanciaDeAmenaza();
+            int nuevaColumna = columna + direccion[1] * peon.getMaxDistanciaDeAmenaza();
+            if (esCoordenadaValida(nuevaFila, nuevaColumna) && !casilleroLibre(nuevaFila, nuevaColumna)) {
+                Optional<Pieza> piezaEnCamino = getPieza(nuevaFila, nuevaColumna);
+                if (piezaEnCamino.isPresent()) {
+                    Pieza piezaTablero = piezaEnCamino.get();
+                    if (piezaTablero.getColor() != peon.getColor()) {
+                        posicionesValidas.add(new int[]{nuevaFila, nuevaColumna});
+                    }
+                }
+            }
+        }
+        for (int[] direccionPeon : movimientos) {
+            int filaNueva = fila + direccionPeon[Constantes.COORDENADA_FILA];
+            int columnaNueva = columna + direccionPeon[Constantes.COORDENADA_COLUMNA];
+            if (esCoordenadaValida(filaNueva, columnaNueva) && casilleroLibre(filaNueva, columnaNueva)) {
+                posicionesValidas.add(new int[]{filaNueva, columnaNueva});
+            }
+        }
+        peon.setMovimientosPosibles(posicionesValidas);
+    }
+
+    private void filtrarAmenazasYPosicionesGenerales(int fila, int columna, Pieza piezaActual) {
+        ArrayList<Amenaza> amenazas = piezaActual.getAmenazasGeneradas();
+        ArrayList<int[]> posicionesValidas = new ArrayList<>();
+        for (Amenaza amenaza : amenazas) {
+            int[] direccion = amenaza.getDireccion();
+            int maxCasilleros = amenaza.getCantidadCasilleros();
+            for (int i = 1; i <= maxCasilleros; i++) {
+                int nuevaFila = fila + direccion[0] * i;
+                int nuevaColumna = columna + direccion[1] * i;
+                if (esCoordenadaValida(nuevaFila, nuevaColumna)) {
+                    Optional<Pieza> piezaEnCamino = getPieza(nuevaFila, nuevaColumna);
+                    if (piezaEnCamino.isPresent()) {
+                        Pieza piezaTablero = piezaEnCamino.get();
+                        if (piezaTablero.getColor() != piezaActual.getColor()) {
+                            posicionesValidas.add(new int[]{nuevaFila, nuevaColumna});
+                        }
+                        break;
+                    } else {
+                        posicionesValidas.add(new int[]{nuevaFila, nuevaColumna});
+                    }
+                }
+            }
+        }
+        piezaActual.setMovimientosPosibles(posicionesValidas);
     }
 }
 

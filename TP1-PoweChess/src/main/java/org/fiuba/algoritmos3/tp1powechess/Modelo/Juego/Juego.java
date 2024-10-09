@@ -1,4 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
@@ -7,6 +8,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Juego {
@@ -23,7 +25,6 @@ public class Juego {
         this.jugadores = jugadores;
         turno = new Turno(jugadores);
         tablero = new TableroCuadrado();
-        this.piezasEnJuego = new ArrayList<>();
         cargarPartida();
     }
 
@@ -110,11 +111,17 @@ public class Juego {
                 Pieza pieza = Configuracion.getPieza(caracter);
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
-                    actualizarMovimientosPieza(fila, columna);
-                    piezasEnJuego.add(pieza);
                 }
                 columna++;
             }
+        }
+    }
+
+    private void guardarPiezaJugador(Coordenada2D posicion, Pieza pieza) {
+        if(pieza.getColor() == Configuracion.ColoresJugadores.BLANCO) {
+            jugadores.get(Configuracion.Jugadores.BLANCAS).setPiezasEnJuego(posicion, pieza);
+        } else {
+            jugadores.get(Configuracion.Jugadores.NEGRAS).setPiezasEnJuego(posicion, pieza);
         }
     }
 
@@ -132,9 +139,8 @@ public class Juego {
     }
 
     public void actualizarMovimientosPieza(int fila, int columna) {
-        Pieza pieza = tablero.getPieza(fila, columna).get();
-        pieza.limpiarListaMovimientosPosibles();
-        pieza.actualizarMovimientosPosibles(fila, columna);
+        tablero.actualizarMovimientosPieza(fila, columna);
     }
+
 }
 
