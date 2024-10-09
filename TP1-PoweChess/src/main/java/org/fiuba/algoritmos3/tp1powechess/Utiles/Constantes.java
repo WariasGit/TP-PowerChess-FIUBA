@@ -34,4 +34,7 @@ public class Constantes {
     public static int UNO_EN_COLUMNA = 1;
     public static int DOS_EN_FILA = 2;
     public static int DOS_EN_COLUMNA = 2;
+
+    public static int NO_TIENE_IMAGEN = 1;
+    public static int INDICE_IMAGEN = 1;
 }

@@ -121,7 +121,13 @@ public class ControladorTablero {
     private void moverPieza(int fila, int columna) {
         System.out.println("Moviendo pieza");
         ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
-        this.posiciones[fila][columna].getChildren().add(imageView);
+
+        if (this.posiciones[fila][columna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
+            this.posiciones[fila][columna].getChildren().add(imageView);
+        }else{
+            this.posiciones[fila][columna].getChildren().remove(Constantes.INDICE_IMAGEN);
+            this.posiciones[fila][columna].getChildren().add(imageView);
+        }
     }
 
     private void guardarPosicionOrigen(int fila, int columna) {
