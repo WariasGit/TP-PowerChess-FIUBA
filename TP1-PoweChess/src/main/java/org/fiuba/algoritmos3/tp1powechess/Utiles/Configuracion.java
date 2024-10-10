@@ -21,6 +21,12 @@ public class Configuracion {
         TABLAS
     }
 
+    public enum CategoriaPoder {
+        DURACION,
+        ACCION,
+        EVOLUCION
+    }
+
     public static class TamanioVentana{
         public static final double ANCHO = 900;
         public static final double ALTO = 750;
