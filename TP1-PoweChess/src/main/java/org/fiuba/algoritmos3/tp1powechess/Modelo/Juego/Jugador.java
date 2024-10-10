@@ -12,12 +12,20 @@ public class Jugador {
     private Boolean jaque;
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
+    private ArrayList<Integer> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
+
 
     public Jugador(Configuracion.ColoresJugadores color, String nombre) {
         this.color = color;
         jaque = false;
         this.nombre = nombre;
         piezasEnJuego = new ArrayList<>();
+
+        //Esto es a modo de prueba
+        this.listaPoderes = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+            listaPoderes.add(i);
+        }
     }
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
@@ -58,6 +66,9 @@ public class Jugador {
         System.out.println("Valor total de piezas: " + valorTotal);
         return valorTotal >= Configuracion.ValorPiezas.VALOR_MINIMO_PIEZAS;
     }
+
+    public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
+
 }
 
 

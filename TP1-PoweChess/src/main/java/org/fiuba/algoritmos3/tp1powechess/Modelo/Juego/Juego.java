@@ -63,6 +63,10 @@ public class Juego {
 
     public TableroCuadrado getTablero() {return tablero;}
 
+    public ArrayList<Jugador> getJugadores() {
+        return new ArrayList<>(jugadores);
+    }
+
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         try {
             Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
