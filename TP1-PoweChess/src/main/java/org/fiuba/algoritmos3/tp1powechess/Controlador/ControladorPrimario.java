@@ -12,6 +12,7 @@ public class ControladorPrimario {
 
     public void salirDelJuego(){
         panePrincipal.fireEvent(new EventoJuego(EventoJuego.SALIR_JUEGO));
+        System.out.println("Se quiere salir del juego");
     }
 
     public void opciones(){

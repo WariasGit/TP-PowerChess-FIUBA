@@ -1,5 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Model.General;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -36,6 +37,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
 
     @Override
     public void handle(EventoJuego evento) {
+        System.out.println("Evento: " + evento.getEventType());
         if (evento.getEventType().equals(EventoJuego.INICIAR_JUEGO)){
             try {
                 iniciarJuego();
@@ -44,12 +46,16 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
             }
         } else if (evento.getEventType().equals(EventoJuego.VOLVER_AL_MENU)){
             try {
-                System.out.println("Volviendo al menu");
                 iniciarVentanaPrincipal();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
+        } else if (evento.getEventType().equals(EventoJuego.SALIR_JUEGO)){
+            System.out.println("Saliendo del juego");
+            stage.close();
+            Platform.exit();
+            System.gc();
         }
     }
 
@@ -85,6 +91,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         Pane root = loader.load();
         this.controladorPrimario = loader.getController();
         root.addEventHandler(EventoJuego.INICIAR_JUEGO, this);
+        root.addEventHandler(EventoJuego.SALIR_JUEGO, this);
         Scene scene = new Scene(root, Configuracion.TamanioVentana.ANCHO, Configuracion.TamanioVentana.ALTO);
         stage.setScene(scene);
         stage.setOnCloseRequest(AdministradorPrimarioJuego.this::mostrarConfirmacionCierre);
