@@ -17,7 +17,8 @@ public class Rey extends Pieza implements Enrocable {
         this.tipoDePieza = Constantes.REY;
         this.maxDistanciaDeAmenaza = Constantes.MINIMA_DISTANCIA;
         this.movimientosPosibles = new ArrayList<>();
-
+        this.valor = Configuracion.ValorPiezas.VALOR_REY;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.REY_BLANCO, Configuracion.CaracterFenParaPiezas.REY_NEGRO);
         // Inicializamos las direcciones de movimiento
         this.direccionesDeMovimiento = new ArrayList<>();
         this.direccionesDeMovimiento.add(new int[]{Constantes.CERO_EN_FILA, Constantes.UNO_EN_COLUMNA});   // Derecha

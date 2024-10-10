@@ -1,4 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,17 @@ public class Turno {
         return getTurno().getNombre();
     }
 
-    public Map<Coordenada2D, Pieza> getPiezasJugadorActual() {
+    public ArrayList<Pieza> getPiezasJugadorActual() {
         return getTurno().getPiezasEnJuego();
+    }
+    public Boolean estaEnJaqueJugadorActual() {
+        return getTurno().estaEnJaque();
+    }
+    public void cambiarEstadoJugadorActual() {
+        getTurno().cambiarEstadoJaque();
+    }
+
+    public Boolean tieneMovimientosJugadorActual() {
+        return getTurno().tieneMovimientosPosibles();
     }
 }

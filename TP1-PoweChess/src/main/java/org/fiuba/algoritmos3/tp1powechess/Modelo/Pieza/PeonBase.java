@@ -13,15 +13,12 @@ public abstract class PeonBase extends Pieza {
         this.tipoDePieza = Constantes.PEON;
         this.movimientosPosibles = new ArrayList<>();
         this.maxDistanciaDeAmenaza = Constantes.MINIMA_DISTANCIA;
-
+        this.valor = Configuracion.ValorPiezas.VALOR_PEON;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.PEON_BLANCO, Configuracion.CaracterFenParaPiezas.PEON_NEGRO);
         // Definimos las direcciones de movimiento del peón
         direccionesDeMovimiento = new ArrayList<>();
         direccionesDeMovimiento.add(new int[]{getDireccion(), Constantes.CERO_EN_COLUMNA});   // Movimiento hacia adelante
         direccionesDeMovimiento.add(new int[]{Constantes.DOS_EN_FILA * getDireccion(), Constantes.CERO_EN_COLUMNA}); // Movimiento inicial doble
-    }
-
-    public String getTipoDePieza() {
-        return "Peon";
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {

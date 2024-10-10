@@ -7,10 +7,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public abstract class Pieza implements Movible {
     protected Configuracion.ColoresJugadores color;
@@ -21,6 +19,8 @@ public abstract class Pieza implements Movible {
     protected ArrayList<int[]> direccionesDeAmenaza;
     protected ArrayList<int[]> movimientosPosibles;
     protected String tipoDePieza;
+    protected char caracterFEN;
+    protected int valor;
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
@@ -88,4 +88,26 @@ public abstract class Pieza implements Movible {
     public void limpiarListaMovimientosPosibles() {
         this.movimientosPosibles.clear();
     }
+
+    public boolean tieneMovimientosPosibles() {
+        return !movimientosPosibles.isEmpty();
+    }
+
+    public int getValor() {
+        return valor;
+    }
+
+    public void asignarCaracterFEN(char opcionBlanca, char opcionNegra) {
+        if(this.color == Configuracion.ColoresJugadores.BLANCO){
+            caracterFEN = opcionBlanca;
+        }else {
+            caracterFEN = opcionNegra;
+        }
+    }
+
+    public char getCaracterFEN() {
+        return caracterFEN;
+    }
+
+
 }

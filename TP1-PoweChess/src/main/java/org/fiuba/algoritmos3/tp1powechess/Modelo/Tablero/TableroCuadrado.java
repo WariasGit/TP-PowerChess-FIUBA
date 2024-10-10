@@ -294,6 +294,31 @@ public class TableroCuadrado {
         }
         piezaActual.setMovimientosPosibles(posicionesValidas);
     }
+
+    public String estadoActualTablero(){
+        StringBuilder estado = new StringBuilder();
+        int casillerosVacios = Constantes.CERO;
+        for (int fila = 0; fila < dimensiones; fila++) {
+            for (int columna = 0; columna < dimensiones; columna++) {
+                Optional<Pieza> pieza = getPieza(fila, columna);
+                if (pieza.isPresent()) {
+                    if(casillerosVacios > Constantes.CERO){
+                        estado.append(casillerosVacios);
+                        casillerosVacios = Constantes.CERO;
+                    }
+                    estado.append(pieza.get().getCaracterFEN());
+                }else{
+                    casillerosVacios++;
+                }
+            }
+            if(casillerosVacios > Constantes.CERO){
+                estado.append(casillerosVacios);
+                casillerosVacios = Constantes.CERO;
+            }
+            estado.append("/");
+        }
+        return estado.toString();
+    }
 }
 
 

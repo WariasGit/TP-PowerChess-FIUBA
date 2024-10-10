@@ -22,6 +22,16 @@ public class Constantes {
     public static String ENCABEZADO_ABANDONO = "Vas a abandonar la partida";
     public static String PREGUNTA_ABANDONO = ", ¿Estás seguro de que deseas abandonar la partida?";
 
+    public static int CANTIDAD_MOVIMIENTOS_INICIALES = 0;
+    public static final int CANTIDAD_MOVIMIENTOS_PARA_TABLAS = 50;
+    public static final int CANTIDAD_PIEZAS_INICIALES = 32;
+
+    public static final int CERO = 0;
+    public static final Integer UNO = 1;
+    public static final int CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES = 35;
+    public static final int CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES = 4;
+    public static final int MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS = 6;
+
     public static int INDICE_MOVIMIENTO_DOBLE = 1;
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;

@@ -41,19 +41,4 @@ public class Coordenada2D {
     public boolean esIgual(Coordenada2D otra) {
         return this.coordenadas[0] == otra.getRow() && this.coordenadas[1] == otra.getCol();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;  // Si es el mismo objeto
-        if (obj == null || getClass() != obj.getClass()) return false;  // Si no es del mismo tipo de clase
-
-        Coordenada2D otra = (Coordenada2D) obj;
-        // Comparamos las coordenadas
-        return this.coordenadas[0] == otra.getRow() && this.coordenadas[1] == otra.getCol();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(coordenadas[0], coordenadas[1]);
-    }
 }
