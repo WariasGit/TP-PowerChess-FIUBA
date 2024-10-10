@@ -1,13 +1,12 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Juego {
     private Configuracion.EstadoJuego estado;
@@ -15,7 +14,11 @@ public class Juego {
     private Turno turno;
     private TableroCuadrado tablero;
     private String ganador;
-    private ArrayList<Pieza> piezasEnJuego;
+    private int contadorMovimientosParaTablas;
+    private int contadorMovimientosParaChequearPosiciones;
+    private int contadorMovimientosTotales;
+    private HashMap<String, Integer> historialPosiciones;
+    private int piezasEnJuego;
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
@@ -23,23 +26,30 @@ public class Juego {
         this.jugadores = jugadores;
         turno = new Turno(jugadores);
         tablero = new TableroCuadrado();
-        this.piezasEnJuego = new ArrayList<>();
+        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+        contadorMovimientosTotales = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+        piezasEnJuego = Constantes.CANTIDAD_PIEZAS_INICIALES;
+        historialPosiciones = new HashMap<>();
         cargarPartida();
-    }
-
-    public void gestionarJaqueMate() {
-        ganador = turno.getNombreTurno();
-        estado = Configuracion.EstadoJuego.FINALIZADO;
-    }
-
-    public void gestionarTablas() {
-        estado = Configuracion.EstadoJuego.TABLAS;
     }
 
     public void gestionarRendicion() {
         terminarPartida();
         ganador = turno.getNombreOponente();
     }
+
+    public void establecerJaqueMate() {
+        ganador = turno.getNombreTurno();
+        estado = Configuracion.EstadoJuego.FINALIZADO;
+    }
+
+    public void establecerTablas() {
+        estado = Configuracion.EstadoJuego.TABLAS;
+        System.out.println("Tablas");
+    }
+
+    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
     public String getNombreJugadorBlancas() {
         return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
@@ -53,10 +63,24 @@ public class Juego {
 
     public TableroCuadrado getTablero() {return tablero;}
 
-    //Si esto funciona bien, se queda asi
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         try {
-            Pieza pieza = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+            Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+            contadorMovimientosTotales++;
+            if(piezaComida != null){
+                quitarPiezaDeJuador(piezaComida);
+                restarUnaPieza();
+                reiniciarContadorMovimientoParaTablas();
+                reiniciarContadorMovimientosParaChequearPosiciones();
+                limpiarHistorialPosiciones();
+            }else{
+                gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
+                if (contadorMovimientosTotales >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
+                    guardarEstadoTablero();
+                }
+            }
+            gestionarTablas();
+            imprimirEstadoDebug();
             return true;
         } catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
@@ -64,9 +88,53 @@ public class Juego {
         }
     }
 
-    public void cambiarTurno() {turno.gestionarTurno();}
+    private void quitarPiezaDeJuador(Pieza piezaComida) {
+        if(piezaComida.getColor() == Configuracion.ColoresJugadores.BLANCO) {
+            jugadores.get(Configuracion.Jugadores.BLANCAS).quitarPiezaEnJuego(piezaComida);
+        } else {
+            jugadores.get(Configuracion.Jugadores.NEGRAS).quitarPiezaEnJuego(piezaComida);
+        }
+    }
 
-    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
+    private void restarUnaPieza() {
+        piezasEnJuego--;
+    }
+
+    private void reiniciarContadorMovimientosParaChequearPosiciones() {
+        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+    }
+
+    private void limpiarHistorialPosiciones() {
+        historialPosiciones.clear();
+    }
+
+    private void guardarEstadoTablero() {
+        String estadoTablero = tablero.estadoActualTablero();
+        historialPosiciones.put(estadoTablero, historialPosiciones.getOrDefault(estadoTablero, Constantes.CERO) + Constantes.UNO);
+        contadorMovimientosParaChequearPosiciones++;
+    }
+
+    private void reiniciarContadorMovimientoParaTablas() {
+        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+    }
+
+    private void gestionarContadorMovimientosParaTablas(int fila, int columna) {
+        if(movioPeon(fila, columna)){
+            reiniciarContadorMovimientoParaTablas();
+        } else {
+            contadorMovimientosParaTablas++;
+        }
+    }
+
+    private boolean movioPeon(int fila, int columna) {
+        Optional<Pieza> pieza = tablero.getPieza(fila, columna);
+        if (pieza.isPresent()) {
+            return Objects.equals(pieza.get().getTipoDePieza(), Constantes.PEON);
+        }
+        return false;
+    }
+
+    public void cambiarTurno() {turno.gestionarTurno();}
 
 
     /*Implemento los metodos "leerArchivoFen" y "setearPiezasDesdeFEN"
@@ -110,11 +178,18 @@ public class Juego {
                 Pieza pieza = Configuracion.getPieza(caracter);
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
-                    actualizarMovimientosPieza(fila, columna);
-                    piezasEnJuego.add(pieza);
+                    guardarPiezaJugador(pieza);
                 }
                 columna++;
             }
+        }
+    }
+
+    private void guardarPiezaJugador(Pieza pieza) {
+        if(pieza.getColor() == Configuracion.ColoresJugadores.BLANCO) {
+            jugadores.get(Configuracion.Jugadores.BLANCAS).setPiezasEnJuego(pieza);
+        } else {
+            jugadores.get(Configuracion.Jugadores.NEGRAS).setPiezasEnJuego(pieza);
         }
     }
 
@@ -127,14 +202,81 @@ public class Juego {
         return tablero.getPieza(i, j);
     }
 
-    public boolean esCasilleroLibre(int fila, int columna) {
-        return tablero.casilleroLibre(fila, columna);
+    public void actualizarMovimientosPieza(int fila, int columna) {
+        tablero.actualizarMovimientosPieza(fila, columna);
     }
 
-    public void actualizarMovimientosPieza(int fila, int columna) {
-        Pieza pieza = tablero.getPieza(fila, columna).get();
-        pieza.limpiarListaMovimientosPosibles();
-        pieza.actualizarMovimientosPosibles(fila, columna);
+    private Boolean jugadorActualEstaEnJaque(){
+        return turno.estaEnJaqueJugadorActual();
     }
+
+    private Boolean jugadorActualTieneMovimientos(){
+        return turno.tieneMovimientosJugadorActual();
+    }
+
+    private void tablasPorAhogado(){
+        if(!jugadorActualTieneMovimientos() && !jugadorActualEstaEnJaque()){
+            establecerTablas();
+        }
+    }
+
+    private Boolean jugadoresTienenMaterialMinimo(){
+        boolean continuar = false;
+        for (Jugador jugador : jugadores) {
+            if(jugador.tieneMaterialSuficiente()){
+                continuar = true;
+            }
+        }
+        return continuar;
+    }
+
+    private void tablasPorMaterialInsuficiente(){
+        if(!jugadoresTienenMaterialMinimo()){
+            establecerTablas();
+        }
+    }
+
+    private void tablasPorMovimientos(){
+        if(contadorMovimientosParaTablas == Constantes.CANTIDAD_MOVIMIENTOS_PARA_TABLAS){
+            establecerTablas();
+        }
+    }
+
+    private boolean hayMovimientosRepetidos() {
+        for (Integer contador : historialPosiciones.values()) {
+            if (contador >= 3) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void tablasPorMovimientosRepetidos(){
+        if (hayMovimientosRepetidos()) {
+            establecerTablas();
+        }
+    }
+
+    public void gestionarTablas() {
+        tablasPorAhogado();
+        if(piezasEnJuego <= Constantes.MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS) {
+            tablasPorMaterialInsuficiente();
+        }
+        tablasPorMovimientos();
+        if(contadorMovimientosParaChequearPosiciones >= Constantes.CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES) {
+            tablasPorMovimientosRepetidos();
+        }
+    }
+
+    public void imprimirEstadoDebug() {
+        System.out.println("----- Estado de Debug -----");
+        System.out.println("Movimientos para tablas: " + contadorMovimientosParaTablas);
+        System.out.println("Movimientos para chequear posiciones: " + contadorMovimientosParaChequearPosiciones);
+        System.out.println("Movimientos totales: " + contadorMovimientosTotales);
+        System.out.println("Tamaño del historial de posiciones: " + historialPosiciones.size());
+        System.out.println("Piezas en juego: " + piezasEnJuego);
+        System.out.println("---------------------------");
+    }
+
 }
 

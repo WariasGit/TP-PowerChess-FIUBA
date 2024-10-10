@@ -15,7 +15,8 @@ public class Reina extends Pieza {
         this.tipoDePieza = Constantes.REINA;
         this.maxDistanciaDeAmenaza = Constantes.MAXIMA_DISTANCIA;
         this.movimientosPosibles = new ArrayList<>();
-
+        this.valor = Configuracion.ValorPiezas.VALOR_REINA;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.REINA_BLANCA, Configuracion.CaracterFenParaPiezas.REINA_NEGRA);
         // Inicializamos las direcciones de movimiento
         this.direccionesDeMovimiento = new ArrayList<>();
         this.direccionesDeMovimiento.add(new int[]{Constantes.CERO_EN_FILA, Constantes.UNO_EN_COLUMNA});   // Derecha

@@ -1,5 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 
+import java.util.Objects;
+
 public class Coordenada2D {
     protected int[] coordenadas; // Array para almacenar x e y
 

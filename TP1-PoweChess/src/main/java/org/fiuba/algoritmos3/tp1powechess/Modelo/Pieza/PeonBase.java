@@ -1,9 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -16,15 +13,12 @@ public abstract class PeonBase extends Pieza {
         this.tipoDePieza = Constantes.PEON;
         this.movimientosPosibles = new ArrayList<>();
         this.maxDistanciaDeAmenaza = Constantes.MINIMA_DISTANCIA;
-
+        this.valor = Configuracion.ValorPiezas.VALOR_PEON;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.PEON_BLANCO, Configuracion.CaracterFenParaPiezas.PEON_NEGRO);
         // Definimos las direcciones de movimiento del peón
         direccionesDeMovimiento = new ArrayList<>();
         direccionesDeMovimiento.add(new int[]{getDireccion(), Constantes.CERO_EN_COLUMNA});   // Movimiento hacia adelante
         direccionesDeMovimiento.add(new int[]{Constantes.DOS_EN_FILA * getDireccion(), Constantes.CERO_EN_COLUMNA}); // Movimiento inicial doble
-    }
-
-    public String getTipoDePieza() {
-        return "Peon";
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
@@ -47,6 +41,16 @@ public abstract class PeonBase extends Pieza {
             }
         }
         return false;
+    }
+
+    public void quitarMovimientoDoblePeon() {
+        if (seHaMovido() && tieneMovimientoDoble()) {
+            direccionesDeMovimiento.remove(Constantes.INDICE_MOVIMIENTO_DOBLE);
+        }
+    }
+
+    private boolean tieneMovimientoDoble(){
+        return direccionesDeMovimiento.size() > Constantes.INDICE_MOVIMIENTO_DOBLE;
     }
 
     // Metodo abstracto para obtener la dirección de movimiento del peón (positivo o negativo según el color)

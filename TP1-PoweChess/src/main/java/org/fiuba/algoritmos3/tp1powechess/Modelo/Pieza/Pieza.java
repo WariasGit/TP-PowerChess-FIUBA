@@ -7,10 +7,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public abstract class Pieza implements Movible {
     protected Configuracion.ColoresJugadores color;
@@ -20,13 +18,15 @@ public abstract class Pieza implements Movible {
     protected ArrayList<int[]> direccionesDeMovimiento;
     protected ArrayList<int[]> direccionesDeAmenaza;
     protected ArrayList<int[]> movimientosPosibles;
-
     protected String tipoDePieza;
+    protected char caracterFEN;
+    protected int valor;
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
         this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
+        this.seHaMovido = false;
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -76,29 +76,38 @@ public abstract class Pieza implements Movible {
         return tipoDePieza;
     }
 
-    public void actualizarMovimientosPosibles(int fila, int columna){
-        for(Amenaza amenaza: getAmenazasGeneradas()){
-            int[] direccion = amenaza.getDireccion();
-            int cantidadCasilleros = amenaza.getCantidadCasilleros();
-            for(int i = 1; i <= cantidadCasilleros; i++){
-                int[] nuevaPosicion = {fila + direccion[0] * i, columna + direccion[1] * i};
-                movimientosPosibles.add(nuevaPosicion);
-            }
-        }
-        if (Objects.equals(tipoDePieza, Constantes.PEON)) {
-            for (int[] direccion : direccionesDeMovimiento) {
-                int[] nuevaPosicion = {fila + direccion[Constantes.COORDENADA_FILA], columna + direccion[Constantes.COORDENADA_COLUMNA]};
-                movimientosPosibles.add(nuevaPosicion);
-            }
-        }
+    public void setMovimientosPosibles(ArrayList<int[]> movimientosPosibles){
+        limpiarListaMovimientosPosibles();
+        this.movimientosPosibles = new ArrayList<int[]>(movimientosPosibles);
     }
 
     public ArrayList<int[]> getMovimientosPosibles(){
         return new ArrayList<int[]>(movimientosPosibles);
     }
 
-
     public void limpiarListaMovimientosPosibles() {
         this.movimientosPosibles.clear();
     }
+
+    public boolean tieneMovimientosPosibles() {
+        return !movimientosPosibles.isEmpty();
+    }
+
+    public int getValor() {
+        return valor;
+    }
+
+    public void asignarCaracterFEN(char opcionBlanca, char opcionNegra) {
+        if(this.color == Configuracion.ColoresJugadores.BLANCO){
+            caracterFEN = opcionBlanca;
+        }else {
+            caracterFEN = opcionNegra;
+        }
+    }
+
+    public char getCaracterFEN() {
+        return caracterFEN;
+    }
+
+
 }

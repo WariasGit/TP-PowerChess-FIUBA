@@ -39,5 +39,4 @@ public class Main extends Application {
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);
         stage.show();
     }
-
 }

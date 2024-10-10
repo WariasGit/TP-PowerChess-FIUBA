@@ -101,6 +101,7 @@ public class ControladorTablero {
         if(piezaActual.isPresent()){
             System.out.println("Tocaste una pieza");
             aplicarColorCasillero(fila, columna);
+            juego.actualizarMovimientosPieza(fila, columna);
             mostrarMovimientosPosibles(piezaActual);
             guardarPosicionOrigen(fila, columna);    //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
         }
@@ -120,7 +121,13 @@ public class ControladorTablero {
     private void moverPieza(int fila, int columna) {
         System.out.println("Moviendo pieza");
         ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
-        this.posiciones[fila][columna].getChildren().add(imageView);
+
+        if (this.posiciones[fila][columna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
+            this.posiciones[fila][columna].getChildren().add(imageView);
+        }else{
+            this.posiciones[fila][columna].getChildren().remove(Constantes.INDICE_IMAGEN);
+            this.posiciones[fila][columna].getChildren().add(imageView);
+        }
     }
 
     private void guardarPosicionOrigen(int fila, int columna) {
@@ -144,12 +151,6 @@ public class ControladorTablero {
     private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual) {
         if(piezaActual.isPresent()){
             Pieza pieza = piezaActual.get();
-            System.out.println("Movimientos posibles:");
-            for (int[] posicion : pieza.getMovimientosPosibles()) {
-                int fila = posicion[0];  // Accede a la fila
-                int columna = posicion[1];  // Accede a la columna
-                System.out.println("Posición posible: (" + fila + ", " + columna + ")");
-            }
             vistaTablero.mostrarMovimientosPosibles(pieza.getMovimientosPosibles());
         }
     }

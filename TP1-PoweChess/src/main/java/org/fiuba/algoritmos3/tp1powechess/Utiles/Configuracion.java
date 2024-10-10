@@ -21,11 +21,36 @@ public class Configuracion {
         TABLAS
     }
 
-    public static enum EstadoJugador {RENDIDO, ACTIVO}
-
     public static class Jugadores {
         public static final int BLANCAS = 0;
         public static final int NEGRAS = 1;
+    }
+
+    public static class CaracterFenParaPiezas {
+        public static final char TORRE_NEGRA = 'r';
+        public static final char CABALLO_NEGRO = 'n';
+        public static final char ALFIL_NEGRO = 'b';
+        public static final char REINA_NEGRA = 'q';
+        public static final char REY_NEGRO = 'k';
+        public static final char PEON_NEGRO = 'p';
+
+        public static final char TORRE_BLANCA = 'R';
+        public static final char CABALLO_BLANCO = 'N';
+        public static final char ALFIL_BLANCO = 'B';
+        public static final char REINA_BLANCA = 'Q';
+        public static final char REY_BLANCO = 'K';
+        public static final char PEON_BLANCO = 'P';
+    }
+
+    public static class ValorPiezas{
+        public static int VALOR_PEON = 1;
+        public static int VALOR_ALFIL = 2;
+        public static int VALOR_CABALLO = 2;
+        public static int VALOR_TORRE = 5;
+        public static int VALOR_REINA = 8;
+        public static int VALOR_REY = 10;
+        public static int VALOR_MINIMO_PIEZAS = 15;
+        public static final int REY_MAS_PEON = 11;
     }
 
     private final static Map<Character, Supplier<Pieza>> mapaPiezas = new HashMap<>();

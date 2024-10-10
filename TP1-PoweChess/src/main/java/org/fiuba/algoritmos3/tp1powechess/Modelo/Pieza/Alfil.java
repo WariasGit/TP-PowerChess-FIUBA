@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public class Alfil extends Pieza {
 
     public Alfil(Configuracion.ColoresJugadores color) {
-
         super(color);
         this.tipoDePieza = Constantes.ALFIL;
         this.maxDistanciaDeAmenaza = Constantes.MAXIMA_DISTANCIA;
         this.movimientosPosibles = new ArrayList<>();
-
+        this.valor = Configuracion.ValorPiezas.VALOR_ALFIL;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.ALFIL_BLANCO, Configuracion.CaracterFenParaPiezas.ALFIL_NEGRO);
         // Inicializamos las direcciones de movimiento
         direccionesDeMovimiento = new ArrayList<>();
         direccionesDeMovimiento.add(new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA});   // Diagonal derecha arriba

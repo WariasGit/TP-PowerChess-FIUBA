@@ -19,7 +19,8 @@ public class Caballo extends Pieza {
         this.tipoDePieza = Constantes.CABALLO;
         this.maxDistanciaDeAmenaza = Constantes.MINIMA_DISTANCIA;
         this.movimientosPosibles = new ArrayList<>();
-
+        this.valor = Configuracion.ValorPiezas.VALOR_CABALLO;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.CABALLO_BLANCO, Configuracion.CaracterFenParaPiezas.CABALLO_NEGRO);
         // Inicializamos las direcciones de movimiento (movimiento en "L")
         this.direccionesDeMovimiento = new ArrayList<>();
         this.direccionesDeMovimiento.add(new int[]{Constantes.DOS_EN_FILA, Constantes.UNO_EN_COLUMNA});
