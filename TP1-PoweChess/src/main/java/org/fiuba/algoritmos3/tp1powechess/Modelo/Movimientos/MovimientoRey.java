@@ -14,7 +14,7 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
         Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());
         Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
 
-        Pieza piezaAMover = casilleroInicial.getPieza();
+        Rey piezaAMover = (Rey) casilleroInicial.getPieza();
 
         if (esMovimientoValido(piezaAMover,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
             return moverPiezaYCapturarSiEsNecesario(piezaAMover, coordenadaInicial, coordenadaFinal, tableroCuadrado);
@@ -23,7 +23,7 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
         return null; // Movimiento no válido
     }
 
-    private boolean esMovimientoValido(Pieza pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {
+    private boolean esMovimientoValido(Rey pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {
         // Verificar si es un movimiento simple o una captura
         boolean esMovimientoNormal = !casilleroFinal.estaOcupado() && pieza.esDireccionDeMovimientoValida(diferencias.getRow(), diferencias.getCol());
         boolean esCaptura = casilleroFinal.estaOcupado() && !casilleroFinal.getPieza().esDelMismoColorQue(pieza) &&
@@ -32,11 +32,13 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
         return (esMovimientoNormal || esCaptura) && tablero.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol());
     }
 
-    private Pieza moverPiezaYCapturarSiEsNecesario(Pieza piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
+    private Pieza moverPiezaYCapturarSiEsNecesario(Rey piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
         piezaAMover.marcarComoMovida();
 
         // Remover la pieza del casillero inicial
         tablero.removePieza(coordenadaInicial);
+
+        piezaAMover.actualizarCasilleroActual(tablero.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol()));
 
         // Colocar la pieza en el casillero final
         return tablero.setPieza(coordenadaFinal, piezaAMover); // Devuelve la pieza capturada si la hubiera, sino null
