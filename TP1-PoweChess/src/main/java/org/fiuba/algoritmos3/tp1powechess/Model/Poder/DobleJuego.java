@@ -1,12 +1,12 @@
 public class DobleJuego extends Poder {
 
     public DobleJuego() {
-        super("Doble-juego", 0, CategoriaPoder.ACCION); // Solo dura un turno
+        super("Doble-juego", 0, CategoriaPoder.ACCION);
     }
 
     @Override
     public void aplicar(Pieza pieza) {
-        pieza.setMovimientoDoble(true); // Permitir un movimiento adicional
+        pieza.setMovimientoDoble(true);
     }
 
     @Override

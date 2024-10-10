@@ -22,7 +22,6 @@ public class Jugador {
         this.piezasEnJuego = null;
         this.piezasPerdidas = null;
 
-
         //Esto es a modo de prueba
         this.listaPoderes = new ArrayList<>();
         for(int i = 0; i < 7; i++){
@@ -43,7 +42,6 @@ public class Jugador {
             piezasEnJuego.add(pieza);
         }
     }
-}
 
     public Rey getRey() {
         for (Pieza pieza : this.getPiezasEnJuego()) {
@@ -53,8 +51,6 @@ public class Jugador {
         }
         return null;
     }
-
-
 
     public void setPiezasPerdidas(Pieza pieza) {
             piezasPerdidas.add(pieza);
@@ -77,7 +73,7 @@ public class Jugador {
     public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
 
     public void usarPoder(Poder poder, Pieza pieza) {
-        if (poderesDisponibles.contains(poder) && !poder.es()) {
+        if (poderesDisponibles.contains(poder) && !poder.esRey()) {
             poder.aplicar(pieza);
             poderesActivos.add(poder);
             if (poder.esDeDuracion()) {
@@ -101,19 +97,19 @@ public class Jugador {
         poderesActivos.removeAll(this.poderesFinalizados);
     }
 
-    private Pieza piezaAsociadaConPoder(Poder poder) {
-        return null; 
-    }
+   // private Pieza piezaAsociadaConPoder(Poder poder) {
+     //   return null;
+    //}
 
     public void agregarPoder(Poder poder) {
         poderesDisponibles.add(poder);
     }
 
-public List<Poder> getPoderesPorCategoria(CategoriaPoder categoria) {
-    return poderesDisponibles.stream()
-            .filter(poder -> poder.getCategoria() == categoria)
-            .collect(Collectors.toList());
-}
+    public List<Poder> getPoderesPorCategoria(CategoriaPoder categoria) {
+        return poderesDisponibles.stream()
+                .filter(poder -> poder.getCategoria() == categoria)
+                .collect(Collectors.toList());
+    }
 
 }
 

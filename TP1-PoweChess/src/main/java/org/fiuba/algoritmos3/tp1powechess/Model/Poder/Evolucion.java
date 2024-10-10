@@ -8,11 +8,11 @@ public class Evolucion extends Poder {
 
     @Override
     public void aplicar(Pieza pieza) {
-        pieza.agregarMovimiento(movimientoExtra); // Agregar movimiento extra a la pieza
+        pieza.aplicarPoder(this);
     }
 
     @Override
     public void desactivar(Pieza pieza) {
-        // No requiere desactivación
+        pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
     }
 }

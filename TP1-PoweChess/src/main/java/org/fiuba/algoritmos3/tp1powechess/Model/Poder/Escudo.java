@@ -6,11 +6,11 @@ public class Escudo extends Poder {
 
     @Override
     public void aplicar(Pieza pieza) {
-        pieza.setInmune(true); // Hacerla inmune a capturas
+        pieza.aplicarPoder(this);
     }
 
     @Override
     public void desactivar(Pieza pieza) {
-        pieza.setInmune(false);
+        pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
     }
 }

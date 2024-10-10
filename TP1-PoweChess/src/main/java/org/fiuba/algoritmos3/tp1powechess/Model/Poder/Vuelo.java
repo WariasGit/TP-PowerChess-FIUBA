@@ -6,11 +6,11 @@ public class Vuelo extends Poder {
 
     @Override
     public void aplicar(Pieza pieza) {
-        pieza.setPuedeVolar(true); // Permitir pasar por encima de otras piezas
+        pieza.aplicarPoder(this);
     }
 
     @Override
     public void desactivar(Pieza pieza) {
-        pieza.setPuedeVolar(false);
+        pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
     }
 }
