@@ -1,20 +1,18 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.*;
-import org.fiuba.algoritmos3.tp1powechess.Model.Estado.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Estado.*;
 import java.util.ArrayList;
 
 public class Casillero {
     private Pieza pieza;
-    private Coordenada coordenada;
     private Configuracion.ColoresJugadores color;
     private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
     private GestorDeAmenazas gestorDeAmenazas;
 
-    public Casillero(Configuracion.ColoresJugadores color, Coordenada coordenada) {
+    public Casillero(Configuracion.ColoresJugadores color) {
         this.color = color;
-        this.coordenada = coordenada;
         this.pieza = null;
         this.estadoDeOcupacionCasillero = new EstadoDesocupado();
         this.gestorDeAmenazas = new GestorDeAmenazas();

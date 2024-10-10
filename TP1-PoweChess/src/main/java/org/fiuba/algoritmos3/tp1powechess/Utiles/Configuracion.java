@@ -1,10 +1,11 @@
 package org.fiuba.algoritmos3.tp1powechess.Utiles;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.PeonAscendente;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.PeonDescendente;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.PeonAscendente;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.PeonDescendente;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJugadores.BLANCO;
 import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJugadores.NEGRO;
@@ -25,32 +26,58 @@ public class Configuracion {
         public static final double ALTO = 750;
     }
 
-    public static enum EstadoJugador {RENDIDO, ACTIVO}
-
     public static class Jugadores {
         public static final int BLANCAS = 0;
         public static final int NEGRAS = 1;
     }
 
-    private final static Map<Character, Pieza> mapaPiezas = new HashMap<>();
-     static {
-        mapaPiezas.put('p', new PeonDescendente(NEGRO));
-        mapaPiezas.put('r', new Torre(NEGRO));
-        mapaPiezas.put('n', new Caballo(NEGRO));
-        mapaPiezas.put('b', new Alfil(NEGRO));
-        mapaPiezas.put('q', new Reina(NEGRO));
-        mapaPiezas.put('k', new Rey(NEGRO));
+    public static class CaracterFenParaPiezas {
+        public static final char TORRE_NEGRA = 'r';
+        public static final char CABALLO_NEGRO = 'n';
+        public static final char ALFIL_NEGRO = 'b';
+        public static final char REINA_NEGRA = 'q';
+        public static final char REY_NEGRO = 'k';
+        public static final char PEON_NEGRO = 'p';
 
-        mapaPiezas.put('P', new PeonAscendente(BLANCO));
-        mapaPiezas.put('R', new Torre(BLANCO));
-        mapaPiezas.put('N', new Caballo(BLANCO));
-        mapaPiezas.put('B', new Alfil(BLANCO));
-        mapaPiezas.put('Q', new Reina(BLANCO));
-        mapaPiezas.put('K', new Rey(BLANCO));
+        public static final char TORRE_BLANCA = 'R';
+        public static final char CABALLO_BLANCO = 'N';
+        public static final char ALFIL_BLANCO = 'B';
+        public static final char REINA_BLANCA = 'Q';
+        public static final char REY_BLANCO = 'K';
+        public static final char PEON_BLANCO = 'P';
+    }
+
+    public static class ValorPiezas{
+        public static int VALOR_PEON = 1;
+        public static int VALOR_ALFIL = 2;
+        public static int VALOR_CABALLO = 2;
+        public static int VALOR_TORRE = 5;
+        public static int VALOR_REINA = 8;
+        public static int VALOR_REY = 10;
+        public static int VALOR_MINIMO_PIEZAS = 15;
+        public static final int REY_MAS_PEON = 11;
+    }
+
+    private final static Map<Character, Supplier<Pieza>> mapaPiezas = new HashMap<>();
+    static {
+        mapaPiezas.put('p', () -> new PeonDescendente(NEGRO));
+        mapaPiezas.put('r', () -> new Torre(NEGRO));
+        mapaPiezas.put('n', () -> new Caballo(NEGRO));
+        mapaPiezas.put('b', () -> new Alfil(NEGRO));
+        mapaPiezas.put('q', () -> new Reina(NEGRO));
+        mapaPiezas.put('k', () -> new Rey(NEGRO));
+
+        mapaPiezas.put('P', () -> new PeonAscendente(BLANCO));
+        mapaPiezas.put('R', () -> new Torre(BLANCO));
+        mapaPiezas.put('N', () -> new Caballo(BLANCO));
+        mapaPiezas.put('B', () -> new Alfil(BLANCO));
+        mapaPiezas.put('Q', () -> new Reina(BLANCO));
+        mapaPiezas.put('K', () -> new Rey(BLANCO));
     }
 
     public static Pieza getPieza(Character caracter) {
-        return mapaPiezas.get(caracter);
+        Supplier<Pieza> constructor = mapaPiezas.get(caracter);
+        return constructor != null ? constructor.get() : null;
     }
 
     final static Map<String, String> piezasNegras = Map.ofEntries(

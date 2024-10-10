@@ -3,14 +3,13 @@ package org.fiuba.algoritmos3.tp1powechess.Vista;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
 
 public class VistaTablero {
     private final StackPane[][] posiciones;
+    private ArrayList<int[]> casillerosPintados = new ArrayList<>();
 
     public VistaTablero(StackPane[][] posiciones) {
         this.posiciones = posiciones;
@@ -36,10 +35,20 @@ public class VistaTablero {
                 StackPane stackPane = this.posiciones[fila][columna];
                 Rectangle rectangle = (Rectangle) stackPane.getChildren().get(0);
                 rectangle.setFill(Color.BLUE);
+                casillerosPintados.add(movimiento);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("No se puede pintar el movimiento en la posición: " + fila + ", " + columna);
             }
         }
+    }
+
+    public void limpiarCasillerosPintados() {
+        for(int [] movimiento : casillerosPintados) {
+            int fila = movimiento[Constantes.COORDENADA_FILA];
+            int columna = movimiento[Constantes.COORDENADA_COLUMNA];
+            pintarCasilleroColorOriginal(fila, columna);
+        }
+        casillerosPintados.clear();
     }
 
 }

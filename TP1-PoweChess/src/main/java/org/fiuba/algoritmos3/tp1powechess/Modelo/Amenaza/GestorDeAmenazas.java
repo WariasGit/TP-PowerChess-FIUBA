@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Amenaza;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza;
 
 import java.util.ArrayList;
 
@@ -13,10 +13,6 @@ public class GestorDeAmenazas {
 
     public void agregarAmenazasActivas(ArrayList<Amenaza> amenazas) {
         amenazasActivas.addAll(amenazas);
-    }
-
-    public void agregarAmenazasBloqueadas(ArrayList<Amenaza> amenazas) {
-        amenazasBloqueadas.addAll(amenazas);
     }
 
     public ArrayList<Amenaza> getAmenazasBloqueadas() {
@@ -38,10 +34,6 @@ public class GestorDeAmenazas {
         return !amenazasActivas.isEmpty() || !amenazasBloqueadas.isEmpty();
     }
 
-    public boolean tieneAlMenosUnaAmenazaActiva() {
-        return !amenazasActivas.isEmpty();
-    }
-
     public void quitarAmenazasIguales(ArrayList<Amenaza> amenazasAEliminar) {
         amenazasAEliminar.forEach(amenazaAEliminar -> {
             amenazasActivas.removeIf(amenaza -> amenaza.esIgualA(amenazaAEliminar));
@@ -53,53 +45,11 @@ public class GestorDeAmenazas {
         return obtenerAmenazasDeListaQueSeExtiendenMasQue(amenazasActivas, numeroDeCasilleros);
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasBloqueadasQueSeExtiendenMasQue(int numeroDeCasilleros) {
-        return obtenerAmenazasDeListaQueSeExtiendenMasQue(amenazasBloqueadas, numeroDeCasilleros);
-    }
-
-    public ArrayList<Amenaza> obtenerAmenazasTotalesQueSeExtiendenMasQue(int numeroDeCasilleros) {
-        ArrayList<Amenaza> amenazasTotales = new ArrayList<>();
-
-        amenazasTotales.addAll(obtenerAmenazasDeListaQueSeExtiendenMasQue(amenazasActivas, numeroDeCasilleros));
-        amenazasTotales.addAll(obtenerAmenazasDeListaQueSeExtiendenMasQue(amenazasBloqueadas, numeroDeCasilleros));
-
-        return amenazasTotales;
-    }
-
     private ArrayList<Amenaza> obtenerAmenazasDeListaQueSeExtiendenMasQue(ArrayList<Amenaza> listaAmenazas, int numeroDeCasilleros) {
         ArrayList<Amenaza> amenazasFiltradas = new ArrayList<>();
 
         listaAmenazas.forEach(amenaza -> {
             if (amenaza.seExtiendeMasAllaDe(numeroDeCasilleros)) {
-                amenazasFiltradas.add(amenaza);
-            }
-        });
-
-        return amenazasFiltradas;
-    }
-
-    public ArrayList<Amenaza> obtenerAmenazasActivasQueSeExtiendenMenosQue(int numeroDeCasilleros) {
-        return obtenerAmenazasDeListaQueSeExtiendenMenosQue(amenazasActivas, numeroDeCasilleros);
-    }
-
-    public ArrayList<Amenaza> obtenerAmenazasBloqueadasQueSeExtiendenMenosQue(int numeroDeCasilleros) {
-        return obtenerAmenazasDeListaQueSeExtiendenMenosQue(amenazasBloqueadas, numeroDeCasilleros);
-    }
-
-    public ArrayList<Amenaza> obtenerAmenazasTotalesQueSeExtiendenMenosQue(int numeroDeCasilleros) {
-        ArrayList<Amenaza> amenazasTotales = new ArrayList<>();
-
-        amenazasTotales.addAll(obtenerAmenazasDeListaQueSeExtiendenMenosQue(amenazasActivas, numeroDeCasilleros));
-        amenazasTotales.addAll(obtenerAmenazasDeListaQueSeExtiendenMenosQue(amenazasBloqueadas, numeroDeCasilleros));
-
-        return amenazasTotales;
-    }
-
-    private ArrayList<Amenaza> obtenerAmenazasDeListaQueSeExtiendenMenosQue(ArrayList<Amenaza> listaAmenazas, int numeroDeCasilleros) {
-        ArrayList<Amenaza> amenazasFiltradas = new ArrayList<>();
-
-        listaAmenazas.forEach(amenaza -> {
-            if (!amenaza.seExtiendeMasAllaDe(numeroDeCasilleros)) {
                 amenazasFiltradas.add(amenaza);
             }
         });

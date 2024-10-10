@@ -7,8 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.EventoCambioDeTurno;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -39,5 +39,4 @@ public class Main extends Application {
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);
         stage.show();
     }
-
 }

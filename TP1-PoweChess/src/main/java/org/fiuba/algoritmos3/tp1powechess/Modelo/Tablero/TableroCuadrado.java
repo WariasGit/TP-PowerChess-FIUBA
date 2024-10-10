@@ -1,7 +1,10 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+
+import java.lang.constant.Constable;
 import java.util.Optional;
 import java.util.ArrayList;
 
@@ -18,9 +21,8 @@ public class TableroCuadrado {
         for (int row = 0; row < dimensiones; row++) {
             for (int col = 0; col < dimensiones; col++) {
                 Configuracion.ColoresJugadores color = (row + col) % 2 == 0 ? Configuracion.ColoresJugadores.BLANCO : Configuracion.ColoresJugadores.NEGRO;
-                  tablero[row][col] = new Casillero(color, new CoordenadaCartesiana2D(row,col));
+                  tablero[row][col] = new Casillero(color);
             }
-            //colocarPiezasIniciales();
         }
     }
 
@@ -44,30 +46,24 @@ public class TableroCuadrado {
 
         // Verificamos que el casillero inicial tenga una pieza
         Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
-        Pieza piezaAMover = casilleroInicial.getPieza();
-        if (piezaAMover == null) {
-            throw new IllegalStateException("No hay una pieza en el casillero inicial.");
+
+        if (!casilleroInicial.estaOcupado()) {
+            throw new IllegalArgumentException("No hay ninguna pieza en el casillero inicial.");
         }
+
+        Pieza piezaAMover = casilleroInicial.getPieza();
+
+        Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
+        Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);
 
         // Verificamos si el movimiento es válido para la pieza
-        if (!piezaAMover.esMovimientoValido(rowInicial, colInicial, rowFinal, colFinal)) {
-            throw new IllegalStateException("El movimiento no es válido para esta pieza.");
-        }
 
-        // Verificamos si el camino está desocupado
-        if (!caminoEstaDesocupado(rowInicial, colInicial, rowFinal, colFinal)) {
-            throw new IllegalStateException("El camino está bloqueado por otras piezas.");
-        }
-
-        // Movemos la pieza al nuevo casillero
-        Pieza piezaMovida = removePieza(rowInicial, colInicial);
-        Pieza piezaComida = setPieza(rowFinal, colFinal, piezaMovida);
-
-        // Devolvemos la pieza comida si hay alguna, o null si no había pieza en el destino
-        return piezaComida;
+        return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
 
-    public Pieza setPieza(int row, int col, Pieza piezaAColocar) {
+    public Pieza setPieza(Coordenada2D coordenada, Pieza piezaAColocar) {
+        int row = coordenada.getRow();
+        int col = coordenada.getCol();
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }
@@ -92,7 +88,9 @@ public class TableroCuadrado {
         return piezaComida;
     }
 
-    public Pieza removePieza(int row, int col) {
+    public Pieza removePieza(Coordenada2D coordenada) {
+        int row = coordenada.getRow();
+        int col = coordenada.getCol();
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }
@@ -173,7 +171,7 @@ public class TableroCuadrado {
         }
     }
 
-    private boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    public boolean caminoEstaDesocupado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
 
@@ -193,7 +191,7 @@ public class TableroCuadrado {
         return true;  // El camino está libre
     }
 
-    private boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    public boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
         int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
 
@@ -225,48 +223,100 @@ public class TableroCuadrado {
         return getPieza(i,j).isEmpty();
     }
 
-    private void colocarPiezasIniciales() {
-        colocarPiezasBlancas();
-        colocarPiezasNegras();
+    public void actualizarMovimientosPieza(int fila, int columna) {
+        Optional<Pieza> pieza = getPieza(fila, columna);
+        pieza.ifPresent(value -> filtrarAmenazasYPosiciones(fila, columna, value));
     }
 
-
-
-    private void colocarPiezasBlancas() {
-        // Colocación de peones blancos
-        for (int col = 0; col < dimensiones; col++) {
-            setPieza(6, col, new PeonAscendente(Configuracion.ColoresJugadores.BLANCO));
+    private void filtrarAmenazasYPosiciones(int fila, int columna, Pieza piezaActual) {
+        if (piezaActual.getTipoDePieza().equals(Constantes.PEON)) {
+            filtrarAmenazasYPosicionesPeon(fila, columna, piezaActual);
+        } else {
+            filtrarAmenazasYPosicionesGenerales(fila, columna, piezaActual);
         }
-        // Colocación de piezas mayores blancas
-        setPieza(7, 0, new Torre(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 1, new Caballo(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 2, new Alfil(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 3, new Reina(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 4, new Rey(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 5, new Alfil(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 6, new Caballo(Configuracion.ColoresJugadores.BLANCO));
-        setPieza(7, 7, new Torre(Configuracion.ColoresJugadores.BLANCO));
     }
 
-
-
-    private void colocarPiezasNegras() {
-        // Colocación de peones negros
-        for (int col = 0; col < dimensiones; col++) {
-            setPieza(1, col, new PeonDescendente(Configuracion.ColoresJugadores.NEGRO));
+    private void filtrarAmenazasYPosicionesPeon(int fila, int columna, Pieza peon){
+        PeonBase peonBase = (PeonBase) peon;
+        peonBase.quitarMovimientoDoblePeon();
+        ArrayList<Amenaza> amenazas = peon.getAmenazasGeneradas();
+        ArrayList<int[]> movimientos = peon.getDireccionesDeMovimiento();
+        ArrayList<int[]> posicionesValidas = new ArrayList<>();
+        for (Amenaza amenaza : amenazas) {
+            int[] direccion = amenaza.getDireccion();
+            int maxCasilleros = amenaza.getCantidadCasilleros();
+            int nuevaFila = fila + direccion[0] * peon.getMaxDistanciaDeAmenaza();
+            int nuevaColumna = columna + direccion[1] * peon.getMaxDistanciaDeAmenaza();
+            if (esCoordenadaValida(nuevaFila, nuevaColumna) && !casilleroLibre(nuevaFila, nuevaColumna)) {
+                Optional<Pieza> piezaEnCamino = getPieza(nuevaFila, nuevaColumna);
+                if (piezaEnCamino.isPresent()) {
+                    Pieza piezaTablero = piezaEnCamino.get();
+                    if (piezaTablero.getColor() != peon.getColor()) {
+                        posicionesValidas.add(new int[]{nuevaFila, nuevaColumna});
+                    }
+                }
+            }
         }
-
-        // Colocación de piezas mayores negras
-        setPieza(0, 0, new Torre(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 1, new Caballo(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 2, new Alfil(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 3, new Reina(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 4, new Rey(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 5, new Alfil(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 6, new Caballo(Configuracion.ColoresJugadores.NEGRO));
-        setPieza(0, 7, new Torre(Configuracion.ColoresJugadores.NEGRO));
+        for (int[] direccionPeon : movimientos) {
+            int filaNueva = fila + direccionPeon[Constantes.COORDENADA_FILA];
+            int columnaNueva = columna + direccionPeon[Constantes.COORDENADA_COLUMNA];
+            if (esCoordenadaValida(filaNueva, columnaNueva) && casilleroLibre(filaNueva, columnaNueva)) {
+                posicionesValidas.add(new int[]{filaNueva, columnaNueva});
+            }
+        }
+        peon.setMovimientosPosibles(posicionesValidas);
     }
 
+    private void filtrarAmenazasYPosicionesGenerales(int fila, int columna, Pieza piezaActual) {
+        ArrayList<Amenaza> amenazas = piezaActual.getAmenazasGeneradas();
+        ArrayList<int[]> posicionesValidas = new ArrayList<>();
+        for (Amenaza amenaza : amenazas) {
+            int[] direccion = amenaza.getDireccion();
+            int maxCasilleros = amenaza.getCantidadCasilleros();
+            for (int i = 1; i <= maxCasilleros; i++) {
+                int nuevaFila = fila + direccion[0] * i;
+                int nuevaColumna = columna + direccion[1] * i;
+                if (esCoordenadaValida(nuevaFila, nuevaColumna)) {
+                    Optional<Pieza> piezaEnCamino = getPieza(nuevaFila, nuevaColumna);
+                    if (piezaEnCamino.isPresent()) {
+                        Pieza piezaTablero = piezaEnCamino.get();
+                        if (piezaTablero.getColor() != piezaActual.getColor()) {
+                            posicionesValidas.add(new int[]{nuevaFila, nuevaColumna});
+                        }
+                        break;
+                    } else {
+                        posicionesValidas.add(new int[]{nuevaFila, nuevaColumna});
+                    }
+                }
+            }
+        }
+        piezaActual.setMovimientosPosibles(posicionesValidas);
+    }
+
+    public String estadoActualTablero(){
+        StringBuilder estado = new StringBuilder();
+        int casillerosVacios = Constantes.CERO;
+        for (int fila = 0; fila < dimensiones; fila++) {
+            for (int columna = 0; columna < dimensiones; columna++) {
+                Optional<Pieza> pieza = getPieza(fila, columna);
+                if (pieza.isPresent()) {
+                    if(casillerosVacios > Constantes.CERO){
+                        estado.append(casillerosVacios);
+                        casillerosVacios = Constantes.CERO;
+                    }
+                    estado.append(pieza.get().getCaracterFEN());
+                }else{
+                    casillerosVacios++;
+                }
+            }
+            if(casillerosVacios > Constantes.CERO){
+                estado.append(casillerosVacios);
+                casillerosVacios = Constantes.CERO;
+            }
+            estado.append("/");
+        }
+        return estado.toString();
+    }
 }
 
 

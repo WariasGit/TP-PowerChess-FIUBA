@@ -1,6 +1,6 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -9,37 +9,16 @@ import java.util.ArrayList;
 public abstract class PeonBase extends Pieza {
 
     public PeonBase(Configuracion.ColoresJugadores color) {
-
         super(color);
         this.tipoDePieza = Constantes.PEON;
-
-        this.maxDistanciaDeAmenaza = 1;
-
+        this.movimientosPosibles = new ArrayList<>();
+        this.maxDistanciaDeAmenaza = Constantes.MINIMA_DISTANCIA;
+        this.valor = Configuracion.ValorPiezas.VALOR_PEON;
+        asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.PEON_BLANCO, Configuracion.CaracterFenParaPiezas.PEON_NEGRO);
         // Definimos las direcciones de movimiento del peón
         direccionesDeMovimiento = new ArrayList<>();
-        direccionesDeMovimiento.add(new int[]{getDireccion(), 0});   // Movimiento hacia adelante
-        direccionesDeMovimiento.add(new int[]{2 * getDireccion(), 0}); // Movimiento inicial doble
-
-        // Definimos las direcciones de amenaza
-        direccionesDeAmenaza = new ArrayList<>();
-        direccionesDeAmenaza.add(new int[]{getDireccion(),1});  // Captura diagonal derecha
-        direccionesDeAmenaza.add(new int[]{-1, getDireccion()}); // Captura diagonal izquierda
-    }
-
-    public String getTipoDePieza() {
-        return "Peon";
-    }
-
-    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
-
-        // Verificamos si la dirección está entre las direcciones de movimiento permitidas
-        if (esDireccionDeMovimientoValida(difX, difY)) {
-            this.seHaMovido = true;  // Si el movimiento es válido, marcamos que el peón se ha movido
-            return true;
-        }
-        return false;
+        direccionesDeMovimiento.add(new int[]{getDireccion(), Constantes.CERO_EN_COLUMNA});   // Movimiento hacia adelante
+        direccionesDeMovimiento.add(new int[]{Constantes.DOS_EN_FILA * getDireccion(), Constantes.CERO_EN_COLUMNA}); // Movimiento inicial doble
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
@@ -53,7 +32,7 @@ public abstract class PeonBase extends Pieza {
     }
 
     // Meetodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    protected boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             // Solo debe moverse hacia adelante (sin cambiar la X)
             if (direccion[0] == difX && direccion[1] == difY) {
@@ -62,6 +41,16 @@ public abstract class PeonBase extends Pieza {
             }
         }
         return false;
+    }
+
+    public void quitarMovimientoDoblePeon() {
+        if (seHaMovido() && tieneMovimientoDoble()) {
+            direccionesDeMovimiento.remove(Constantes.INDICE_MOVIMIENTO_DOBLE);
+        }
+    }
+
+    private boolean tieneMovimientoDoble(){
+        return direccionesDeMovimiento.size() > Constantes.INDICE_MOVIMIENTO_DOBLE;
     }
 
     // Metodo abstracto para obtener la dirección de movimiento del peón (positivo o negativo según el color)
