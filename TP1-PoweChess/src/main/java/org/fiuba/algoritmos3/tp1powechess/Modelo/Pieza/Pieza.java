@@ -4,6 +4,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -21,6 +22,8 @@ public abstract class Pieza implements Movible {
     protected String tipoDePieza;
     protected char caracterFEN;
     protected int valor;
+    protected Boolean movimientoDoble;
+    protected Poder poderActual;
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
@@ -110,4 +113,15 @@ public abstract class Pieza implements Movible {
     }
 
 
+    public void setMovimientoDoble(boolean valor) {
+        movimientoDoble = valor;
+    }
+
+    public void aplicarPoder(Poder poder) {
+        poderActual = poder;
+    }
+
+    public void desactivarPoder(Poder poder) {
+        poderActual = poder;
+    }
 }

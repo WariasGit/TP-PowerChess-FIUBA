@@ -1,8 +1,13 @@
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Poder;
+
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+
 public class Evolucion extends Poder {
     private int[] movimientoExtra;
 
     public Evolucion(int[] movimientoExtra) {
-        super("Evolucion", 0, CategoriaPoder.EVOLUCION); // Dura por el resto de la partida
+        super("Evolucion", 0, Configuracion.CategoriaPoder.EVOLUCION); // Dura por el resto de la partida
         this.movimientoExtra = movimientoExtra;
     }
 
