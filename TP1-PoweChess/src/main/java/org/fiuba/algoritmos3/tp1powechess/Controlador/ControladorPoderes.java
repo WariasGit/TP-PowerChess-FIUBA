@@ -7,6 +7,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPoderes;
 
@@ -32,10 +33,10 @@ public class ControladorPoderes {
 
     private void cargarPoderesBlancas(Jugador jugador) {
         System.out.println("Cargando blancas");
-        for(Integer poder: jugador.getListaPoderes()){
-            Button botonPoder = new Button("Poder: " + poder);
+        for(Poder poder: jugador.getListaPoderes()){
+            Button botonPoder = new Button(poder.getNombre());
             botonPoder.setOnAction(event -> {
-                pruebaPoder();
+                gestorPoderes();
             });
             poderesBlancas.getChildren().add(botonPoder);
         }
@@ -43,16 +44,16 @@ public class ControladorPoderes {
 
     private void cargarPoderesNegras(Jugador jugador) {
         System.out.println("Cargando negras");
-        for(Integer poder: jugador.getListaPoderes()){
-            Button botonPoder = new Button("Poder: " + poder);
+        for(Poder poder: jugador.getListaPoderes()){
+            Button botonPoder = new Button(poder.getNombre());
             botonPoder.setOnAction(event -> {
-                pruebaPoder();
+                gestorPoderes();
             });
             poderesNegras.getChildren().add(botonPoder);
         }
     }
 
-    private void pruebaPoder(){
+    private void gestorPoderes(){
         System.out.println("Usando el poder: ");
     }
 }

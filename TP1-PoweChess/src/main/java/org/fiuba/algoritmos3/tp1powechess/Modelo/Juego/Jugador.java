@@ -1,8 +1,10 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 
+import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +14,7 @@ public class Jugador {
     private Boolean jaque;
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
-    private ArrayList<Integer> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
+    private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
 
 
     public Jugador(Configuracion.ColoresJugadores color, String nombre) {
@@ -20,12 +22,18 @@ public class Jugador {
         jaque = false;
         this.nombre = nombre;
         piezasEnJuego = new ArrayList<>();
+        cargarPoderes();
+    }
 
-        //Esto es a modo de prueba
-        this.listaPoderes = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
-            listaPoderes.add(i);
-        }
+    private void cargarPoderes() {
+        listaPoderes = new ArrayList<>();
+        listaPoderes.add(new DobleJuego());
+        listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
+        listaPoderes.add(new Evolucion(Configuracion.CaracteristicasPoderes.PRIMER_MOVIMIENTO_EXTRA));
+        listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
+        listaPoderes.add(new Vuelo());
+        //listaPoderes.add(new Limpieza());
+        //listaPoderes.add(new RobarPoder());
     }
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
@@ -67,7 +75,7 @@ public class Jugador {
         return valorTotal >= Configuracion.ValorPiezas.VALOR_MINIMO_PIEZAS;
     }
 
-    public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
+    public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
 
 }
 

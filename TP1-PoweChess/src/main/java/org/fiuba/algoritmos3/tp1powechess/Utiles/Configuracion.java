@@ -27,6 +27,13 @@ public class Configuracion {
         EVOLUCION
     }
 
+    public class CaracteristicasPoderes{
+        public static final int DURACION_ESCUDO = 3;
+        public static final int DURACION_FREEZE = 2;
+        public static final int[] PRIMER_MOVIMIENTO_EXTRA = new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA}; // Diagonal derecha arriba
+        public static final int[] SEGUNDO_MOVIMIENTO_EXTRA = new int[]{Constantes.UNO_EN_FILA, Constantes.CERO_EN_COLUMNA}; //Abajo
+    }
+
     public static class TamanioVentana{
         public static final double ANCHO = 900;
         public static final double ALTO = 750;

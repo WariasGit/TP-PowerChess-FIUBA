@@ -50,4 +50,8 @@ public abstract class Poder {
     public boolean esRey(Pieza pieza) {
         return Objects.equals(pieza.getTipoDePieza(), Constantes.REY);
     }
+
+    public String getNombre() {
+        return this.nombre;
+    }
 }
