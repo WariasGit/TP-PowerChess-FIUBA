@@ -1,5 +1,4 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
-
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;

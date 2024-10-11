@@ -11,30 +11,12 @@ import java.util.Map;
 
 public class Jugador {
     private Configuracion.ColoresJugadores color;
-    private Boolean jaque;
     private String nombre;
-    ArrayList<Pieza> piezasEnJuego;
-    private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
-
-
-    public Jugador(Configuracion.ColoresJugadores color, String nombre) {
-        this.color = color;
-        jaque = false;
-        this.nombre = nombre;
-        piezasEnJuego = new ArrayList<>();
-        cargarPoderes();
-    }
-
-    private void cargarPoderes() {
-        listaPoderes = new ArrayList<>();
-        listaPoderes.add(new DobleJuego());
-        listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
-        listaPoderes.add(new Evolucion(Configuracion.CaracteristicasPoderes.PRIMER_MOVIMIENTO_EXTRA));
-        listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
-        listaPoderes.add(new Vuelo());
-        //listaPoderes.add(new Limpieza());
-        //listaPoderes.add(new RobarPoder());
-    }
+    private Configuracion.EstadoJugador estado;
+    private List<Pieza> piezasEnJuego;
+    private List<Pieza> piezasPerdidas;
+    private ArrayList<Integer> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
+    private List<Poder> poderesDisponibles;
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
 
@@ -52,6 +34,15 @@ public class Jugador {
 
     public void cambiarEstadoJaque() {
         jaque = !jaque;
+    }
+
+    public Rey getRey() {
+        for (Pieza pieza : piezasEnJuego) {
+            if (pieza instanceof Rey) {
+                return (Rey) pieza;
+            }
+        }
+        return null;
     }
 
     public Boolean tieneMovimientosPosibles(){
@@ -75,8 +66,38 @@ public class Jugador {
         return valorTotal >= Configuracion.ValorPiezas.VALOR_MINIMO_PIEZAS;
     }
 
-    public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
+     ///METODOS PODERES /////
+    public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
+
+    public void usarPoder(Poder poder, Pieza pieza) {
+        if (poderesDisponibles.contains(poder) && !pieza.esRey()) {
+            poder.aplicar(pieza);
+            poderesDisponibles.remove(poder); 
+        }
+    }
+
+    //No se puede agregar/robar un poder que la persona tenga ya disponible -- HIPOTESIS
+    public void agregarPoder(Poder poder) {
+        if (!poderesDisponibles.contains(poder)) {
+            poderesDisponibles.add(poder);
+        }
+    }
+
+    public List<Poder> getPoderesDisponibles() {
+        return poderesDisponibles;
+    }
+
+    private void inicializarPoderes() {
+        poderesDisponibles.add(new Freeze(3));  //definir duracion poderes
+    }
+
+    //el nombre es dudodoso, porque se "autoroba" un poder, lo tengo que ver
+    public Poder robarPoderDisponible(Poder poder) {
+        poderesDisponibles.remove(poder);
+        return poder;
+    }
 
 }
+
 
 
