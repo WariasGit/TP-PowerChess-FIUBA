@@ -13,10 +13,12 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ControladorTablero {
@@ -24,8 +26,8 @@ public class ControladorTablero {
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
-    private final StackPane[][] posiciones = new StackPane[8][8];
-    private final VistaTablero vistaTablero = new VistaTablero(posiciones);
+    private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
+    private VistaTablero vistaTablero = new VistaTablero(posiciones);
 
 
     public void initialize() {
@@ -94,6 +96,7 @@ public class ControladorTablero {
             limpiarSeleccion();
             quitarMovimientosPosibles();
         }
+    }
 
     }
 
@@ -112,7 +115,7 @@ public class ControladorTablero {
         if (movimientoValido) {
             moverPieza(fila, columna);
             juego.actualizarMovimientosPieza(fila, columna);
-            tableroGrid.fireEvent(new EventoCambioDeTurno());
+            tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         } else {
             System.out.println("Movimiento invalido, se muestra la vista del error");
         }

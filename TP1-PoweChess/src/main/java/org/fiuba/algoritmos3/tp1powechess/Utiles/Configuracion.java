@@ -37,6 +37,7 @@ public class Configuracion {
     public static class TamanioVentana{
         public static final double ANCHO = 900;
         public static final double ALTO = 750;
+        public static final Integer DIMENSION_TABLERO = 8;
     }
 
     public static class Jugadores {

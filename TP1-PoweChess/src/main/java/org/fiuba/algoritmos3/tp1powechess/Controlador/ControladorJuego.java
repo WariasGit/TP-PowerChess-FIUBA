@@ -9,19 +9,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
+import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPrimaria;
 import java.io.IOException;
 import java.util.Map;
 
 
-public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
+public class ControladorJuego implements EventHandler<EventoJuego>{
     private Juego juego;
-    private VistaJuego vistaJuego = new VistaJuego();
     private ControladorTablero controladorTablero;
     private ControladorPoderes controladorPoderes;
+    @FXML private VBox contenedor;
     @FXML private VBox poderes;
     @FXML private GridPane tablero;
     @FXML private Rectangle jugador1_color;
@@ -66,34 +68,20 @@ public class ControladorJuego implements EventHandler<EventoCambioDeTurno>{
     );
 
     @Override
-    public void handle(EventoCambioDeTurno cambioDeTurnoEvent) {
+    public void handle(EventoJuego cambioDeTurnoEvent) {
         this.juego.cambiarTurno();
         this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {
-        vistaJuego.mostrarConfirmacionCierre(windowEvent);
+        VistaPrimaria.mostrarConfirmacionCierre(windowEvent);
     }
 
-    public void gestionarTablas(){
-        String NombreJugadorTablas = juego.getNombreJugadorActual();
-        tablero.fireEvent(new EventoCambioDeTurno());
-        Boolean continuar = vistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
-        if(continuar){
-            tablero.fireEvent(new EventoTablas());
-        }
-        else {
-            tablero.fireEvent(new EventoCambioDeTurno());
-        }
+    public void guardarPartida(){
+        System.out.println("Probando el boton");
     }
 
-    public void gestionarAbandono(){
-        Boolean continuar = vistaJuego.mostrarConfirmacionAbandono(juego.getNombreJugadorActual());
-        if(continuar){
-            System.out.println(juego.getNombreJugadorActual() + " se ha rendido.");
-
-            juego.gestionarRendicion();
-        }
+    public void volverAlMenu(){
+        tablero.fireEvent(new EventoJuego(EventoJuego.VOLVER_AL_MENU));
     }
-
 }

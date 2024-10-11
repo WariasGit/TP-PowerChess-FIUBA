@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TableroCuadrado {
     private Casillero[][] tablero;
-    static private Integer dimensiones = 8;
+    static private Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
 
     public TableroCuadrado() {
         tablero = new Casillero[dimensiones][dimensiones];
@@ -43,7 +43,6 @@ public class TableroCuadrado {
         if (!esCoordenadaValida(rowFinal, colFinal)) {
             throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
         }
-
         // Verificamos que el casillero inicial tenga una pieza
         Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
 
