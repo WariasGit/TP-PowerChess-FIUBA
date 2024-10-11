@@ -9,7 +9,9 @@ public abstract class Poder {
         this.categoria = categoria;
     }
 
-    public abstract void aplicar(Pieza pieza);
+    public abstract void aplicar(Pieza pieza) {
+        pieza.aplicarPoder(this); //???
+    };
 
     public abstract void desactivar(Pieza pieza);
 
@@ -39,10 +41,5 @@ public abstract class Poder {
         return this.categoria;
     }
 
-    public boolean esRey(Pieza pieza) {
-        if (pieza.getTipoDePieza == 'Rey') {
-            return true;
-        }
-        return false;
     }
 }

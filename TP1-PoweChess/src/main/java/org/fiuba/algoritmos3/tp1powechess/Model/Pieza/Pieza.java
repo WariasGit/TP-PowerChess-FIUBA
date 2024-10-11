@@ -16,11 +16,15 @@ public abstract class Pieza {
     protected ArrayList<int[]> direccionesDeMovimiento;
     protected ArrayList<int[]> direccionesDeAmenaza;
     protected String tipoDePieza;
+    private List<Poder> poderesAplicados;
+
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
         this.seHaMovido = false;
         this.tipoDeEnroque = new NoEnrocable();
+        this.poderesAplicados = new ArrayList<>();
+
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -73,5 +77,45 @@ public abstract class Pieza {
     public String getTipoDePieza() {
         return tipoDePieza;
     }
+
+    ///METODOS PODERES////////
+    public boolean esRey(Pieza pieza) {
+        if (pieza.getTipoDePieza() == 'Rey') {
+            return true;
+        }
+        return false;
+    }
+
+    public void aplicarPoder(Poder poder) {
+        poderesAplicados.add(poder);
+    }
+
+    public void desactivarPoder(Poder poder) {
+        poderesAplicados.remove(poder);
+    }
+    public boolean tienePoder(Poder poder) {
+        return poderesAplicados.contains(poder);
+    }
+
+    //verifica si tiene freeze aplicado
+    public boolean sePuedeMover() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof Freeze) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //verifica si tiene escudo aplicado
+    public boolean sePuedeComer() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof Escudo) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

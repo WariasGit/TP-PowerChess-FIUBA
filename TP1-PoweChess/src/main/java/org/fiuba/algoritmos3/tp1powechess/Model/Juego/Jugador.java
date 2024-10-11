@@ -13,7 +13,6 @@ public class Jugador {
     private List<Pieza> piezasPerdidas;
     private ArrayList<Integer> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
     private List<Poder> poderesDisponibles;
-    private List<Poder> poderesActivos;
 
     public Jugador(Configuracion.ColoresJugadores color, String nombre) {
         this.color = color;
@@ -70,45 +69,36 @@ public class Jugador {
     public String getNombre() { return this.nombre; }
     public Configuracion.ColoresJugadores getColor() { return this.color; }
 
+
+    ///METODOS PODERES /////
     public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
 
     public void usarPoder(Poder poder, Pieza pieza) {
-        if (poderesDisponibles.contains(poder) && !poder.esRey()) {
+        if (poderesDisponibles.contains(poder) && !pieza.esRey()) {
             poder.aplicar(pieza);
-            poderesActivos.add(poder);
-            if (poder.esDeDuracion()) {
-                poder.reducirDuracion();
-            } else {
-                poder.desactivar(pieza);
-            }
             poderesDisponibles.remove(poder); 
         }
     }
 
-    public void actualizarDuracionPoderes() {
-        List<Poder> poderesFinalizados = new ArrayList<>();
-        for (Poder poder : this.poderesActivos) {
-            poder.reducirDuracion();
-            if (!poder.estaActivo()) {
-                poder.desactivar(piezaAsociadaConPoder(poder)); 
-                poderesFinalizados.add(poder);
-            }
-        }
-        poderesActivos.removeAll(this.poderesFinalizados);
-    }
-
-   // private Pieza piezaAsociadaConPoder(Poder poder) {
-     //   return null;
-    //}
-
+    //No se puede agregar/robar un poder que la persona tenga ya disponible -- HIPOTESIS
     public void agregarPoder(Poder poder) {
-        poderesDisponibles.add(poder);
+        if (!poderesDisponibles.contains(poder)) {
+            poderesDisponibles.add(poder);
+        }
     }
 
-    public List<Poder> getPoderesPorCategoria(CategoriaPoder categoria) {
-        return poderesDisponibles.stream()
-                .filter(poder -> poder.getCategoria() == categoria)
-                .collect(Collectors.toList());
+    public List<Poder> getPoderesDisponibles() {
+        return poderesDisponibles;
+    }
+
+    private void inicializarPoderes() {
+        poderesDisponibles.add(new Freeze(3));  //definir duracion poderes
+    }
+
+    //el nombre es dudodoso, porque se "autoroba" un poder, lo tengo que ver
+    public Poder robarPoderDisponible(Poder poder) {
+        poderesDisponibles.remove(poder);
+        return poder;
     }
 
 }

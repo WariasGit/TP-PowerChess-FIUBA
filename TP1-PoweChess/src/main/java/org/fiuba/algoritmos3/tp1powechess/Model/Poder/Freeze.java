@@ -11,6 +11,5 @@ public class Freeze extends Poder {
 
     @Override
     public void desactivar(Pieza pieza) {
-        pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
-    }
+        pieza.desactivarPoder(this); }
 }
