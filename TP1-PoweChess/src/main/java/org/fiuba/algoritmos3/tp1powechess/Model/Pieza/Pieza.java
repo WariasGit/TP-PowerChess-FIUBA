@@ -78,9 +78,17 @@ public abstract class Pieza {
         return tipoDePieza;
     }
 
+    public void agregarMovimiento(int difX, int difY) {
+        direccionesDeMovimiento.add(new int[]{difX, difY});
+    }
+    public void eliminarMovimiento(int difX, int difY) {
+        direccionesDeMovimiento.remove(new int[]{difX, difY});
+    }
+}
+
     ///METODOS PODERES////////
-    public boolean esRey(Pieza pieza) {
-        if (pieza.getTipoDePieza() == 'Rey') {
+    public boolean esRey() {
+        if (this.getTipoDePieza() == 'Rey') {
             return true;
         }
         return false;
@@ -97,8 +105,16 @@ public abstract class Pieza {
         return poderesAplicados.contains(poder);
     }
 
+    public boolean puedeVolar() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof Vuelo) {
+                return true;
+            }
+            return false;
+    }
+
     //verifica si tiene freeze aplicado
-    public boolean sePuedeMover() {
+    public boolean tieneFreeze() {
         for (Poder poder : poderesAplicados) {
             if (poder instanceof Freeze) {
                 return false;
@@ -108,13 +124,22 @@ public abstract class Pieza {
     }
 
     //verifica si tiene escudo aplicado
-    public boolean sePuedeComer() {
+    public boolean tieneEscudo() {
         for (Poder poder : poderesAplicados) {
             if (poder instanceof Escudo) {
                 return false;
             }
         }
         return true;
+    }
+
+        public boolean tieneDobleTurno() {
+            for (Poder poder : poderesAplicados) {
+                if (poder instanceof DobleTurno) {
+                    return true;
+                }
+                return false;
+        }
     }
 
 

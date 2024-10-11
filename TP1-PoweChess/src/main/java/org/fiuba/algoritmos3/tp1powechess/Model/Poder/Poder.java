@@ -13,8 +13,6 @@ public abstract class Poder {
         pieza.aplicarPoder(this); //???
     };
 
-    public abstract void desactivar(Pieza pieza);
-
     public boolean esDeDuracion() {
         return this.categoria == CategoriaPoder.DURACION;
     }

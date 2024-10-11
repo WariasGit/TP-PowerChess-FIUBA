@@ -34,6 +34,7 @@ public class TableroCuadrado {
 
     public Pieza moverPieza(int rowInicial, int colInicial, int rowFinal, int colFinal) {
         // Verificamos si las coordenadas son válidas
+
         if (!esCoordenadaValida(rowInicial, colInicial)) {
             throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
         }
@@ -45,23 +46,30 @@ public class TableroCuadrado {
         // Verificamos que el casillero inicial tenga una pieza
         Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
         Pieza piezaAMover = casilleroInicial.getPieza();
+
         if (piezaAMover == null) {
             throw new IllegalStateException("No hay una pieza en el casillero inicial.");
+        } else if (piezaAMover.tieneFreeze()) { //verifico si tiene el poder de freeze
+            throw new IllegalStateException("La pieza esta congelada.");
         }
-
         // Verificamos si el movimiento es válido para la pieza
         if (!piezaAMover.esMovimientoValido(rowInicial, colInicial, rowFinal, colFinal)) {
             throw new IllegalStateException("El movimiento no es válido para esta pieza.");
         }
 
         // Verificamos si el camino está desocupado
-        if (!caminoEstaDesocupado(rowInicial, colInicial, rowFinal, colFinal)) {
+        if (!caminoEstaDesocupado(rowInicial, colInicial, rowFinal, colFinal) && !piezaAMover.puedeVolar()) {
             throw new IllegalStateException("El camino está bloqueado por otras piezas.");
+        }
+        Pieza piezaAComer = getPieza(rowFinal, colFinal) //verifico si tiene el poder de escudo
+        if (piezaAComer.tieneEscudo) {
+            throw new IllegalStateException("La pieza esta protegida por un escudo.");
         }
 
         // Movemos la pieza al nuevo casillero
         Pieza piezaMovida = removePieza(rowInicial, colInicial);
         Pieza piezaComida = setPieza(rowFinal, colFinal, piezaMovida);
+
 
         // Devolvemos la pieza comida si hay alguna, o null si no había pieza en el destino
         return piezaComida;

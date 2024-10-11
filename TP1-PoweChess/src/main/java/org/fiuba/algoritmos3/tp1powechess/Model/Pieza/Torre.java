@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Torre extends Pieza {
 
+
     public Torre(Configuracion.ColoresJugadores color) {
 
         super(color);
@@ -61,4 +62,6 @@ public class Torre extends Pieza {
         }
         return false;
     }
+
+
 }

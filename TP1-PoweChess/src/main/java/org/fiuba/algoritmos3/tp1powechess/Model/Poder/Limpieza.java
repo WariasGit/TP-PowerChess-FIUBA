@@ -8,5 +8,4 @@ public class Limpieza extends Poder {
     public void aplicar(Pieza pieza) {
         pieza.desactivarPoder();
     }
-
 }
