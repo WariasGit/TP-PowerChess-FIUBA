@@ -54,4 +54,7 @@ public abstract class Poder {
     public String getNombre() {
         return this.nombre;
     }
+    public abstract void aplicar(Jugador jugador, Jugador oponente);
+
+    public abstract void aplicar(Pieza pieza);
 }

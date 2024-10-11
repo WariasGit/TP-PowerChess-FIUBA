@@ -323,9 +323,6 @@ public class Juego {
         }
     }
 
-
-
-
     public void imprimirEstadoDebug() {
         System.out.println("----- Estado de Debug -----");
         System.out.println("Movimientos para tablas: " + contadorMovimientosParaTablas);

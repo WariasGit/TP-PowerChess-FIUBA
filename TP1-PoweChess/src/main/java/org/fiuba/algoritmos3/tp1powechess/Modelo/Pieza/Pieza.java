@@ -30,6 +30,8 @@ public abstract class Pieza implements Movible {
         this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
         this.seHaMovido = false;
+        this.poderesAplicados = new ArrayList<>();
+
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -53,6 +55,19 @@ public abstract class Pieza implements Movible {
     };
 
     public abstract boolean esDireccionDeMovimientoValida(int difX, int difY);
+    public boolean esDeColor(String color) {
+        return this.color.equals(color);
+    }
+
+    public void setEstrategiaEnroque(Enrocable enroque) {
+        this.tipoDeEnroque = enroque;
+    }
+
+    public boolean puedeEnrocar() {
+        return tipoDeEnroque.puedeEnrocar();
+    }
+
+    public abstract boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY);
 
     public abstract boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY);
 
@@ -112,11 +127,6 @@ public abstract class Pieza implements Movible {
         return caracterFEN;
     }
 
-
-    public void setMovimientoDoble(boolean valor) {
-        movimientoDoble = valor;
-    }
-
     public void aplicarPoder(Poder poder) {
         poderActual = poder;
     }
@@ -124,4 +134,69 @@ public abstract class Pieza implements Movible {
     public void desactivarPoder(Poder poder) {
         poderActual = poder;
     }
+
+    public void agregarMovimiento(int difX, int difY) {
+        direccionesDeMovimiento.add(new int[]{difX, difY});
+    }
+
+    public void eliminarMovimiento(int difX, int difY) {
+        direccionesDeMovimiento.remove(new int[]{difX, difY});
+    }
+
+    public boolean esRey() {
+        if (Objects.equals(this.getTipoDePieza(), "Rey")) {
+            return true;
+        }
+        return false;
+    }
+
+    public void aplicarPoder(Poder poder) {
+        poderesAplicados.add(poder);
+    }
+
+    public void desactivarPoder(Poder poder) {
+        poderesAplicados.remove(poder);
+    }
+
+    public boolean tienePoder(Poder poder) {
+        return poderesAplicados.contains(poder);
+    }
+
+    public boolean puedeVolar() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof Vuelo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean tieneFreeze() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof Freeze) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean tieneEscudo() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof Escudo) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean tieneDobleTurno() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof DobleJuego) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
+
