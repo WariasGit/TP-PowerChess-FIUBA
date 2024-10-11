@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 import java.util.List;
 
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;

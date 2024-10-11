@@ -1,8 +1,7 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.*;
-import org.fiuba.algoritmos3.tp1powechess.Model.Estado.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Estado.*;
 import java.util.ArrayList;
 
 public class Casillero {

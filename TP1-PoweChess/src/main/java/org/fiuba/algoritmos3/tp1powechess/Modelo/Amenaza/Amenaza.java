@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Amenaza;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza;
 
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 

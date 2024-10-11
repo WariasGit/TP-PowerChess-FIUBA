@@ -1,6 +1,6 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Enrocable;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable;
 
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 
 public class EnrocableSiNoSeHaMovido implements Enrocable {
     private Pieza pieza;

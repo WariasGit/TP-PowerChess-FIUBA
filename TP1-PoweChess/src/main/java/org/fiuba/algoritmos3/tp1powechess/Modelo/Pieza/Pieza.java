@@ -1,12 +1,14 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 
-import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.Enrocable;
-import org.fiuba.algoritmos3.tp1powechess.Model.Enrocable.NoEnrocable;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.NoEnrocable;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class Pieza {
     protected Configuracion.ColoresJugadores color;
@@ -71,7 +73,7 @@ public abstract class Pieza {
     }
 
     public ArrayList<int[]> getDireccionesDeMovimiento() {
-        return new ArrayList<int[]> (direccionesDeMovimiento);
+        return new ArrayList<int[]>(direccionesDeMovimiento);
     }
 
     public String getTipoDePieza() {
@@ -81,14 +83,15 @@ public abstract class Pieza {
     public void agregarMovimiento(int difX, int difY) {
         direccionesDeMovimiento.add(new int[]{difX, difY});
     }
+
     public void eliminarMovimiento(int difX, int difY) {
         direccionesDeMovimiento.remove(new int[]{difX, difY});
     }
-}
+
 
     ///METODOS PODERES////////
     public boolean esRey() {
-        if (this.getTipoDePieza() == 'Rey') {
+        if (Objects.equals(this.getTipoDePieza(), "Rey")) {
             return true;
         }
         return false;
@@ -101,6 +104,7 @@ public abstract class Pieza {
     public void desactivarPoder(Poder poder) {
         poderesAplicados.remove(poder);
     }
+
     public boolean tienePoder(Poder poder) {
         return poderesAplicados.contains(poder);
     }
@@ -110,7 +114,8 @@ public abstract class Pieza {
             if (poder instanceof Vuelo) {
                 return true;
             }
-            return false;
+        }
+        return false;
     }
 
     //verifica si tiene freeze aplicado
@@ -133,14 +138,17 @@ public abstract class Pieza {
         return true;
     }
 
-        public boolean tieneDobleTurno() {
-            for (Poder poder : poderesAplicados) {
-                if (poder instanceof DobleTurno) {
-                    return true;
-                }
-                return false;
+    public boolean tieneDobleTurno() {
+        for (Poder poder : poderesAplicados) {
+            if (poder instanceof DobleJuego) {
+                return true;
+            }
         }
+        return false;
     }
 
-
+    public void setMovimientoDoble(boolean b) {
+        //Lo puse para solucionar errores
+    }
 }
+

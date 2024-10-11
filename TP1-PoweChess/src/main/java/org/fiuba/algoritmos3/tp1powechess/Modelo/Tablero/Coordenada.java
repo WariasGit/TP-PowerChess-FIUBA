@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Tablero;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 
 public abstract class Coordenada {
     protected int[] indices;

@@ -1,8 +1,7 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.io.*;

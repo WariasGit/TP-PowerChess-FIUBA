@@ -2,11 +2,9 @@ package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPoderes;
 

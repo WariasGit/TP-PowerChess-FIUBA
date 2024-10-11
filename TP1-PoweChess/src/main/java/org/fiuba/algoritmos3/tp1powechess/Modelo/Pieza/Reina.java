@@ -1,6 +1,6 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.util.ArrayList;

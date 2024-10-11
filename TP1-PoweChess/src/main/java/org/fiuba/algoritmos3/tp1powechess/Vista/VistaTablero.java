@@ -3,8 +3,7 @@ package org.fiuba.algoritmos3.tp1powechess.Vista;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;

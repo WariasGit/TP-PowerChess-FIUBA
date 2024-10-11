@@ -9,11 +9,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
-import org.fiuba.algoritmos3.tp1powechess.Model.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.Coordenada;
-import org.fiuba.algoritmos3.tp1powechess.Model.Tablero.TableroCuadrado;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
 

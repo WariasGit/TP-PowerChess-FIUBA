@@ -1,6 +1,8 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Juego;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Freeze;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class Jugador {
     }
 
     public Rey getRey() {
-        for (Pieza pieza : this.getPiezasEnJuego()) {
+        for (Pieza pieza : piezasEnJuego) {
             if (pieza instanceof Rey) {
                 return (Rey) pieza;
             }

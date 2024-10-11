@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 import java.io.IOException;
 import java.util.Map;

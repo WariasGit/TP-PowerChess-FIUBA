@@ -1,7 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Utiles;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.PeonAscendente;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.PeonDescendente;
-import org.fiuba.algoritmos3.tp1powechess.Model.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.PeonAscendente;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.PeonDescendente;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 
 import java.util.HashMap;
 import java.util.Map;

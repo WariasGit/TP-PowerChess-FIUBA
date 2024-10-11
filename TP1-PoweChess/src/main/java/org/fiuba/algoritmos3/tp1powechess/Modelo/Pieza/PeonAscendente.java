@@ -1,4 +1,4 @@
-package org.fiuba.algoritmos3.tp1powechess.Model.Pieza;
+package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class PeonAscendente extends PeonBase {
