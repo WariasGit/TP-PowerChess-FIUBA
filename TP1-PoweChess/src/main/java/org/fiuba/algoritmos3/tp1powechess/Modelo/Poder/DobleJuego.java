@@ -6,7 +6,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class DobleJuego extends Poder {
 
     public DobleJuego() {
-        super("Doble-juego", 0, Configuracion.CategoriaPoder.ACCION);
+        super(Configuracion.CaracteristicasPoderes.DOBLE_JUEGO, 0, Configuracion.CategoriaPoder.ACCION);
     }
 
     @Override

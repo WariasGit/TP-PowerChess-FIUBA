@@ -7,7 +7,7 @@ public class Evolucion extends Poder {
     private int[] movimientoExtra;
 
     public Evolucion(int[] movimientoExtra) {
-        super("Evolucion", 0, Configuracion.CategoriaPoder.EVOLUCION); // Dura por el resto de la partida
+        super(Configuracion.CaracteristicasPoderes.EVOLUCION, 0, Configuracion.CategoriaPoder.EVOLUCION); // Dura por el resto de la partida
         this.movimientoExtra = movimientoExtra;
     }
 

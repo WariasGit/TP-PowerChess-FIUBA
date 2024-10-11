@@ -5,7 +5,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Freeze extends Poder {
     public Freeze(int duracion) {
-        super("Freeze", duracion, Configuracion.CategoriaPoder.DURACION);
+        super(Configuracion.CaracteristicasPoderes.FREEZE, duracion, Configuracion.CategoriaPoder.DURACION);
     }
 
     @Override

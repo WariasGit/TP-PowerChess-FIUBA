@@ -21,7 +21,7 @@ import java.util.Map;
 public class ControladorJuego implements EventHandler<EventoJuego>{
     private Juego juego;
     private ControladorTablero controladorTablero;
-    private ControladorPoderes controladorPoderes;
+    private ControladorSecundario controladorSecundario;
     @FXML private VBox contenedor;
     @FXML private VBox poderes;
     @FXML private GridPane tablero;
@@ -44,7 +44,7 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
             FXMLLoader childLoader = new FXMLLoader(getClass().getResource("/org/fiuba/algoritmos3/tp1powechess/poderes-vista.fxml"));
             Parent poderesNode = childLoader.load();
             poderes.getChildren().add(poderesNode);
-            controladorPoderes = childLoader.getController();
+            controladorSecundario = childLoader.getController();
         } catch(IOException e) {
             System.out.println("Error al cargar el controlador de los poderes");
         }
@@ -58,7 +58,7 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         this.jugador2_color.setFill(colores.get(Configuracion.ColoresJugadores.NEGRO));
         this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
         controladorTablero.setJuego(juego);
-        controladorPoderes.setJuego(juego.getJugadores());
+        controladorSecundario.setJuego(juego.getJugadores());
     }
 
     private static final Map<Configuracion.ColoresJugadores, Color> colores = Map.ofEntries(

@@ -6,7 +6,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class Vuelo extends Poder {
 
     public Vuelo() {
-        super("Vuelo", 0, Configuracion.CategoriaPoder.ACCION); // Solo dura un turno
+        super(Configuracion.CaracteristicasPoderes.VUELO, 0, Configuracion.CategoriaPoder.ACCION); // Solo dura un turno
     }
 
     @Override

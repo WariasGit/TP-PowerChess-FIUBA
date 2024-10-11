@@ -11,6 +11,7 @@ import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorPrimario;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -28,6 +29,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     String NombreJugadorBlancas;
     String NombreJugadorNegras;
     ControladorPrimario controladorPrimario;
+    GestorPoderes gestorPoderes = new GestorPoderes(Ajedrez);
     private Stage stage;
     Reproductor reproductor = new Reproductor();
 
@@ -44,22 +46,21 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else if (evento.getEventType().equals(EventoJuego.VOLVER_AL_MENU)){
+        }
+        else if (evento.getEventType().equals(EventoJuego.VOLVER_AL_MENU)){
             try {
                 iniciarVentanaPrincipal();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else if(evento.getEventType().equals(EventoJuego.CARGAR_PARTIDA_GUARDADA)){
+        }
+        else if(evento.getEventType().equals(EventoJuego.CARGAR_PARTIDA_GUARDADA)){
             try {
                 cargarPartidaGuardada();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
-
-
         else if (evento.getEventType().equals(EventoJuego.SALIR_JUEGO)){
             System.out.println("Saliendo del juego");
             stage.close();
@@ -93,6 +94,13 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         juegoController.setJuego(Ajedrez);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
         root.addEventHandler(EventoJuego.VOLVER_AL_MENU, this);
+        root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
+        root.addEventHandler(EventoPoder.ESCUDO, evento -> gestorPoderes.activarEscudo());
+        root.addEventHandler(EventoPoder.EVOLUCION, evento -> gestorPoderes.activarEvolucion());
+        root.addEventHandler(EventoPoder.FREEZE, evento -> gestorPoderes.activarFreeze());
+        root.addEventHandler(EventoPoder.LIMPIEZA, evento -> gestorPoderes.activarLimpieza());
+        root.addEventHandler(EventoPoder.ROBAR, evento -> gestorPoderes.activarRobar());
+        root.addEventHandler(EventoPoder.VUELO, evento -> gestorPoderes.activarVuelo());
         Scene scene = new Scene(root, Configuracion.TamanioVentana.ANCHO, Configuracion.TamanioVentana.ALTO);
         stage.setScene(scene);
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);

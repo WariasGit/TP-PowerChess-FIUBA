@@ -1,5 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -10,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
@@ -18,11 +21,12 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ControladorTablero {
+public class ControladorTablero{
     @FXML private GridPane tableroGrid;
     private Juego juego;
     private Integer posicionOrigenFila;
@@ -161,4 +165,5 @@ public class ControladorTablero {
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
     }
+
 }

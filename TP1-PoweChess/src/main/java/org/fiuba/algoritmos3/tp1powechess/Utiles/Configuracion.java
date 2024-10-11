@@ -1,8 +1,11 @@
 package org.fiuba.algoritmos3.tp1powechess.Utiles;
+import javafx.event.EventType;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.PeonAscendente;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.PeonDescendente;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 
+import javax.swing.event.DocumentEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -27,11 +30,34 @@ public class Configuracion {
         EVOLUCION
     }
 
+    private static Map<String, EventType<EventoPoder>> mapaEventos = new HashMap<>();
+    static{
+        mapaEventos.put(CaracteristicasPoderes.DOBLE_JUEGO, EventoPoder.DOBLE_JUEGO);
+        mapaEventos.put(CaracteristicasPoderes.ESCUDO, EventoPoder.ESCUDO);
+        mapaEventos.put(CaracteristicasPoderes.EVOLUCION, EventoPoder.EVOLUCION);
+        mapaEventos.put(CaracteristicasPoderes.FREEZE, EventoPoder.FREEZE);
+        mapaEventos.put(CaracteristicasPoderes.LIMPIEZA, EventoPoder.LIMPIEZA);
+        mapaEventos.put(CaracteristicasPoderes.ROBAR, EventoPoder.ROBAR);
+        mapaEventos.put(CaracteristicasPoderes.VUELO, EventoPoder.VUELO);
+    }
+
+    public static EventType<EventoPoder> getEventoPoder(String nombrePoder) {
+        return mapaEventos.get(nombrePoder);
+    }
+
+
     public class CaracteristicasPoderes{
         public static final int DURACION_ESCUDO = 3;
         public static final int DURACION_FREEZE = 2;
         public static final int[] PRIMER_MOVIMIENTO_EXTRA = new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA}; // Diagonal derecha arriba
         public static final int[] SEGUNDO_MOVIMIENTO_EXTRA = new int[]{Constantes.UNO_EN_FILA, Constantes.CERO_EN_COLUMNA}; //Abajo
+        public static final String DOBLE_JUEGO = "Doble_juego";
+        public static final String ESCUDO = "Escudo";
+        public static final String EVOLUCION = "Evolucion";
+        public static final String FREEZE = "Freeze";
+        public static final String LIMPIEZA = "Limpieza";
+        public static final String ROBAR = "Robar";
+        public static final String VUELO = "Vuelo";
     }
 
     public static class TamanioVentana{

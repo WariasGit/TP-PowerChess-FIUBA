@@ -1,9 +1,11 @@
 package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
@@ -13,7 +15,7 @@ import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 
 import java.util.ArrayList;
 
-public class ControladorPoderes {
+public class ControladorSecundario {
     @FXML public FlowPane poderesNegras;
     @FXML public FlowPane poderesBlancas;
     @FXML VBox vboxPoderes;
@@ -28,6 +30,7 @@ public class ControladorPoderes {
         cargarPoderes();
     }
 
+
     private void cargarPoderes(){
         System.out.println("Cargando poderes");
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
@@ -38,7 +41,7 @@ public class ControladorPoderes {
         System.out.println("Cargando blancas");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(event -> {gestorPoderes();});
+            botonPoder.setOnAction(this::gestorPoderes);
             poderesBlancas.getChildren().add(botonPoder);
         }
     }
@@ -47,13 +50,17 @@ public class ControladorPoderes {
         System.out.println("Cargando negras");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(event -> {gestorPoderes();});
+            botonPoder.setOnAction(this::gestorPoderes);
             poderesNegras.getChildren().add(botonPoder);
         }
     }
 
-    private void gestorPoderes() {
-        System.out.println("Usando el poder: ");
+    private void gestorPoderes(javafx.event.ActionEvent actionEvent) {
+        Button boton = (Button) actionEvent.getSource();
+        String nombrePoder = boton.getText();
+        EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
+        vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
+        System.out.println("Poder: " + nombrePoder);
     }
 
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){
