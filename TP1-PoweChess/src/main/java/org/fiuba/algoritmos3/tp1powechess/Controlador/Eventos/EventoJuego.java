@@ -10,6 +10,7 @@ public class EventoJuego extends Event {
     public static final EventType<EventoJuego> INICIAR_JUEGO = new EventType<>("Iniciar Juego.");
     public static final EventType<EventoJuego> RENDIRSE_EVENT = new EventType<>("Rendirse.");
     public static final EventType<EventoJuego> TABLAS_ACEPTADAS_EVENT = new EventType<>("Tablas Aceptadas.");
+    public static final EventType<EventoJuego> CARGAR_PARTIDA_GUARDADA = new EventType<>("Guardar Partida.");
 
     public EventoJuego(EventType<? extends Event> eventType) {
         super(eventType);

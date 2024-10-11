@@ -11,8 +11,8 @@ import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorPrimario;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Model.Juego.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPrimaria;
@@ -40,7 +40,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         System.out.println("Evento: " + evento.getEventType());
         if (evento.getEventType().equals(EventoJuego.INICIAR_JUEGO)){
             try {
-                iniciarJuego();
+                iniciarJuego(Constantes.RUTA_ARCHIVO_INICIO_FEN);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -50,8 +50,17 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        } else if(evento.getEventType().equals(EventoJuego.CARGAR_PARTIDA_GUARDADA)){
+            try {
+                cargarPartidaGuardada();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-        } else if (evento.getEventType().equals(EventoJuego.SALIR_JUEGO)){
+
+
+        else if (evento.getEventType().equals(EventoJuego.SALIR_JUEGO)){
             System.out.println("Saliendo del juego");
             stage.close();
             Platform.exit();
@@ -60,14 +69,19 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
 
-    private void iniciarJuego() throws IOException {
+    private void iniciarJuego(String path) throws IOException {
         this.jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
         this.jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
         List<Jugador> jugadores = new ArrayList<>();
         jugadores.add(jugadorBlancas);
         jugadores.add(jugadorNegras);
         this.Ajedrez = new Juego(jugadores);
+        Ajedrez.cargarPartida(path);
         iniciarVentanaJuego();
+    }
+
+    private void cargarPartidaGuardada() throws IOException {
+        iniciarJuego(Constantes.RUTA_ARCHIVO_PARTIDDA_GUARDADA);
     }
 
     private void iniciarVentanaJuego() throws IOException {
@@ -92,6 +106,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         this.controladorPrimario = loader.getController();
         root.addEventHandler(EventoJuego.INICIAR_JUEGO, this);
         root.addEventHandler(EventoJuego.SALIR_JUEGO, this);
+        root.addEventHandler(EventoJuego.CARGAR_PARTIDA_GUARDADA, this);
         Scene scene = new Scene(root, Configuracion.TamanioVentana.ANCHO, Configuracion.TamanioVentana.ALTO);
         stage.setScene(scene);
         stage.setOnCloseRequest(AdministradorPrimarioJuego.this::mostrarConfirmacionCierre);

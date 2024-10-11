@@ -1,4 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -31,7 +32,6 @@ public class Juego {
         contadorMovimientosTotales = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
         piezasEnJuego = Constantes.CANTIDAD_PIEZAS_INICIALES;
         historialPosiciones = new HashMap<>();
-        cargarPartida();
     }
 
     public void gestionarRendicion() {
@@ -84,13 +84,50 @@ public class Juego {
                 }
             }
             gestionarTablas();
-            imprimirEstadoDebug();
+            imprimirTablero();
+            //imprimirEstadoDebug();
             return true;
         } catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
             return false;
         }
     }
+
+
+
+    private void imprimirTablero() {
+        Casillero[][] casilleros = tablero.getTablero();
+        int dimension = tablero.getDimension();
+        // Imprimir los índices de las columnas
+        System.out.print("   ");
+        for (int col = 0; col < dimension; col++) {
+            System.out.print(col + "  ");
+        }
+        System.out.println();
+        // Imprimir el tablero con bordes
+        for (int i = 0; i < dimension; i++) {
+            // Imprimir índice de la fila
+            System.out.print(i + " |");
+            for (int j = 0; j < dimension; j++) {
+                Pieza pieza = casilleros[i][j].getPieza();
+                if (pieza != null) {
+                    System.out.print(" " + pieza.getCaracterFEN() + " ");
+                } else {
+                    System.out.print(" . ");  // Espacio vacío
+                }
+            }
+            System.out.println("| " + i);  // Cerrar el borde de la fila
+        }
+        // Imprimir los índices de las columnas nuevamente
+        System.out.print("   ");
+        for (int col = 0; col < dimension; col++) {
+            System.out.print(col + "  ");
+        }
+        System.out.println();
+    }
+
+
+
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
         if(piezaComida.getColor() == Configuracion.ColoresJugadores.BLANCO) {
@@ -197,8 +234,8 @@ public class Juego {
         }
     }
 
-    public void cargarPartida() throws IOException {
-        String linea = leerArchivoFen(Constantes.RUTA_ARCHIVO_INICIO_FEN);
+    public void cargarPartida(String path) throws IOException {
+        String linea = leerArchivoFen(path);
         setearPiezasDesdeFEN(linea);
     }
 
@@ -271,6 +308,23 @@ public class Juego {
             tablasPorMovimientosRepetidos();
         }
     }
+
+    public void guardarPartida() throws IOException {
+        String estadoTablero = tablero.estadoActualTablero();
+        try {
+            FileWriter escritorArchivo = new FileWriter(Constantes.RUTA_ARCHIVO_GUARDAR_PARTIDA);
+            BufferedWriter bufferEscritor = new BufferedWriter(escritorArchivo);
+            bufferEscritor.write(estadoTablero);
+            bufferEscritor.close();
+            System.out.println("Archivo guardado exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al escribir el archivo.");
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     public void imprimirEstadoDebug() {
         System.out.println("----- Estado de Debug -----");

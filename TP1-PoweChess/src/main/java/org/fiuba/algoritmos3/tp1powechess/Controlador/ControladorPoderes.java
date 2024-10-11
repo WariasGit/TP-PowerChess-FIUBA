@@ -38,9 +38,7 @@ public class ControladorPoderes {
         System.out.println("Cargando blancas");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(event -> {
-                gestorPoderes();
-            });
+            botonPoder.setOnAction(event -> {gestorPoderes();});
             poderesBlancas.getChildren().add(botonPoder);
         }
     }
@@ -49,15 +47,15 @@ public class ControladorPoderes {
         System.out.println("Cargando negras");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(event -> {
-                gestorPoderes();
-            });
+            botonPoder.setOnAction(event -> {gestorPoderes();});
             poderesNegras.getChildren().add(botonPoder);
         }
     }
 
-    private void gestorPoderes(){
+    private void gestorPoderes() {
         System.out.println("Usando el poder: ");
+    }
+
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){
         String NombreJugadorTablas = "";
         Button boton = (Button) actionEvent.getSource();

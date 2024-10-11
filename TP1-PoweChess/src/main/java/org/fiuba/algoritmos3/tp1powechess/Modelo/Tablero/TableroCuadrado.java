@@ -12,6 +12,11 @@ public class TableroCuadrado {
     private Casillero[][] tablero;
     static private Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
 
+    //Esto es momentaneo, para ver algo
+    public Casillero[][] getTablero() {
+        return tablero;
+    }
+
     public TableroCuadrado() {
         tablero = new Casillero[dimensiones][dimensiones];
         inicializarTableroAjedrez();

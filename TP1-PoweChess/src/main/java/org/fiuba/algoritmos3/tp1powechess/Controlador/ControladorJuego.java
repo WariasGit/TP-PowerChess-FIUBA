@@ -13,7 +13,6 @@ import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPrimaria;
 import java.io.IOException;
 import java.util.Map;
@@ -77,11 +76,11 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         VistaPrimaria.mostrarConfirmacionCierre(windowEvent);
     }
 
-    public void guardarPartida(){
-        System.out.println("Probando el boton");
-    }
-
     public void volverAlMenu(){
         tablero.fireEvent(new EventoJuego(EventoJuego.VOLVER_AL_MENU));
+    }
+
+    public void guardarPartida() throws IOException {
+        juego.guardarPartida();
     }
 }

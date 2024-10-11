@@ -20,7 +20,8 @@ public class ControladorPrimario {
     }
 
     public void cargarPartida(){
-        //
+        panePrincipal.fireEvent(new EventoJuego(EventoJuego.CARGAR_PARTIDA_GUARDADA));
+        System.out.println("Se carga una partida guardada");
     }
 
 }

@@ -4,6 +4,8 @@ public class Constantes {
     public static final String RUTA_JUEGO_FXML = "/org/fiuba/algoritmos3/tp1powechess/juego-vista.fxml";
     public static final String RUTA_INICIO_FXML = "/org/fiuba/algoritmos3/tp1powechess/inicio-vista.fxml";
     public static final String RUTA_ARCHIVO_INICIO_FEN = "FEN_inicio_partida.txt";
+    public static final String RUTA_ARCHIVO_GUARDAR_PARTIDA = "src/main/resources/PartidaGuardada.txt";
+    public static final String RUTA_ARCHIVO_PARTIDDA_GUARDADA = "PartidaGuardada.txt";
 
     public static final String RUTA_MUSICA_MENU = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_menu.mp3";
     public static final String RUTA_MUSICA_JUEGO = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_partida.mp3";
