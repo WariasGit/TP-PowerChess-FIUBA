@@ -10,11 +10,6 @@ public class Escudo extends Poder {
     }
 
     @Override
-    public void aplicar(Pieza pieza) {
-        pieza.aplicarPoder(this);
-    }
-
-    @Override
     public void desactivar(Pieza pieza) {
         pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
     }

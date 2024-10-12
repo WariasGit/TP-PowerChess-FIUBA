@@ -7,7 +7,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class RobarPoder extends Poder {
 
     public RobarPoder() {
-        super("Robar poder", 1, Configuracion.CategoriaPoder.ACCION);
+        super(Configuracion.CaracteristicasPoderes.ROBAR, 1, Configuracion.CategoriaPoder.ACCION);
     }
 
     @Override

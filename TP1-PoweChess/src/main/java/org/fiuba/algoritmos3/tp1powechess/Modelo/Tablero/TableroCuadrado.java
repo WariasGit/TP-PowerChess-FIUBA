@@ -44,7 +44,6 @@ public class TableroCuadrado {
         if (!esCoordenadaValida(rowInicial, colInicial)) {
             throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
         }
-
         if (!esCoordenadaValida(rowFinal, colFinal)) {
             throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
         }
@@ -54,8 +53,22 @@ public class TableroCuadrado {
         if (!casilleroInicial.estaOcupado()) {
             throw new IllegalArgumentException("No hay ninguna pieza en el casillero inicial.");
         }
-
         Pieza piezaAMover = casilleroInicial.getPieza();
+        
+        if (piezaAMover == null) {
+            throw new IllegalStateException("No hay una pieza en el casillero inicial.");
+        } else if (piezaAMover.tieneFreeze()) { //verifico si tiene el poder de freeze
+            throw new IllegalStateException("La pieza esta congelada.");
+        }   
+
+           // Verificamos si el camino está desocupado
+        if (!caminoEstaDesocupado(rowInicial, colInicial, rowFinal, colFinal) && !piezaAMover.puedeVolar()) {
+            throw new IllegalStateException("El camino está bloqueado por otras piezas.");
+        }
+        Pieza piezaAComer = getPieza(rowFinal, colFinal) //verifico si tiene el poder de escudo
+        if (piezaAComer.tieneEscudo) {
+            throw new IllegalStateException("La pieza esta protegida por un escudo.");
+        }
 
         Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);
