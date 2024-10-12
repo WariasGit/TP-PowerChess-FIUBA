@@ -67,7 +67,6 @@ public class Jugador {
         return valorTotal >= Configuracion.ValorPiezas.VALOR_MINIMO_PIEZAS;
     }
 
-     ///METODOS PODERES /////
     public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
 
     public void usarPoder(Poder poder, Pieza pieza) {
@@ -77,11 +76,10 @@ public class Jugador {
         if (!poder.esDeDuracion()) {
             poderesDisponibles.remove(poder); 
         } else {
-            poder.reducirDuracion() //falta que en cada turno que quede se vaya restando la duracion 
+            poder.reducirDuracion() 
         }
         }
 
-    //No se puede agregar/robar un poder que la persona tenga ya disponible -- HIPOTESIS
     public void agregarPoder(Poder poder) {
         if (!poderesDisponibles.contains(poder)) {
             poderesDisponibles.add(poder);
@@ -96,14 +94,11 @@ public class Jugador {
     }
 
     private void inicializarPoderes() {
-        poderesDisponibles.add(new Freeze(3));  //definir duracion poderes
+        poderesDisponibles.add(new Freeze(3));
+        poderesDisponibles.add(new Escudo(3));
+        poderesDisponibles.add(new Vuelo(1));
     }
 
-    //el nombre es dudodoso, porque se "autoroba" un poder, lo tengo que ver
-    public Poder robarPoderDisponible(Poder poder) {
-        poderesDisponibles.remove(poder);
-        return poder;
-    }
 
     public void reducirDuracionPoderes() {
         List<Poder> poderesRestantes = new ArrayList<>();
@@ -112,12 +107,12 @@ public class Jugador {
             poder.reducirDuracion();
             }
             if (poder.getDuracion() > 0) {
-                poderesRestantes.add(poder);  // Mantener el poder si sigue activo
+                poderesRestantes.add(poder);  
             } else {
                 poder.desactivar(this);  
             }
         }
-        this.poderesAplicados = poderesRestantes;  // Actualizar la lista de poderes activos
+        this.poderesAplicados = poderesRestantes;  
     }
 
 }
