@@ -9,12 +9,6 @@ public class Vuelo extends Poder {
         super(Configuracion.CaracteristicasPoderes.VUELO, 0, Configuracion.CategoriaPoder.ACCION); // Solo dura un turno
     }
 
-    @Override
-    public void aplicar(Pieza pieza) {
-        pieza.aplicarPoder(this);
-    }
-
-    @Override
     public void desactivar(Pieza pieza) {
         pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
     }

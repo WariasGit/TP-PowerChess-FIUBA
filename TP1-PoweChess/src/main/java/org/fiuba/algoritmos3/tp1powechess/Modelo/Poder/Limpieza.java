@@ -7,7 +7,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class Limpieza extends Poder {
 
     public Limpieza() {
-        super("Limpieza", 1, Configuracion.CategoriaPoder.ACCION);
+        super(Configuracion.CaracteristicasPoderes.LIMPIEZA, 1, Configuracion.CategoriaPoder.ACCION);
     }
     public void aplicar(Pieza pieza) {
         pieza.desactivarPoder(this);
