@@ -49,6 +49,7 @@ public class Configuracion {
     public class CaracteristicasPoderes{
         public static final int DURACION_ESCUDO = 3;
         public static final int DURACION_FREEZE = 2;
+        public static final int DURACION_VUELO = 1;
         public static final int[] PRIMER_MOVIMIENTO_EXTRA = new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA}; // Diagonal derecha arriba
         public static final int[] SEGUNDO_MOVIMIENTO_EXTRA = new int[]{Constantes.UNO_EN_FILA, Constantes.CERO_EN_COLUMNA}; //Abajo
         public static final String DOBLE_JUEGO = "Doble_juego";

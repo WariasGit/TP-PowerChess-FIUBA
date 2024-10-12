@@ -3,11 +3,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
-
-import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Jugador {
     private Configuracion.ColoresJugadores color;
@@ -27,13 +24,9 @@ public class Jugador {
 
     private void cargarPoderes() {
         listaPoderes = new ArrayList<>();
-        listaPoderes.add(new DobleJuego());
         listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
-        listaPoderes.add(new Evolucion(Configuracion.CaracteristicasPoderes.PRIMER_MOVIMIENTO_EXTRA));
         listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
         listaPoderes.add(new Vuelo());
-        //listaPoderes.add(new Limpieza());
-        //listaPoderes.add(new RobarPoder());
     }
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
