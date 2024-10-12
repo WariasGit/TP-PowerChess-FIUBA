@@ -1,0 +1,62 @@
+#contenedor {
+    -fx-background-color: #294245;
+}
+
+.label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-background-color: #1e3a3b ;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial";
+    -fx-padding: 5px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 2px;
+}
+
+.button:hover {
+    -fx-background-color: #719d8a;
+    -fx-cursor: hand;
+}
+
+.menu-button {
+    -fx-background-color: #1e3a3b ;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 2px;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #719d8a;
+}
+
+.menu-button:filled {
+    -fx-background-color: #3e625d;
+}
+
+.menu-item {
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3e625d;
+    -fx-padding: 5px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #719d8a;
+}
+
+.label-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #719d8a;
+    -fx-padding: 20px 0;
+}
