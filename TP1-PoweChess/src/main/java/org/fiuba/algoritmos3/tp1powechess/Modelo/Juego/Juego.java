@@ -333,5 +333,7 @@ public class Juego {
         System.out.println("---------------------------");
     }
 
+    public void seleccionarPoder(Pieza pieza, poder Poder )
+
 }
 

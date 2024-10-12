@@ -17,6 +17,7 @@ public class Jugador {
     private List<Pieza> piezasPerdidas;
     private ArrayList<Integer> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
     private List<Poder> poderesDisponibles;
+    private List<Poder> poderesActivos; 
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
 
@@ -72,9 +73,13 @@ public class Jugador {
     public void usarPoder(Poder poder, Pieza pieza) {
         if (poderesDisponibles.contains(poder) && !pieza.esRey()) {
             poder.aplicar(pieza);
-            poderesDisponibles.remove(poder); 
         }
-    }
+        if (!poder.esDeDuracion()) {
+            poderesDisponibles.remove(poder); 
+        } else {
+            poder.reducirDuracion() //falta que en cada turno que quede se vaya restando la duracion 
+        }
+        }
 
     //No se puede agregar/robar un poder que la persona tenga ya disponible -- HIPOTESIS
     public void agregarPoder(Poder poder) {
@@ -84,7 +89,10 @@ public class Jugador {
     }
 
     public List<Poder> getPoderesDisponibles() {
-        return poderesDisponibles;
+        return this.poderesDisponibles;
+    }
+    public List<Poder> getPoderesActivos() {
+        return this.poderesActivos;
     }
 
     private void inicializarPoderes() {
@@ -95,6 +103,21 @@ public class Jugador {
     public Poder robarPoderDisponible(Poder poder) {
         poderesDisponibles.remove(poder);
         return poder;
+    }
+
+    public void reducirDuracionPoderes() {
+        List<Poder> poderesRestantes = new ArrayList<>();
+        for (Poder poder : poderesAplicados) {
+            if (poder.esDeDuracion()) {
+            poder.reducirDuracion();
+            }
+            if (poder.getDuracion() > 0) {
+                poderesRestantes.add(poder);  // Mantener el poder si sigue activo
+            } else {
+                poder.desactivar(this);  
+            }
+        }
+        this.poderesAplicados = poderesRestantes;  // Actualizar la lista de poderes activos
     }
 
 }

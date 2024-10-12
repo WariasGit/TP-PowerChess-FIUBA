@@ -19,20 +19,18 @@ public class Turno {
         this.turnoDuplicado = false;
 
     }
-
     public void gestionarTurno() {
-        if (turnoDuplicado) { //DUPLICAR TURNO
-            turnoDuplicado = false;
-        } else {
-            turnoActual = (turnoActual + 1) % jugadores.size();
-        }
+        Jugador actual = this.getTurno();
+        actual.reducirDuracionPoderes(); 
+        this.turnoActual = (this.turnoActual + 1) % jugadores.size();
+
 
     public Jugador getTurno() {
-        return jugadores.get(turnoActual);
+        return jugadores.get(this.turnoActual);
     }
 
     public Jugador getOponente() {
-        int oponenteIndex = (turnoActual - 1 + jugadores.size()) % jugadores.size();
+        int oponenteIndex = (this.turnoActual - 1 + jugadores.size()) % jugadores.size();
         return jugadores.get(oponenteIndex);
     }
 

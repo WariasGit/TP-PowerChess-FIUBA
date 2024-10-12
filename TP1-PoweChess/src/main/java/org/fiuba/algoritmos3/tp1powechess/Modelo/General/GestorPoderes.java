@@ -26,11 +26,41 @@ public class GestorPoderes {
         this.posicionColumnaPiezaSeleccionada = columna;
     }
 
-    public void activarDobleJuego() {System.out.println("Activando doble Juego");}
-    public void activarEscudo() {System.out.println("Activando Escudo");}
-    public void activarEvolucion() {System.out.println("Activando Evolucion");}
-    public void activarFreeze() {System.out.println("Activando Freeze");}
-    public void activarLimpieza() {System.out.println("Activando Limpieza");}
-    public void activarRobar() {System.out.println("Activando Robar");}
-    public void activarVuelo() {System.out.println("Activando Vuelo");}
+    public void getPosicionFila() {
+        return this.posicionFilaPiezaSeleccionada; 
+    }
+
+    public void getPosicionColumna() {
+        return this.posicionColumnaPiezaSeleccionada; 
+    }
+
+    
+    public void activarEscudo() {
+        try {
+            Pieza piezaSeleccionada = juego.getPiezaEnPosicion(this.getPosicionFila(), this.getPosicionColumna());
+            jugador.usarPoder(new Escudo(), piezaSeleccionada); 
+            System.out.println("Activando Escudo");
+        } catch (IOException e) {
+                throw new RuntimeException(e);
+        }
+    }
+
+    public void activarFreeze() {
+        try {
+            Pieza piezaSeleccionada = juego.getPiezaEnPosicion(this.getPosicionFila(), this.getPosicionColumna());
+            jugador.usarPoder(new Freeze(), piezaSeleccionada); 
+            System.out.println("Activando Freeze");
+        } catch (IOException e) {
+                throw new RuntimeException(e);
+        }e
+    }
+
+    public void activarVuelo() {
+        try {
+            Pieza piezaSeleccionada = juego.getPiezaEnPosicion(this.getPosicionFila(), this.getPosicionColumna());
+            jugador.usarPoder(new Vuelo(), piezaSeleccionada); 
+            System.out.println("Activando Vuelo");
+        } catch (IOException e) {
+                throw new RuntimeException(e);
+        }
 }
