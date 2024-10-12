@@ -323,6 +323,10 @@ public class Juego {
         }
     }
 
+    public Configuracion.ColoresJugadores getColorJugadorActual() {
+        return turno.getColorJugadorActual();
+    }
+
 
 
 

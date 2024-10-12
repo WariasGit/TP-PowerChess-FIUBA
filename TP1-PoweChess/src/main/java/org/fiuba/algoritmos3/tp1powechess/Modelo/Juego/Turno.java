@@ -50,4 +50,8 @@ public class Turno {
     public Boolean tieneMovimientosJugadorActual() {
         return getTurno().tieneMovimientosPosibles();
     }
+
+    public Configuracion.ColoresJugadores getColorJugadorActual() {
+        return getTurno().getColor();
+    }
 }

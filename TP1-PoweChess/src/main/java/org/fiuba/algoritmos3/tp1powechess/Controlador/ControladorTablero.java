@@ -90,38 +90,86 @@ public class ControladorTablero{
         int fila = getGridIndex(GridPane.getRowIndex(stackPane));
         int columna = getGridIndex(GridPane.getColumnIndex(stackPane));
         System.out.println("Click en: " + fila + ", " + columna);
+        // Obtener la pieza en la posición actual, si existe
         Optional<Pieza> piezaActual = juego.getPiezaActual(fila, columna);
-        if(esPrimeraSeleccion()) {
-            System.out.println("Cuenta como primer click");
-            manejarPrimerClick(piezaActual, fila, columna);
-        } else {
-            System.out.println("Cuenta como segundo click");
-            manejarSegundoClick(fila, columna);
-            quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-            limpiarSeleccion();
-            quitarMovimientosPosibles();
+        if (esPrimeraSeleccion()) {
+            // Primer click
+            if (piezaActual.isPresent()) {
+                Pieza pieza = piezaActual.get();
+                // Si el jugador está tocando una pieza del color correcto para su turno
+                if (juego.getColorJugadorActual() == pieza.getColor()) {
+                    System.out.println("Primer click en una pieza del color del jugador actual");
+                    manejarPrimerClick(pieza, fila, columna);  // Guardar selección y pintar
+                }
+                else {
+                    // Seleccionando una pieza del rival, por ejemplo para poderes
+                    System.out.println("Primer click en una pieza del color rival");
+                    aplicarColorCasillero(fila, columna);  // Pintar casillero de pieza rival
+                    guardarPosicionOrigen(fila, columna);  // Guardar la selección
+                }
+            }
+            else {
+                // Si se selecciona un casillero vacío en el primer click, no se hace nada
+                System.out.println("Primer click en casillero vacío, no se hace nada");
+            }
+        }
+        else {
+            // Segundo click
+            System.out.println("Segundo click");
+            if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+                if (piezaActual.isPresent()) {
+                    Pieza pieza = piezaActual.get();
+                    if (juego.getColorJugadorActual() == pieza.getColor()) {
+                        // Click en una nueva pieza propia, cambiar la selección
+                        System.out.println("Cambiando selección a una nueva pieza del mismo jugador");
+                        quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
+                        quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
+                        manejarPrimerClick(pieza, fila, columna);  // Cambiar selección y pintar el nuevo casillero
+                    }
+                    else {
+                        // Segundo click en pieza del rival, deseleccionar
+                        System.out.println("Click en pieza rival");
+                        manejarSegundoClick(fila, columna);  // Ejecutar movimiento
+                        quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
+                        quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
+                        limpiarSeleccion();  // No se cambia turno
+                    }
+                }
+                else {
+                    // Segundo click en un casillero vacío,
+                    manejarSegundoClick(fila, columna);  // Ejecutar movimiento
+                    quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
+                    limpiarSeleccion();  // Limpiar selección después del segundo click
+                    quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
+                }
+            }
+            else {
+                //Segundo click en la misma pieza, deseleccionar
+                quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
+                quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
+                limpiarSeleccion();  // No se cambia turno
+            }
         }
     }
 
 
-    private void manejarPrimerClick(Optional<Pieza> piezaActual ,int fila, int columna) {
-        if(piezaActual.isPresent()){
-            System.out.println("Tocaste una pieza");
-            aplicarColorCasillero(fila, columna);
-            juego.actualizarMovimientosPieza(fila, columna);
-            mostrarMovimientosPosibles(piezaActual);
-            guardarPosicionOrigen(fila, columna);    //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
-        }
+    private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
+        aplicarColorCasillero(fila, columna);
+        guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
+        juego.actualizarMovimientosPieza(fila, columna);
+        mostrarMovimientosPosibles(piezaActual);
     }
 
     private void manejarSegundoClick(int fila, int columna) {
-        boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
-        if (movimientoValido) {
-            moverPieza(fila, columna);
-            juego.actualizarMovimientosPieza(fila, columna);
-            tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
-        } else {
-            System.out.println("Movimiento invalido, se muestra la vista del error");
+        if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+            boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
+            if (movimientoValido) {
+                moverPieza(fila, columna);
+                juego.actualizarMovimientosPieza(fila, columna);
+                tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
+            } else {
+                System.out.println("Movimiento invalido, se muestra la vista del error");
+            }
         }
     }
 
@@ -155,11 +203,8 @@ public class ControladorTablero{
         vistaTablero.pintarCasilleroColorOriginal(fila, columna);
     }
 
-    private void mostrarMovimientosPosibles(Optional<Pieza> piezaActual) {
-        if(piezaActual.isPresent()){
-            Pieza pieza = piezaActual.get();
-            vistaTablero.mostrarMovimientosPosibles(pieza.getMovimientosPosibles());
-        }
+    private void mostrarMovimientosPosibles(Pieza piezaActual) {
+            vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());
     }
 
     private void quitarMovimientosPosibles() {
