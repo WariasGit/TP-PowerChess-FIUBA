@@ -124,4 +124,13 @@ public abstract class Pieza implements Movible {
     public void desactivarPoder(Poder poder) {
         poderActual = poder;
     }
+
+    public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
+        for(int[] movimiento : movimientosPosibles) {
+            if(movimiento[0] == filaFinal && movimiento[1] == columnaFinal) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

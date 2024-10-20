@@ -7,8 +7,8 @@ public class Constantes {
     public static final String RUTA_ARCHIVO_GUARDAR_PARTIDA = "src/main/resources/PartidaGuardada.txt";
     public static final String RUTA_ARCHIVO_PARTIDDA_GUARDADA = "PartidaGuardada.txt";
 
-    public static final String RUTA_MUSICA_MENU = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_menu.mp3";
-    public static final String RUTA_MUSICA_JUEGO = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_partida.mp3";
+    public static final String RUTA_MUSICA_MENU = "/sonidos/rock_menu.mp3";
+    public static final String RUTA_MUSICA_JUEGO = "/sonidos/rock_partida.mp3";
 
     public static String REY = "Rey";
     public static String REINA = "Reina";

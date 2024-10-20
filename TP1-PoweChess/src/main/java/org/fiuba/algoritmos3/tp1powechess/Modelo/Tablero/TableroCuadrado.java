@@ -3,14 +3,12 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
-
-import java.lang.constant.Constable;
 import java.util.Optional;
 import java.util.ArrayList;
 
 public class TableroCuadrado {
-    private Casillero[][] tablero;
-    static private Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
+    private final Casillero[][] tablero;
+    static private final Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
 
     //Esto es momentaneo, para ver algo
     public Casillero[][] getTablero() {
@@ -39,27 +37,23 @@ public class TableroCuadrado {
         return Optional.ofNullable(tablero[i][j].getPieza());
     }
 
-    public Pieza moverPieza(int rowInicial, int colInicial, int rowFinal, int colFinal) {
+    public Pieza moverPieza(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
         // Verificamos si las coordenadas son válidas
-        if (!esCoordenadaValida(rowInicial, colInicial)) {
-            throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
-        }
-
-        if (!esCoordenadaValida(rowFinal, colFinal)) {
+        if (!esCoordenadaValida(filaFinal, columnaFinal)) {
             throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
         }
         // Verificamos que el casillero inicial tenga una pieza
-        Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
-
+        Casillero casilleroInicial = getCasillero(filaInicial, columnaInicial);
         if (!casilleroInicial.estaOcupado()) {
             throw new IllegalArgumentException("No hay ninguna pieza en el casillero inicial.");
         }
-
         Pieza piezaAMover = casilleroInicial.getPieza();
-
-        Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
-        Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);
-
+        //Verificamos que la posicion de destino este dentro de los movimientos posibles.
+        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
+            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
+        }
+        Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
+        Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
         // Verificamos si el movimiento es válido para la pieza
 
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
@@ -193,26 +187,6 @@ public class TableroCuadrado {
         }
 
         return true;  // El camino está libre
-    }
-
-    public boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
-        int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
-        int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
-
-        int filaActual = rowInicial + incrementoFila;
-        int colActual = colInicial + incrementoColumna;
-
-        // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
-        while (filaActual != rowFinal || colActual != colFinal) {
-            if (getCasillero(filaActual, colActual).estaAmenazado()) {
-                return true;  // El camino está amenazado
-            }
-
-            filaActual += incrementoFila;
-            colActual += incrementoColumna;
-        }
-
-        return false;  // El camino no tiene amenazas
     }
 
     public void setPiezaInicial(int row, int col, Pieza pieza) {
