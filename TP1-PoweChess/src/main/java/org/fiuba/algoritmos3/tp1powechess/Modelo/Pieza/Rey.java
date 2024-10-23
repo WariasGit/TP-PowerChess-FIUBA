@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class Rey extends Pieza implements Enrocable {
     protected Casillero casilleroActual;
+    private ArrayList<int[]> movimientosAmenazadosJaque;
 
     public Rey(Configuracion.ColoresJugadores color) {
 
@@ -32,25 +33,18 @@ public class Rey extends Pieza implements Enrocable {
         this.direccionesDeMovimiento.add(new int[]{-Constantes.UNO_EN_FILA, -Constantes.UNO_EN_COLUMNA});  // Diagonal izquierda arriba
         this.direccionesDeMovimiento.add(new int[]{Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA});  // Diagonal derecha abajo
         this.direccionesDeMovimiento.add(new int[]{Constantes.UNO_EN_FILA, -Constantes.UNO_EN_COLUMNA}); // Diagonal izquierda abajo
-
         // Para el Rey, las direcciones de movimiento y de amenaza son las mismas
         direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
-
         this.estrategiaDeMovimiento = new MovimientoRey();
-    }
-
-    public String getTipoDePieza() {
-        return "Rey";
+        this.movimientosAmenazadosJaque = new ArrayList<>();
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         int difX = finX - inicioX;
         int difY = finY - inicioY;
-
         // Verificamos si la dirección está entre las permitidas para las amenazas
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
-
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 // Verificar que la distancia sea válida (<= 1 casilla para el Rey)
@@ -85,6 +79,20 @@ public class Rey extends Pieza implements Enrocable {
     }
 
     public boolean estaEnJaque(){
-        return this.casilleroActual.estaAmenazadoPorColorDistinto(String.valueOf(this.color));
+        return this.casilleroActual.estaAmenazadoPorColorDistinto(color);
     }
+
+    public void quitarMovimientoPosible(int[] movimientoPosible) {
+        this.movimientosPosibles.removeIf(movimiento ->
+                movimiento[0] == movimientoPosible[0] && movimiento[1] == movimientoPosible[1]);
+    }
+
+    public void setMovimientoAmenazadoJaque(int[] movimiento) {
+        this.movimientosAmenazadosJaque.add(movimiento);
+    }
+
+    public ArrayList<int[]> getMovimientosAmenazadosJaque() {return new ArrayList<>(this.movimientosAmenazadosJaque);}
+
+    public Coordenada2D getPosicionActual() {return this.casilleroActual.getPosicion();}
+
 }

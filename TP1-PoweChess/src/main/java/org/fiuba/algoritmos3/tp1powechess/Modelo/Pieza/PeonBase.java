@@ -7,7 +7,6 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.util.ArrayList;
 
 public abstract class PeonBase extends Pieza {
-
     public PeonBase(Configuracion.ColoresJugadores color) {
         super(color);
         this.tipoDePieza = Constantes.PEON;

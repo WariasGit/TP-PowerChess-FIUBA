@@ -59,11 +59,9 @@ public abstract class Pieza implements Movible {
     public ArrayList<Amenaza> getAmenazasGeneradas() {
         ArrayList<Amenaza> amenazas = new ArrayList<>();
         int maxDistancia = getMaxDistanciaDeAmenaza();
-
         for (int[] direccion : direccionesDeAmenaza) {
             amenazas.add(new Amenaza(this.color, direccion, maxDistancia));
         }
-
         return amenazas;
     }
 

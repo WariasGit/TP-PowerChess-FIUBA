@@ -70,6 +70,7 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
     public void handle(EventoJuego cambioDeTurnoEvent) {
         this.juego.cambiarTurno();
         this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
+        this.juego.gestionarJaque();
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {

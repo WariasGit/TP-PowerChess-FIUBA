@@ -40,6 +40,7 @@ public class Constantes {
     public static final int CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES = 4;
     public static final int MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS = 6;
 
+    public static final int INDICE_MOVIMIENTO_SIMPLE = 0;
     public static int INDICE_MOVIMIENTO_DOBLE = 1;
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;

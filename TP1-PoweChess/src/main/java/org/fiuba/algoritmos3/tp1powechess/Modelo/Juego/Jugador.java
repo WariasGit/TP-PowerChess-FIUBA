@@ -43,9 +43,9 @@ public class Jugador {
         return jaque;
     }
 
-    public void cambiarEstadoJaque() {
-        jaque = !jaque;
-    }
+    public void establecerJaque(){jaque = true;}
+
+    public void quitarJaque(){jaque = false;}
 
     public Boolean tieneMovimientosPosibles(){
         for (Pieza pieza : piezasEnJuego) {
