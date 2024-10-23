@@ -11,15 +11,17 @@ import java.util.*;
 
 public class Juego {
     private Configuracion.EstadoJuego estado;
-    private List<Jugador> jugadores;
-    private Turno turno;
-    private TableroCuadrado tablero;
+    private final List<Jugador> jugadores;
+    private final Turno turno;
+    private final TableroCuadrado tablero;
     private String ganador;
     private int contadorMovimientosParaTablas;
     private int contadorMovimientosParaChequearPosiciones;
     private int contadorMovimientosTotales;
-    private HashMap<String, Integer> historialPosiciones;
+    private final HashMap<String, Integer> historialPosiciones;
     private int piezasEnJuego;
+    private final GestorDeTablas gestorDeTablas;
+    private final GestorDeJaque gestorDeJaque;
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
@@ -32,6 +34,9 @@ public class Juego {
         contadorMovimientosTotales = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
         piezasEnJuego = Constantes.CANTIDAD_PIEZAS_INICIALES;
         historialPosiciones = new HashMap<>();
+        gestorDeTablas = new GestorDeTablas();
+        gestorDeJaque = new GestorDeJaque();
+        gestorDeJaque.setTablero(tablero);
     }
 
     public void gestionarRendicion() {
@@ -40,52 +45,23 @@ public class Juego {
     }
 
     public void establecerJaqueMate() {
-        ganador = turno.getNombreTurno();
-        estado = Configuracion.EstadoJuego.FINALIZADO;
-    }
-
-    public void establecerTablas() {
-        estado = Configuracion.EstadoJuego.TABLAS;
-        System.out.println("Tablas");
+        ganador = turno.getNombreOponente();
+        terminarPartida();
     }
 
     public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
-    public String getNombreJugadorBlancas() {
-        return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
-    }
-
-    public String getNombreJugadorNegras() {
-        return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
-    }
-
-    public String getNombreJugadorActual() {return turno.getTurno().getNombre();}
-
-    public TableroCuadrado getTablero() {return tablero;}
-
-    public ArrayList<Jugador> getJugadores() {
-        return new ArrayList<>(jugadores);
-    }
-
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         try {
             Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
-            contadorMovimientosTotales++;
-            if(piezaComida != null){
-                quitarPiezaDeJuador(piezaComida);
-                restarUnaPieza();
-                reiniciarContadorMovimientoParaTablas();
-                reiniciarContadorMovimientosParaChequearPosiciones();
-                limpiarHistorialPosiciones();
-            }else{
-                gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
-                if (contadorMovimientosTotales >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
-                    guardarEstadoTablero();
-                }
+            gestionarJaque();
+            if(turno.estaEnJaqueJugadorActual()){
+                System.out.print("Debe realizar un movimiento para salir del Jaque");
+                //Se revierte el movimiento
+                tablero.moverPieza(destinoFila, destinoColumna, origenFila, origenColumna);
+                return false;
             }
-            gestionarTablas();
-            imprimirTablero();
-            //imprimirEstadoDebug();
+            aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
             return true;
         } catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
@@ -93,41 +69,25 @@ public class Juego {
         }
     }
 
-
-
-    private void imprimirTablero() {
-        Casillero[][] casilleros = tablero.getTablero();
-        int dimension = tablero.getDimension();
-        // Imprimir los índices de las columnas
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
-        // Imprimir el tablero con bordes
-        for (int i = 0; i < dimension; i++) {
-            // Imprimir índice de la fila
-            System.out.print(i + " |");
-            for (int j = 0; j < dimension; j++) {
-                Pieza pieza = casilleros[i][j].getPieza();
-                if (pieza != null) {
-                    System.out.print(" " + pieza.getCaracterFEN() + " ");
-                } else {
-                    System.out.print(" . ");  // Espacio vacío
-                }
+    private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
+        contadorMovimientosTotales++;
+        calcularMovimientosPosiblesIniciales();
+        if(piezaComida != null){
+            quitarPiezaDeJuador(piezaComida);
+            restarUnaPieza();
+            reiniciarContadorMovimientoParaTablas();
+            reiniciarContadorMovimientosParaChequearPosiciones();
+            limpiarHistorialPosiciones();
+        }else{
+            gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
+            if (contadorMovimientosTotales >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
+                guardarEstadoTablero();
             }
-            System.out.println("| " + i);  // Cerrar el borde de la fila
         }
-        // Imprimir los índices de las columnas nuevamente
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
+        gestionarTablas();
+        imprimirTablero();
+        //imprimirEstadoDebug();
     }
-
-
-
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
         if(piezaComida.getColor() == Configuracion.ColoresJugadores.BLANCO) {
@@ -177,31 +137,16 @@ public class Juego {
 
     public void cambiarTurno() {turno.gestionarTurno();}
 
+    public void guardarPartida() {
+        String estadoTablero = tablero.estadoActualTablero();
+        GestorDeArchivos.guardarFen(estadoTablero);
+    }
 
-    /*Implemento los metodos "leerArchivoFen" y "setearPiezasDesdeFEN"
-    para cargar una partida desde un archivo de texto,la notacion de FEN
-    es una forma de almacenar el estado de una partida en caso de ser guardada*/
-
-    public static String leerArchivoFen(String rutaArchivo) throws IOException {
-        InputStream inputStream = Constantes.class.getClassLoader().getResourceAsStream(rutaArchivo);
-
-        if (inputStream == null) {
-            throw new FileNotFoundException("InputStream is null, Archivo no encontrado: " + rutaArchivo);
-        }
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            String linea = reader.readLine();
-            if (linea == null || linea.length() < 4) {
-                throw new IllegalArgumentException("La cadena FEN no es válida");
-            }
-            return linea;
-        } catch (IOException e) {
-            if (e instanceof FileNotFoundException) {
-                throw new FileNotFoundException("Archivo no encontrado: " + rutaArchivo);
-            } else {
-                throw new IOException("Error al leer el archivo: " + rutaArchivo, e);
-            }
-        }
+    public void cargarPartida(String path) throws IOException {
+        String cadenaFen = GestorDeArchivos.leerArchivoFen(path);
+        setearPiezasDesdeFEN(cadenaFen);
+        tablero.setearCasillerosReyes();
+        guardarReferenciaDeReyes();
     }
 
     public void setearPiezasDesdeFEN(String cadenaFen) {
@@ -219,10 +164,28 @@ public class Juego {
                 Pieza pieza = Configuracion.getPieza(caracter);
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
+                    Coordenada2D posicionActual = new Coordenada2D(fila, columna);
+                    pieza.setPosicion(posicionActual);
                     guardarPiezaJugador(pieza);
                 }
                 columna++;
             }
+        }
+        calcularMovimientosPosiblesIniciales();
+    }
+
+    private void calcularMovimientosPosiblesIniciales() {this.tablero.calcularMovimientosPosiblesIniciales();}
+
+    private void guardarReferenciaDeReyes(){
+        Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();
+        Optional<Pieza> reyBlancoOpcional = tablero.getReyBlancoPosicionInicial();
+        if(reyNegroOpcional.isPresent()){
+            Rey reyNegro = (Rey) reyNegroOpcional.get();
+            gestorDeJaque.setReyNegro(reyNegro);
+        }
+        if(reyBlancoOpcional.isPresent()){
+            Rey reyBlanco = (Rey) reyBlancoOpcional.get();
+            gestorDeJaque.setReyBlanco(reyBlanco);
         }
     }
 
@@ -234,101 +197,63 @@ public class Juego {
         }
     }
 
-    public void cargarPartida(String path) throws IOException {
-        String linea = leerArchivoFen(path);
-        setearPiezasDesdeFEN(linea);
-    }
-
-    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
-        return tablero.getPieza(i, j);
-    }
-
     public void actualizarMovimientosPieza(int fila, int columna) {
         tablero.actualizarMovimientosPieza(fila, columna);
     }
 
-    private Boolean jugadorActualEstaEnJaque(){
-        return turno.estaEnJaqueJugadorActual();
-    }
-
-    private Boolean jugadorActualTieneMovimientos(){
-        return turno.tieneMovimientosJugadorActual();
-    }
-
-    private void tablasPorAhogado(){
-        if(!jugadorActualTieneMovimientos() && !jugadorActualEstaEnJaque()){
-            establecerTablas();
-        }
-    }
-
-    private Boolean jugadoresTienenMaterialMinimo(){
-        boolean continuar = false;
-        for (Jugador jugador : jugadores) {
-            if(jugador.tieneMaterialSuficiente()){
-                continuar = true;
-            }
-        }
-        return continuar;
-    }
-
-    private void tablasPorMaterialInsuficiente(){
-        if(!jugadoresTienenMaterialMinimo()){
-            establecerTablas();
-        }
-    }
-
-    private void tablasPorMovimientos(){
-        if(contadorMovimientosParaTablas == Constantes.CANTIDAD_MOVIMIENTOS_PARA_TABLAS){
-            establecerTablas();
-        }
-    }
-
-    private boolean hayMovimientosRepetidos() {
-        for (Integer contador : historialPosiciones.values()) {
-            if (contador >= 3) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void tablasPorMovimientosRepetidos(){
-        if (hayMovimientosRepetidos()) {
-            establecerTablas();
-        }
-    }
-
-    public void gestionarTablas() {
-        tablasPorAhogado();
+    private void gestionarTablas() {
+        Jugador jugadorActual = turno.getTurno();
+        gestorDeTablas.tablasPorAhogado(jugadorActual);
         if(piezasEnJuego <= Constantes.MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS) {
-            tablasPorMaterialInsuficiente();
+            gestorDeTablas.tablasPorMaterialInsuficiente(jugadores);
         }
-        tablasPorMovimientos();
+        gestorDeTablas.tablasPorMovimientos(contadorMovimientosParaTablas);
         if(contadorMovimientosParaChequearPosiciones >= Constantes.CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES) {
-            tablasPorMovimientosRepetidos();
+            gestorDeTablas.tablasPorMovimientosRepetidos(historialPosiciones);
+        }
+        if(gestorDeTablas.haytablas()){
+            this.estado = Configuracion.EstadoJuego.TABLAS;
         }
     }
 
-    public void guardarPartida() throws IOException {
-        String estadoTablero = tablero.estadoActualTablero();
-        try {
-            FileWriter escritorArchivo = new FileWriter(Constantes.RUTA_ARCHIVO_GUARDAR_PARTIDA);
-            BufferedWriter bufferEscritor = new BufferedWriter(escritorArchivo);
-            bufferEscritor.write(estadoTablero);
-            bufferEscritor.close();
-            System.out.println("Archivo guardado exitosamente.");
-        } catch (IOException e) {
-            System.out.println("Ocurrió un error al escribir el archivo.");
-            e.printStackTrace();
+    public void gestionarJaque(){
+        gestorDeJaque.restarMovimientosPosiblesALosReyes();
+        Jugador jugadorActual = turno.getTurno();
+        Configuracion.ColoresJugadores colorJugadorActual = turno.getColorJugadorActual();
+        if(gestorDeJaque.jugadorActualEnJaque(colorJugadorActual)){
+            turno.ponerEnJaqueJugadorActual();
+            System.out.print("Jaque al jugador " + turno.getNombreTurno());
+        }
+        else{
+            turno.quitarJaqueJugadorActual();
+        }
+        if(gestorDeJaque.mateJugadorActual(jugadorActual)){
+            establecerJaqueMate();
+            System.out.print("Jaque Mate");
         }
     }
 
-    public Configuracion.ColoresJugadores getColorJugadorActual() {
-        return turno.getColorJugadorActual();
+    public String getNombreJugadorBlancas() {
+        return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
     }
 
+    public String getNombreJugadorNegras() {
+        return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
+    }
 
+    public String getNombreJugadorActual() {return turno.getNombreTurno();}
 
+    public TableroCuadrado getTablero() {return tablero;}
+
+    public ArrayList<Jugador> getJugadores() {
+        return new ArrayList<>(jugadores);
+    }
+
+    public Configuracion.ColoresJugadores getColorJugadorActual() {return turno.getColorJugadorActual();}
+
+    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
+        return tablero.getPieza(i, j);
+    }
 
     public void imprimirEstadoDebug() {
         System.out.println("----- Estado de Debug -----");
@@ -340,5 +265,35 @@ public class Juego {
         System.out.println("---------------------------");
     }
 
+    private void imprimirTablero() {
+        Casillero[][] casilleros = tablero.getTablero();
+        int dimension = tablero.getDimension();
+        // Imprimir los índices de las columnas
+        System.out.print("   ");
+        for (int col = 0; col < dimension; col++) {
+            System.out.print(col + "  ");
+        }
+        System.out.println();
+        // Imprimir el tablero con bordes
+        for (int i = 0; i < dimension; i++) {
+            // Imprimir índice de la fila
+            System.out.print(i + " |");
+            for (int j = 0; j < dimension; j++) {
+                Pieza pieza = casilleros[i][j].getPieza();
+                if (pieza != null) {
+                    System.out.print(" " + pieza.getCaracterFEN() + " ");
+                } else {
+                    System.out.print(" . ");  // Espacio vacío
+                }
+            }
+            System.out.println("| " + i);  // Cerrar el borde de la fila
+        }
+        // Imprimir los índices de las columnas nuevamente
+        System.out.print("   ");
+        for (int col = 0; col < dimension; col++) {
+            System.out.print(col + "  ");
+        }
+        System.out.println();
+    }
 }
 

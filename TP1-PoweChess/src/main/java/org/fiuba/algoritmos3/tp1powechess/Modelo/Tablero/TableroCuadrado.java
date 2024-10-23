@@ -3,14 +3,12 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
-
-import java.lang.constant.Constable;
 import java.util.Optional;
 import java.util.ArrayList;
 
 public class TableroCuadrado {
-    private Casillero[][] tablero;
-    static private Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
+    private final Casillero[][] tablero;
+    static private final Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
 
     //Esto es momentaneo, para ver algo
     public Casillero[][] getTablero() {
@@ -26,7 +24,8 @@ public class TableroCuadrado {
         for (int row = 0; row < dimensiones; row++) {
             for (int col = 0; col < dimensiones; col++) {
                 Configuracion.ColoresJugadores color = (row + col) % 2 == 0 ? Configuracion.ColoresJugadores.BLANCO : Configuracion.ColoresJugadores.NEGRO;
-                  tablero[row][col] = new Casillero(color);
+                Coordenada2D posicion = new Coordenada2D(row, col);
+                  tablero[row][col] = new Casillero(color, posicion);
             }
         }
     }
@@ -39,29 +38,21 @@ public class TableroCuadrado {
         return Optional.ofNullable(tablero[i][j].getPieza());
     }
 
-    public Pieza moverPieza(int rowInicial, int colInicial, int rowFinal, int colFinal) {
-        // Verificamos si las coordenadas son válidas
-        if (!esCoordenadaValida(rowInicial, colInicial)) {
-            throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
-        }
-        if (!esCoordenadaValida(rowFinal, colFinal)) {
-            throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
-        }
-        // Verificamos que el casillero inicial tenga una pieza
-        Casillero casilleroInicial = getCasillero(rowInicial, colInicial);
-
-        if (!casilleroInicial.estaOcupado()) {
-            throw new IllegalArgumentException("No hay ninguna pieza en el casillero inicial.");
-        }
-
+    public Pieza moverPieza(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
+        Casillero casilleroInicial = getCasillero(filaInicial, columnaInicial);
         Pieza piezaAMover = casilleroInicial.getPieza();
-
+        //Verificamos que la posicion de destino este dentro de los movimientos posibles.
+        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
+            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
+        }
         if(piezaAMover.tieneFreeze()) {
             throw new IllegalArgumentException("La pieza se encuentra congelada por el Poder de Freeze.");
         }
+        Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
+        Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
+        piezaAMover.setPosicion(coordenadaFinal);
 
-        Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
-        Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);
+
 
         // Verificamos si el movimiento es válido para la pieza
 
@@ -121,7 +112,7 @@ public class TableroCuadrado {
         return piezaARemover;
     }
 
-    private boolean esCoordenadaValida(int row, int col) {
+    public boolean esCoordenadaValida(int row, int col) {
         return row >= 0 && row < dimensiones && col >= 0 && col < dimensiones;
     }
 
@@ -198,26 +189,6 @@ public class TableroCuadrado {
         return true;  // El camino está libre
     }
 
-    public boolean caminoEstaAmenazado(int rowInicial, int colInicial, int rowFinal, int colFinal) {
-        int incrementoFila = Integer.compare(rowFinal, rowInicial);  // -1, 0, 1 según la dirección
-        int incrementoColumna = Integer.compare(colFinal, colInicial);  // -1, 0, 1 según la dirección
-
-        int filaActual = rowInicial + incrementoFila;
-        int colActual = colInicial + incrementoColumna;
-
-        // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
-        while (filaActual != rowFinal || colActual != colFinal) {
-            if (getCasillero(filaActual, colActual).estaAmenazado()) {
-                return true;  // El camino está amenazado
-            }
-
-            filaActual += incrementoFila;
-            colActual += incrementoColumna;
-        }
-
-        return false;  // El camino no tiene amenazas
-    }
-
     public void setPiezaInicial(int row, int col, Pieza pieza) {
         tablero[row][col].setPieza(pieza);
     }
@@ -228,6 +199,14 @@ public class TableroCuadrado {
 
     public boolean casilleroLibre(Integer i, Integer j) {
         return getPieza(i,j).isEmpty();
+    }
+
+    public void calcularMovimientosPosiblesIniciales(){
+        for(int fila = 0; fila < dimensiones; fila++){
+            for(int columna = 0; columna < dimensiones; columna++){
+                actualizarMovimientosPieza(fila, columna);
+            }
+        }
     }
 
     public void actualizarMovimientosPieza(int fila, int columna) {
@@ -323,6 +302,51 @@ public class TableroCuadrado {
             estado.append("/");
         }
         return estado.toString();
+    }
+
+    public boolean puedoMoverUnPeonAlCasillero(int filaActual, int columnaActual) {
+        System.out.println("Estoy verificando si hay peones debajo de: " + filaActual + ", " + columnaActual);
+        // Recorrer los dos casilleros inmediatamente debajo
+        for (int i = 1; i <= 2; i++) {
+            if(esCoordenadaValida(filaActual + i, columnaActual)){
+                Casillero casilleroDebajo = getCasillero(filaActual + i, columnaActual);
+                // Verificamos si el casillero contiene un peón
+                if (casilleroDebajo.estaOcupado()) {
+                    if(casilleroDebajo.hayUnPeon()){
+                        Pieza peon = casilleroDebajo.getPieza();
+                        // Si el peón puede moverse al casillero actual, retorna true
+                        System.out.println("El peon tiene esta cantidad de movimientos: " + peon.getMovimientosPosibles().size());
+                        if (peon.puedeMoverseA(filaActual, columnaActual)) {
+                            System.out.println("Se puede salvar el jaque por algun peon");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        // Si ningún peón puede moverse al casillero, retorna false
+        return false;
+    }
+
+    public Optional<Pieza> getReyNegroPosicionInicial() {
+        return getPieza(Configuracion.PosicionInicialReyes.FILA_REY_NEGRO, Configuracion.PosicionInicialReyes.COLUMNA_REY_NEGRO);
+    }
+
+    public Optional<Pieza> getReyBlancoPosicionInicial() {
+        return getPieza(Configuracion.PosicionInicialReyes.FILA_REY_BLANCO, Configuracion.PosicionInicialReyes.COLUMNA_REY_BLANCO);
+    }
+
+    public void setearCasillerosReyes(){
+        Optional<Pieza> reyNegroOpcional = getReyNegroPosicionInicial();
+        Optional<Pieza> reyBlancoOpcional = getReyBlancoPosicionInicial();
+        if (reyNegroOpcional.isPresent() && reyBlancoOpcional.isPresent()) {
+            Rey reyNegro = (Rey) reyNegroOpcional.get();
+            Rey reyBlanco = (Rey) reyBlancoOpcional.get();
+            Casillero casilleroReyNegro = getCasillero(Configuracion.PosicionInicialReyes.FILA_REY_NEGRO, Configuracion.PosicionInicialReyes.COLUMNA_REY_NEGRO);
+            Casillero casilleroReyBlanco = getCasillero(Configuracion.PosicionInicialReyes.FILA_REY_BLANCO, Configuracion.PosicionInicialReyes.COLUMNA_REY_BLANCO);
+            reyNegro.actualizarCasilleroActual(casilleroReyNegro);
+            reyBlanco.actualizarCasilleroActual(casilleroReyBlanco);
+        }
     }
 }
 

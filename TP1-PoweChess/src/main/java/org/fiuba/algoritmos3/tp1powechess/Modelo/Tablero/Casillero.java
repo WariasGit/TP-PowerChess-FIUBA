@@ -3,16 +3,21 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Estado.*;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Casillero {
     private Pieza pieza;
     private Configuracion.ColoresJugadores color;
     private EstadoDeOcupacionCasillero estadoDeOcupacionCasillero;
     private GestorDeAmenazas gestorDeAmenazas;
+    private Coordenada2D posicion;
 
-    public Casillero(Configuracion.ColoresJugadores color) {
+    public Casillero(Configuracion.ColoresJugadores color, Coordenada2D posicion) {
         this.color = color;
+        this.posicion = posicion;
         this.pieza = null;
         this.estadoDeOcupacionCasillero = new EstadoDesocupado();
         this.gestorDeAmenazas = new GestorDeAmenazas();
@@ -21,6 +26,8 @@ public class Casillero {
     public Configuracion.ColoresJugadores getColor() {
         return color;
     }
+
+    public Coordenada2D getPosicion() {return posicion;}
 
     public EstadoDeOcupacionCasillero getEstadoCasillero() {
         return estadoDeOcupacionCasillero;
@@ -76,12 +83,21 @@ public class Casillero {
         return this.gestorDeAmenazas.tieneAlMenosUnaAmenaza();
     }
 
-    public boolean estaAmenazadoPorColorDistinto(String color) {
+    public ArrayList<Amenaza> getAmenazasJaque(Configuracion.ColoresJugadores color){
+        return this.gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
+    }
+
+    public boolean estaAmenazadoPorColorDistinto(Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasDistintoColor = gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
         return !amenazasDistintoColor.isEmpty();
     }
 
-    public boolean estaActivamenteAmenazadoPorColorDistinto(String color) {
+    public boolean estaAmenazadoPorMismoColor(Configuracion.ColoresJugadores color) {
+        ArrayList<Amenaza> amenazasMiscoColor = gestorDeAmenazas.obtenerAmenazasTotalesMismoColor(color);
+        return !amenazasMiscoColor.isEmpty();
+    }
+
+    public boolean estaActivamenteAmenazadoPorColorDistinto(Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasActivasDistintoColor = gestorDeAmenazas.obtenerAmenazasActivasDistintoColor(color);
         return !amenazasActivasDistintoColor.isEmpty();
     }
@@ -98,27 +114,27 @@ public class Casillero {
         return this.gestorDeAmenazas.getAmenazas();
     }
 
-    public ArrayList<Amenaza> getAmenazasActivasDistintoColor(String colorAmenaza){
+    public ArrayList<Amenaza> getAmenazasActivasDistintoColor(Configuracion.ColoresJugadores colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasActivasDistintoColor(colorAmenaza);
     }
 
-    public ArrayList<Amenaza> getAmenazasBloqueadasDistintoColor(String colorAmenaza){
+    public ArrayList<Amenaza> getAmenazasBloqueadasDistintoColor(Configuracion.ColoresJugadores colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasBloqueadasDistintoColor(colorAmenaza);
     }
 
-    public ArrayList<Amenaza> getAmenazasDistintoColor(String colorAmenaza){
+    public ArrayList<Amenaza> getAmenazasDistintoColor(Configuracion.ColoresJugadores colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(colorAmenaza);
     }
 
-    public ArrayList<Amenaza> getAmenazasActivasMismoColor(String colorAmenaza){
+    public ArrayList<Amenaza> getAmenazasActivasMismoColor(Configuracion.ColoresJugadores colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasActivasPorColor(colorAmenaza);
     }
 
-    public ArrayList<Amenaza> getAmenazasBloqueadasMismoColor(String colorAmenaza){
+    public ArrayList<Amenaza> getAmenazasBloqueadasMismoColor(Configuracion.ColoresJugadores colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasBloqueadasPorColor(colorAmenaza);
     }
 
-    public ArrayList<Amenaza> getAmenazasMismoColor(String colorAmenaza){
+    public ArrayList<Amenaza> getAmenazasMismoColor(Configuracion.ColoresJugadores colorAmenaza){
         return this.gestorDeAmenazas.obtenerAmenazasTotalesPorColor(colorAmenaza);
     }
 
@@ -129,6 +145,8 @@ public class Casillero {
     public void bloquearAmenazasQueSeExtiendenMasDeUnCasillero() {
         gestorDeAmenazas.moverAmenazasActivasAmasDeUnCasilleroABloqueadas();
     }
+
+    public boolean hayUnPeon(){return Objects.equals(this.pieza.getTipoDePieza(), Constantes.PEON);}
 
     public void desbloquearAmenazasBloqueadas() {
         gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();

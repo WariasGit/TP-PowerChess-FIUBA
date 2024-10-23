@@ -66,7 +66,7 @@ public class Caballo extends Pieza {
 
         for (int[] direccion : this.direccionesDeAmenaza) {
             // Crear la amenaza en la dirección dada
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
 
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {

@@ -43,14 +43,27 @@ public class Jugador {
         return jaque;
     }
 
-    public void cambiarEstadoJaque() {
-        jaque = !jaque;
-    }
+    public void establecerJaque(){jaque = true;}
+
+    public void quitarJaque(){jaque = false;}
 
     public Boolean tieneMovimientosPosibles(){
         for (Pieza pieza : piezasEnJuego) {
             if (pieza.tieneMovimientosPosibles()) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean puedeOcuparEsteCasillero(int filaNueva, int columnaNueva) {
+        for (Pieza pieza : piezasEnJuego) {
+            ArrayList<int[]> posicionesPosibles = pieza.getMovimientosPosibles();
+            for (int[] posicion : posicionesPosibles) {
+                if(posicion[0] == filaNueva && posicion[1] == columnaNueva) {
+                    System.out.println("Esta posicion puede ser defendida por el jugador actual: " + filaNueva + ", " + columnaNueva);
+                    return true;
+                }
             }
         }
         return false;
@@ -69,7 +82,6 @@ public class Jugador {
     }
 
     public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
-
 }
 
 

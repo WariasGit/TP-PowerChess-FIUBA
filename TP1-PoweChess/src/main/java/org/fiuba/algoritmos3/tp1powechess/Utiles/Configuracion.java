@@ -30,6 +30,13 @@ public class Configuracion {
         VUELO
     }
 
+    public static class PosicionInicialReyes{
+        public static final int FILA_REY_NEGRO = 0;
+        public static final int COLUMNA_REY_NEGRO = 4;
+        public static final int FILA_REY_BLANCO = 7;
+        public static final int COLUMNA_REY_BLANCO = 4;
+    }
+
     public enum CategoriaPoder {
         DURACION,
         ACCION,

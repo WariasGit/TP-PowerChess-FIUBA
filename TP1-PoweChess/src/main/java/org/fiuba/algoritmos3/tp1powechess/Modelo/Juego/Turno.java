@@ -40,11 +40,17 @@ public class Turno {
     public ArrayList<Pieza> getPiezasJugadorActual() {
         return getTurno().getPiezasEnJuego();
     }
+
     public Boolean estaEnJaqueJugadorActual() {
         return getTurno().estaEnJaque();
     }
-    public void cambiarEstadoJugadorActual() {
-        getTurno().cambiarEstadoJaque();
+
+    public void ponerEnJaqueJugadorActual() {
+        getTurno().establecerJaque();
+    }
+
+    public void quitarJaqueJugadorActual() {
+        getTurno().quitarJaque();
     }
 
     public Boolean tieneMovimientosJugadorActual() {

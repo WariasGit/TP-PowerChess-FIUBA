@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public abstract class Pieza implements Movible {
     protected Configuracion.ColoresJugadores color;
+    protected Coordenada2D posicion;
     protected boolean seHaMovido;
     protected int maxDistanciaDeAmenaza;
     protected EstrategiaDeMovimiento estrategiaDeMovimiento;
@@ -37,9 +38,9 @@ public abstract class Pieza implements Movible {
         return color;
     }
 
-    public boolean seHaMovido() {
-        return seHaMovido;
-    }
+    public boolean seHaMovido() {return seHaMovido;}
+
+    public void setPosicion(Coordenada2D posicion) {this.posicion = posicion;}
 
     public void marcarComoMovida() {
         this.seHaMovido = true;
@@ -60,11 +61,9 @@ public abstract class Pieza implements Movible {
     public ArrayList<Amenaza> getAmenazasGeneradas() {
         ArrayList<Amenaza> amenazas = new ArrayList<>();
         int maxDistancia = getMaxDistanciaDeAmenaza();
-
         for (int[] direccion : direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(this.color, direccion, maxDistancia));
+            amenazas.add(new Amenaza(this.color, direccion, maxDistancia, posicion));
         }
-
         return amenazas;
     }
 
@@ -113,10 +112,6 @@ public abstract class Pieza implements Movible {
         return caracterFEN;
     }
 
-    public void setMovimientoDoble(boolean valor) {
-        movimientoDoble = valor;
-    }
-
     public void aplicarPoder(Poder poder) {
         poderActual = poder;
     }
@@ -128,12 +123,20 @@ public abstract class Pieza implements Movible {
     public boolean tieneFreeze() {
         return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE;
     }
-
     public boolean tieneEscudo() {
         return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO;
     }
 
     public boolean tieneVuelo() {
         return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.VUELO;
+    }
+
+    public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
+        for(int[] movimiento : movimientosPosibles) {
+            if(movimiento[0] == filaFinal && movimiento[1] == columnaFinal) {
+                return true;
+            }
+        }
+        return false;
     }
 }

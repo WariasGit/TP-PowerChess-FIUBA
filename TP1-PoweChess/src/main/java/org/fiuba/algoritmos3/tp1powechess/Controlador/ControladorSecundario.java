@@ -30,13 +30,13 @@ public class ControladorSecundario {
         cargarPoderes();
     }
     private void cargarPoderes(){
-        System.out.println("Cargando poderes");
+        //System.out.println("Cargando poderes");
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
         cargarPoderesNegras(JugadoresActuales.get(Configuracion.Jugadores.NEGRAS));
     }
 
     private void cargarPoderesBlancas(Jugador jugador) {
-        System.out.println("Cargando blancas");
+        //System.out.println("Cargando blancas");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
             botonPoder.setOnAction(this::gestorPoderes);
@@ -45,7 +45,7 @@ public class ControladorSecundario {
     }
 
     private void cargarPoderesNegras(Jugador jugador) {
-        System.out.println("Cargando negras");
+        //System.out.println("Cargando negras");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
             botonPoder.setOnAction(this::gestorPoderes);

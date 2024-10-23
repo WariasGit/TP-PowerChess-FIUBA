@@ -7,7 +7,6 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.util.ArrayList;
 
 public abstract class PeonBase extends Pieza {
-
     public PeonBase(Configuracion.ColoresJugadores color) {
         super(color);
         this.tipoDePieza = Constantes.PEON;
@@ -23,7 +22,7 @@ public abstract class PeonBase extends Pieza {
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 return true;
             }

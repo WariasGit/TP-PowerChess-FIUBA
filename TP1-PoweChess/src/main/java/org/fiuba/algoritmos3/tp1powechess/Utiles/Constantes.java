@@ -7,8 +7,8 @@ public class Constantes {
     public static final String RUTA_ARCHIVO_GUARDAR_PARTIDA = "src/main/resources/PartidaGuardada.txt";
     public static final String RUTA_ARCHIVO_PARTIDDA_GUARDADA = "PartidaGuardada.txt";
 
-    public static final String RUTA_MUSICA_MENU = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_menu.mp3";
-    public static final String RUTA_MUSICA_JUEGO = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_partida.mp3";
+    public static final String RUTA_MUSICA_MENU = "/sonidos/rock_menu.mp3";
+    public static final String RUTA_MUSICA_JUEGO = "/sonidos/rock_partida.mp3";
 
     public static String REY = "Rey";
     public static String REINA = "Reina";
@@ -40,6 +40,7 @@ public class Constantes {
     public static final int CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES = 4;
     public static final int MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS = 6;
 
+    public static final int INDICE_MOVIMIENTO_SIMPLE = 0;
     public static int INDICE_MOVIMIENTO_DOBLE = 1;
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;

@@ -3,7 +3,7 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.General;
 import javafx.event.EventHandler;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
-
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 /**
  * Esta clase maneja los poderes en el juego de PowerChess.
  * Utiliza expresiones lambda para gestionar eventos de manera concisa y legible.
@@ -27,7 +27,10 @@ public class GestorPoderes {
     }
 
     public void activarDobleJuego() {System.out.println("Activando doble Juego");}
-    public void activarEscudo() {System.out.println("Activando Escudo");}
+    public void activarEscudo() {juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
+        System.out.println("Activando Escudo");
+
+    }
     public void activarEvolucion() {System.out.println("Activando Evolucion");}
     public void activarFreeze() {System.out.println("Activando Freeze");}
     public void activarLimpieza() {System.out.println("Activando Limpieza");}

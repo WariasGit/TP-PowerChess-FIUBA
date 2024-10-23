@@ -1,16 +1,19 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza;
 
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Amenaza {
     private Configuracion.ColoresJugadores color;
     private int[] direccion;
     private int cantidadCasilleros;
+    private Coordenada2D posicionOrigenAmenaza;
 
-    public Amenaza(Configuracion.ColoresJugadores color, int[] direccion, int cantidadCasilleros) {
+    public Amenaza(Configuracion.ColoresJugadores color, int[] direccion, int cantidadCasilleros, Coordenada2D posicionOrigenAmenaza) {
         this.color = color;
         this.direccion = direccion;
         this.cantidadCasilleros = cantidadCasilleros;
+        this.posicionOrigenAmenaza = posicionOrigenAmenaza;
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -24,6 +27,8 @@ public class Amenaza {
     public int getCantidadCasilleros() {
         return cantidadCasilleros;
     }
+
+    public Coordenada2D getPosicion() {return posicionOrigenAmenaza;}
 
     public boolean coordenadasEnDireccionAmenazada(int inicioX, int inicioY, int casillaX, int casillaY) {
         // Calcular las diferencias en las coordenadas
@@ -42,7 +47,7 @@ public class Amenaza {
         return false; // Si la dirección no es válida
     }
 
-    public boolean esDeColor(String color) {
+    public boolean esDeColor(Configuracion.ColoresJugadores color) {
         return color.equals(this.color);
     }
 
@@ -64,5 +69,4 @@ public class Amenaza {
     public boolean seExtiendeMenosOIgualA(int numeroDeCasilleros) {
         return this.cantidadCasilleros <= numeroDeCasilleros;
     }
-
 }

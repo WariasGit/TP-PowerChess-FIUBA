@@ -29,8 +29,6 @@ public abstract class Poder {
 
     public abstract Configuracion.TipoPoder getTipo();
 
-
-
     public boolean esDeDuracion() {
         return this.categoria == Configuracion.CategoriaPoder.DURACION;
     }
