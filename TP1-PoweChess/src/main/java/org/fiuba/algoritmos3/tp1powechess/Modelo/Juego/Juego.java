@@ -323,6 +323,11 @@ public class Juego {
         }
     }
 
+    public Configuracion.ColoresJugadores getColorJugadorActual() {
+        return turno.getColorJugadorActual();
+    }
+
+
 
 
     public void imprimirEstadoDebug() {
@@ -334,8 +339,6 @@ public class Juego {
         System.out.println("Piezas en juego: " + piezasEnJuego);
         System.out.println("---------------------------");
     }
-
-    public void seleccionarPoder(Pieza pieza, poder Poder )
 
 }
 

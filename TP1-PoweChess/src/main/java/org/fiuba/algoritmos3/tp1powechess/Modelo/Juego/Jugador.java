@@ -3,21 +3,31 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
-
-import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Jugador {
     private Configuracion.ColoresJugadores color;
+    private Boolean jaque;
     private String nombre;
-    private Configuracion.EstadoJugador estado;
-    private List<Pieza> piezasEnJuego;
-    private List<Pieza> piezasPerdidas;
-    private ArrayList<Integer> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
-    private List<Poder> poderesDisponibles;
-    private List<Poder> poderesActivos; 
+    ArrayList<Pieza> piezasEnJuego;
+    private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
+
+
+    public Jugador(Configuracion.ColoresJugadores color, String nombre) {
+        this.color = color;
+        jaque = false;
+        this.nombre = nombre;
+        piezasEnJuego = new ArrayList<>();
+        cargarPoderes();
+    }
+
+    private void cargarPoderes() {
+        listaPoderes = new ArrayList<>();
+        listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
+        listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
+        listaPoderes.add(new Vuelo());
+    }
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
 
@@ -35,15 +45,6 @@ public class Jugador {
 
     public void cambiarEstadoJaque() {
         jaque = !jaque;
-    }
-
-    public Rey getRey() {
-        for (Pieza pieza : piezasEnJuego) {
-            if (pieza instanceof Rey) {
-                return (Rey) pieza;
-            }
-        }
-        return null;
     }
 
     public Boolean tieneMovimientosPosibles(){
@@ -67,55 +68,8 @@ public class Jugador {
         return valorTotal >= Configuracion.ValorPiezas.VALOR_MINIMO_PIEZAS;
     }
 
-    public ArrayList<Integer> getListaPoderes() {return new ArrayList<>(listaPoderes);}
-
-    public void usarPoder(Poder poder, Pieza pieza) {
-        if (poderesDisponibles.contains(poder) && !pieza.esRey()) {
-            poder.aplicar(pieza);
-        }
-        if (!poder.esDeDuracion()) {
-            poderesDisponibles.remove(poder); 
-        } else {
-            poder.reducirDuracion() 
-        }
-        }
-
-    public void agregarPoder(Poder poder) {
-        if (!poderesDisponibles.contains(poder)) {
-            poderesDisponibles.add(poder);
-        }
-    }
-
-    public List<Poder> getPoderesDisponibles() {
-        return this.poderesDisponibles;
-    }
-    public List<Poder> getPoderesActivos() {
-        return this.poderesActivos;
-    }
-
-    private void inicializarPoderes() {
-        poderesDisponibles.add(new Freeze(3));
-        poderesDisponibles.add(new Escudo(3));
-        poderesDisponibles.add(new Vuelo(1));
-    }
-
-
-    public void reducirDuracionPoderes() {
-        List<Poder> poderesRestantes = new ArrayList<>();
-        for (Poder poder : poderesAplicados) {
-            if (poder.esDeDuracion()) {
-            poder.reducirDuracion();
-            }
-            if (poder.getDuracion() > 0) {
-                poderesRestantes.add(poder);  
-            } else {
-                poder.desactivar(this);  
-            }
-        }
-        this.poderesAplicados = poderesRestantes;  
-    }
+    public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
 
 }
-
 
 

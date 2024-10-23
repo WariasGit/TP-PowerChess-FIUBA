@@ -32,14 +32,6 @@ public class Reina extends Pieza {
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
     }
 
-    public boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
-
-        // Verificamos si la dirección está entre las permitidas
-        return esDireccionDeMovimientoValida(difX, difY);
-    }
-
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
             Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
@@ -51,7 +43,7 @@ public class Reina extends Pieza {
     }
 
     // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    private boolean esDireccionDeMovimientoValida(int difX, int difY) {
+    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
         for (int[] direccion : direccionesDeMovimiento) {
             if ((direccion[0] == 0 && difX == 0 && difY * direccion[1] > 0) ||  // Movimiento vertical
                     (direccion[1] == 0 && difY == 0 && difX * direccion[0] > 0) ||  // Movimiento horizontal

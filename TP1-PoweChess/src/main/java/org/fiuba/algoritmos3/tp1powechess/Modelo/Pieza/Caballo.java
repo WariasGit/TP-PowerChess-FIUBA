@@ -78,5 +78,4 @@ public class Caballo extends Pieza {
         }
         return false;
     }
-
 }
