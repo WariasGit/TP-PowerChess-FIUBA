@@ -31,6 +31,8 @@ public abstract class Pieza implements Movible {
         this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
         this.seHaMovido = false;
+        this.poderesAplicados = new ArrayList<>();
+
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -54,6 +56,19 @@ public abstract class Pieza implements Movible {
     };
 
     public abstract boolean esDireccionDeMovimientoValida(int difX, int difY);
+    public boolean esDeColor(String color) {
+        return this.color.equals(color);
+    }
+
+    public void setEstrategiaEnroque(Enrocable enroque) {
+        this.tipoDeEnroque = enroque;
+    }
+
+    public boolean puedeEnrocar() {
+        return tipoDeEnroque.puedeEnrocar();
+    }
+
+    public abstract boolean esMovimientoValido(int inicioX, int inicioY, int finX, int finY);
 
     public abstract boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY);
 
@@ -136,4 +151,20 @@ public abstract class Pieza implements Movible {
     public boolean tieneVuelo() {
         return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.VUELO;
     }
+
+    public void agregarMovimiento(int difX, int difY) {
+        direccionesDeMovimiento.add(new int[]{difX, difY});
+    }
+
+    public void eliminarMovimiento(int difX, int difY) {
+        direccionesDeMovimiento.remove(new int[]{difX, difY});
+    }
+
+    public boolean esRey() {
+        if (Objects.equals(this.getTipoDePieza(), "Rey")) {
+            return true;
+        }
+        return false;
+    }
+
 }

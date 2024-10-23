@@ -10,22 +10,27 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class Turno {
     private List<Jugador> jugadores;
     private int turnoActual;
+    private boolean turnoDuplicado;
+
 
     public Turno(List<Jugador> jugadores) {
         this.jugadores = jugadores;
         this.turnoActual = Configuracion.Jugadores.BLANCAS;
-    }
+        this.turnoDuplicado = false;
 
-    public void gestionarTurno() {
-        turnoActual = (turnoActual + 1) % jugadores.size();
     }
+    public void gestionarTurno() {
+        Jugador actual = this.getTurno();
+        actual.reducirDuracionPoderes(); 
+        this.turnoActual = (this.turnoActual + 1) % jugadores.size();
+
 
     public Jugador getTurno() {
-        return jugadores.get(turnoActual);
+        return jugadores.get(this.turnoActual);
     }
 
     public Jugador getOponente() {
-        int oponenteIndex = (turnoActual - 1 + jugadores.size()) % jugadores.size();
+        int oponenteIndex = (this.turnoActual - 1 + jugadores.size()) % jugadores.size();
         return jugadores.get(oponenteIndex);
     }
 
@@ -50,8 +55,8 @@ public class Turno {
     public Boolean tieneMovimientosJugadorActual() {
         return getTurno().tieneMovimientosPosibles();
     }
-
-    public Configuracion.ColoresJugadores getColorJugadorActual() {
-        return getTurno().getColor();
+}
+    public void duplicarTurno() {
+        turnoDuplicado = true;
     }
 }

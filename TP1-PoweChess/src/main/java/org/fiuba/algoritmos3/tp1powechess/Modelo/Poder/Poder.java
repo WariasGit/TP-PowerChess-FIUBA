@@ -66,4 +66,8 @@ public abstract class Poder {
     public String getNombre() {
         return this.nombre;
     }
+
+    public void aplicar(Pieza pieza) {
+        pieza.aplicarPoder(this); 
+    }
 }
