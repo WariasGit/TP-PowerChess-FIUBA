@@ -24,7 +24,8 @@ public class TableroCuadrado {
         for (int row = 0; row < dimensiones; row++) {
             for (int col = 0; col < dimensiones; col++) {
                 Configuracion.ColoresJugadores color = (row + col) % 2 == 0 ? Configuracion.ColoresJugadores.BLANCO : Configuracion.ColoresJugadores.NEGRO;
-                  tablero[row][col] = new Casillero(color);
+                Coordenada2D posicion = new Coordenada2D(row, col);
+                  tablero[row][col] = new Casillero(color, posicion);
             }
         }
     }
@@ -294,6 +295,27 @@ public class TableroCuadrado {
             estado.append("/");
         }
         return estado.toString();
+    }
+
+    public Optional<Pieza> getReyNegroPosicionInicial() {
+        return getPieza(Configuracion.PosicionInicialReyes.FILA_REY_NEGRO, Configuracion.PosicionInicialReyes.COLUMNA_REY_NEGRO);
+    }
+
+    public Optional<Pieza> getReyBlancoPosicionInicial() {
+        return getPieza(Configuracion.PosicionInicialReyes.FILA_REY_BLANCO, Configuracion.PosicionInicialReyes.COLUMNA_REY_BLANCO);
+    }
+
+    public void setearCasillerosReyes(){
+        Optional<Pieza> reyNegroOpcional = getReyNegroPosicionInicial();
+        Optional<Pieza> reyBlancoOpcional = getReyBlancoPosicionInicial();
+        if (reyNegroOpcional.isPresent() && reyBlancoOpcional.isPresent()) {
+            Rey reyNegro = (Rey) reyNegroOpcional.get();
+            Rey reyBlanco = (Rey) reyBlancoOpcional.get();
+            Casillero casilleroReyNegro = getCasillero(Configuracion.PosicionInicialReyes.FILA_REY_NEGRO, Configuracion.PosicionInicialReyes.COLUMNA_REY_NEGRO);
+            Casillero casilleroReyBlanco = getCasillero(Configuracion.PosicionInicialReyes.FILA_REY_BLANCO, Configuracion.PosicionInicialReyes.COLUMNA_REY_BLANCO);
+            reyNegro.actualizarCasilleroActual(casilleroReyNegro);
+            reyBlanco.actualizarCasilleroActual(casilleroReyBlanco);
+        }
     }
 }
 

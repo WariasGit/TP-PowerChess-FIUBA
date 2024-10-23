@@ -75,7 +75,7 @@ public class GestorDeJaque {
             System.out.println("Movimiento: " + movimiento[0] + ", " + movimiento[1]);
             Casillero casilleroAmenazado = tablero.getCasillero(movimiento[0], movimiento[1]);
             //Si una pieza aliada del rey puede atacar u ocupar ese casillero, entonces se puede salvar el jaque.
-            if(casilleroAmenazado.estaActivamenteAmenazadoPorMismoColor(rey.getColor())){
+            if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor())){
                 sePuedeSalvarElJaque = true;
                 break;
             }
@@ -91,7 +91,7 @@ public class GestorDeJaque {
                 System.out.println("Fila y columna nuevas dentro del bucle: " + filaNueva + ", " + columnaNueva);
                 casilleroAmenazado = tablero.getCasillero(filaNueva, columnaNueva);
                 //Si una pieza aliada del rey puede atacar u ocupar ese casillero, entonces se puede salvar el jaque.
-                if(casilleroAmenazado.estaActivamenteAmenazadoPorMismoColor(rey.getColor())){
+                if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor())){
                     sePuedeSalvarElJaque = true;
                 }
             }
@@ -101,7 +101,7 @@ public class GestorDeJaque {
                 System.out.println("Este casillero debe estar ocupado: " + filaNueva + ", " + columnaNueva);
                 casilleroAmenazado = tablero.getCasillero(filaNueva, columnaNueva);
                 //Si una pieza aliada del rey capturar a la amenaza, entonces se puede salvar el jaque.
-                if(casilleroAmenazado.estaActivamenteAmenazadoPorMismoColor(rey.getColor())){
+                if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor())){
                     sePuedeSalvarElJaque = true;
                 }
             }

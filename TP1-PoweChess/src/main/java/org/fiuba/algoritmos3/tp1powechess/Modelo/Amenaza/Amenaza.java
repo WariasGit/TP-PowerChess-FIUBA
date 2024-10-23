@@ -42,7 +42,7 @@ public class Amenaza {
         return false; // Si la dirección no es válida
     }
 
-    public boolean esDeColor(String color) {
+    public boolean esDeColor(Configuracion.ColoresJugadores color) {
         return color.equals(this.color);
     }
 

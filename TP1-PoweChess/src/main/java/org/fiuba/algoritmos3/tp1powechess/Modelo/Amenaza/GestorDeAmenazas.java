@@ -1,5 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza;
 
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+
 import java.util.ArrayList;
 
 public class GestorDeAmenazas {
@@ -57,15 +59,15 @@ public class GestorDeAmenazas {
         return amenazasFiltradas;
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasActivasPorColor(String color) {
+    public ArrayList<Amenaza> obtenerAmenazasActivasPorColor(Configuracion.ColoresJugadores color) {
         return obtenerAmenazasDeListaPorColor(amenazasActivas, color);
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasBloqueadasPorColor(String color) {
+    public ArrayList<Amenaza> obtenerAmenazasBloqueadasPorColor(Configuracion.ColoresJugadores color) {
         return obtenerAmenazasDeListaPorColor(amenazasBloqueadas, color);
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasTotalesPorColor(String color) {
+    public ArrayList<Amenaza> obtenerAmenazasTotalesPorColor(Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasTotales = new ArrayList<>();
 
         amenazasTotales.addAll(obtenerAmenazasDeListaPorColor(amenazasActivas, color));
@@ -74,7 +76,7 @@ public class GestorDeAmenazas {
         return amenazasTotales;
     }
 
-    private ArrayList<Amenaza> obtenerAmenazasDeListaPorColor(ArrayList<Amenaza> listaAmenazas, String color) {
+    private ArrayList<Amenaza> obtenerAmenazasDeListaPorColor(ArrayList<Amenaza> listaAmenazas, Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasFiltradas = new ArrayList<>();
 
         listaAmenazas.forEach(amenaza -> {
@@ -86,24 +88,38 @@ public class GestorDeAmenazas {
         return amenazasFiltradas;
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasActivasDistintoColor(String color) {
+    public ArrayList<Amenaza> obtenerAmenazasActivasDistintoColor(Configuracion.ColoresJugadores color) {
         return obtenerAmenazasDeListaDistintoColor(amenazasActivas, color);
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasBloqueadasDistintoColor(String color) {
+    public ArrayList<Amenaza> obtenerAmenazasBloqueadasDistintoColor(Configuracion.ColoresJugadores color) {
         return obtenerAmenazasDeListaDistintoColor(amenazasBloqueadas, color);
     }
 
-    public ArrayList<Amenaza> obtenerAmenazasTotalesDistintoColor(String color) {
+    public ArrayList<Amenaza> obtenerAmenazasTotalesMismoColor(Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasTotales = new ArrayList<>();
-
-        amenazasTotales.addAll(obtenerAmenazasDeListaDistintoColor(amenazasActivas, color));
-        amenazasTotales.addAll(obtenerAmenazasDeListaDistintoColor(amenazasBloqueadas, color));
-
+        amenazasTotales.addAll(obtenerAmenazasDeListaMismoColor(amenazasActivas, color));
+        amenazasTotales.addAll(obtenerAmenazasDeListaMismoColor(amenazasBloqueadas, color));
         return amenazasTotales;
     }
 
-    private ArrayList<Amenaza> obtenerAmenazasDeListaDistintoColor(ArrayList<Amenaza> listaAmenazas, String color) {
+    public ArrayList<Amenaza> obtenerAmenazasTotalesDistintoColor(Configuracion.ColoresJugadores color) {
+        ArrayList<Amenaza> amenazasTotales = new ArrayList<>();
+        amenazasTotales.addAll(obtenerAmenazasDeListaDistintoColor(amenazasActivas, color));
+        amenazasTotales.addAll(obtenerAmenazasDeListaDistintoColor(amenazasBloqueadas, color));
+        return amenazasTotales;
+    }
+
+    private ArrayList<Amenaza> obtenerAmenazasDeListaMismoColor(ArrayList<Amenaza> listaAmenazas, Configuracion.ColoresJugadores color) {
+        ArrayList<Amenaza> amenazasFiltradas = new ArrayList<>();
+        listaAmenazas.forEach(amenaza -> {
+            if (amenaza.esDeColor(color)) {amenazasFiltradas.add(amenaza);
+            }
+            });
+        return amenazasFiltradas;
+    }
+
+    private ArrayList<Amenaza> obtenerAmenazasDeListaDistintoColor(ArrayList<Amenaza> listaAmenazas, Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasFiltradas = new ArrayList<>();
 
         listaAmenazas.forEach(amenaza -> {
