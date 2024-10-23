@@ -78,18 +78,16 @@ public class Rey extends Pieza implements Enrocable {
         this.casilleroActual = casillero;
     }
 
-    public boolean estaEnJaque(){
-        return this.casilleroActual.estaAmenazadoPorColorDistinto(color);
-    }
+    public boolean estaEnJaque(){return this.casilleroActual.estaAmenazadoPorColorDistinto(color);}
 
     public void quitarMovimientoPosible(int[] movimientoPosible) {
         this.movimientosPosibles.removeIf(movimiento ->
                 movimiento[0] == movimientoPosible[0] && movimiento[1] == movimientoPosible[1]);
     }
 
-    public void setMovimientoAmenazadoJaque(int[] movimiento) {
-        this.movimientosAmenazadosJaque.add(movimiento);
-    }
+    public void setMovimientoAmenazadoJaque(int[] movimiento) {this.movimientosAmenazadosJaque.add(movimiento);}
+
+    public void limpiarListaMovimientosAmenazados(){this.movimientosAmenazadosJaque.clear();}
 
     public ArrayList<int[]> getMovimientosAmenazadosJaque() {return new ArrayList<>(this.movimientosAmenazadosJaque);}
 

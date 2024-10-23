@@ -3,7 +3,10 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Estado.*;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Casillero {
     private Pieza pieza;
@@ -86,7 +89,7 @@ public class Casillero {
     }
 
     public boolean estaAmenazadoPorMismoColor(Configuracion.ColoresJugadores color) {
-        ArrayList<Amenaza> amenazasMiscoColor = gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
+        ArrayList<Amenaza> amenazasMiscoColor = gestorDeAmenazas.obtenerAmenazasTotalesMismoColor(color);
         return !amenazasMiscoColor.isEmpty();
     }
 
@@ -138,6 +141,8 @@ public class Casillero {
     public void bloquearAmenazasQueSeExtiendenMasDeUnCasillero() {
         gestorDeAmenazas.moverAmenazasActivasAmasDeUnCasilleroABloqueadas();
     }
+
+    public boolean hayUnPeon(){return Objects.equals(this.pieza.getTipoDePieza(), Constantes.PEON);}
 
     public void desbloquearAmenazasBloqueadas() {
         gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();

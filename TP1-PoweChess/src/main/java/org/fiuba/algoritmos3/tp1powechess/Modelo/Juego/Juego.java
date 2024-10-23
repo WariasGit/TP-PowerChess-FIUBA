@@ -70,6 +70,7 @@ public class Juego {
 
     private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
         contadorMovimientosTotales++;
+        calcularMovimientosPosiblesIniciales();
         if(piezaComida != null){
             quitarPiezaDeJuador(piezaComida);
             restarUnaPieza();
@@ -167,7 +168,10 @@ public class Juego {
                 columna++;
             }
         }
+        calcularMovimientosPosiblesIniciales();
     }
+
+    private void calcularMovimientosPosiblesIniciales() {this.tablero.calcularMovimientosPosiblesIniciales();}
 
     private void guardarReferenciaDeReyes(){
         Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();

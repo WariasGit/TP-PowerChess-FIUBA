@@ -9,6 +9,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GestorDeJaque {
     Rey reyNegro;
@@ -50,6 +51,8 @@ public class GestorDeJaque {
     }
 
     private void quitarMovimientosPosiblesAlRey(Rey rey){
+        System.out.println("Cantidad de movimientos posibles antes: " + rey.getMovimientosPosibles().size());
+        //rey.limpiarListaMovimientosAmenazados();
         for(int[] movimiento: rey.getMovimientosPosibles()){
             System.out.println("Movimientos del rey: " + movimiento[0] + ", " + movimiento[1]);
             Casillero casilleroPosible = tablero.getCasillero(movimiento[0], movimiento[1]);
@@ -59,6 +62,7 @@ public class GestorDeJaque {
                 rey.setMovimientoAmenazadoJaque(movimiento);
             }
         }
+        System.out.println("Cantidad de movimientos posibles despues: " + rey.getMovimientosPosibles().size());
     }
 
     private boolean sePuedeSalvarElJaque(Rey rey){
@@ -72,10 +76,22 @@ public class GestorDeJaque {
         boolean sePuedeSalvarElJaque = false;
         //Recorremos cada uno de los movimientos que nos llevan a casilleros amenazados.
         for(int[] movimiento: movimientosAmenazadosJaque){
-            System.out.println("Movimiento: " + movimiento[0] + ", " + movimiento[1]);
+            System.out.println("Movimiento amenazado: " + movimiento[0] + ", " + movimiento[1]);
             Casillero casilleroAmenazado = tablero.getCasillero(movimiento[0], movimiento[1]);
             //Si una pieza aliada del rey puede atacar u ocupar ese casillero, entonces se puede salvar el jaque.
+            //Lo separe en 2 if para debug solamente, luego los agrupo
             if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor())){
+                ArrayList<Amenaza> amenazas = casilleroAmenazado.getAmenazas();
+                System.out.println("Se puede salvar el jaque por alguna pieza aliada y estas son las amenazas sobre el casillero.");
+                for(Amenaza amenaza: amenazas){
+                    System.out.println("Color: " + amenaza.getColor());
+                    System.out.println("Direccion: " + Arrays.toString(amenaza.getDireccion()));
+                    System.out.println("Casilleros: " + amenaza.getCantidadCasilleros());
+                }
+                sePuedeSalvarElJaque = true;
+                break;
+            }
+            if(this.tablero.puedoMoverUnPeonAlCasillero(movimiento[0], movimiento[1])){
                 sePuedeSalvarElJaque = true;
                 break;
             }
@@ -91,7 +107,7 @@ public class GestorDeJaque {
                 System.out.println("Fila y columna nuevas dentro del bucle: " + filaNueva + ", " + columnaNueva);
                 casilleroAmenazado = tablero.getCasillero(filaNueva, columnaNueva);
                 //Si una pieza aliada del rey puede atacar u ocupar ese casillero, entonces se puede salvar el jaque.
-                if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor())){
+                if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor()) || this.tablero.puedoMoverUnPeonAlCasillero(filaNueva, columnaNueva)){
                     sePuedeSalvarElJaque = true;
                 }
             }
@@ -102,6 +118,13 @@ public class GestorDeJaque {
                 casilleroAmenazado = tablero.getCasillero(filaNueva, columnaNueva);
                 //Si una pieza aliada del rey capturar a la amenaza, entonces se puede salvar el jaque.
                 if(casilleroAmenazado.estaAmenazadoPorMismoColor(rey.getColor())){
+                    ArrayList<Amenaza> amenazas = casilleroAmenazado.getAmenazas();
+                    System.out.println("Se puede salvar el jaque por alguna pieza aliada que puede capturar a la amenza y estas son las amenazas sobre el casillero.");
+                    for(Amenaza amenaza: amenazas) {
+                        System.out.println("Color: " + amenaza.getColor());
+                        System.out.println("Direccion: " + Arrays.toString(amenaza.getDireccion()));
+                        System.out.println("Casilleros: " + amenaza.getCantidadCasilleros());
+                    }
                     sePuedeSalvarElJaque = true;
                 }
             }
