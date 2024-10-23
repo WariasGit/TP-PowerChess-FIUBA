@@ -1,5 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
@@ -163,6 +164,8 @@ public class Juego {
                 Pieza pieza = Configuracion.getPieza(caracter);
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
+                    Coordenada2D posicionActual = new Coordenada2D(fila, columna);
+                    pieza.setPosicion(posicionActual);
                     guardarPiezaJugador(pieza);
                 }
                 columna++;

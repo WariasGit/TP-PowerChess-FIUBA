@@ -39,15 +39,7 @@ public class TableroCuadrado {
     }
 
     public Pieza moverPieza(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-        // Verificamos si las coordenadas son válidas
-        if (!esCoordenadaValida(filaFinal, columnaFinal)) {
-            throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
-        }
-        // Verificamos que el casillero inicial tenga una pieza
         Casillero casilleroInicial = getCasillero(filaInicial, columnaInicial);
-        if (!casilleroInicial.estaOcupado()) {
-            throw new IllegalArgumentException("No hay ninguna pieza en el casillero inicial.");
-        }
         Pieza piezaAMover = casilleroInicial.getPieza();
         //Verificamos que la posicion de destino este dentro de los movimientos posibles.
         if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
@@ -55,7 +47,7 @@ public class TableroCuadrado {
         }
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
-        // Verificamos si el movimiento es válido para la pieza
+        piezaAMover.setPosicion(coordenadaFinal);
 
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
@@ -113,7 +105,7 @@ public class TableroCuadrado {
         return piezaARemover;
     }
 
-    private boolean esCoordenadaValida(int row, int col) {
+    public boolean esCoordenadaValida(int row, int col) {
         return row >= 0 && row < dimensiones && col >= 0 && col < dimensiones;
     }
 

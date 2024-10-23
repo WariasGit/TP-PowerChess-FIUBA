@@ -10,6 +10,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Rey extends Pieza implements Enrocable {
     protected Casillero casilleroActual;
@@ -36,7 +37,6 @@ public class Rey extends Pieza implements Enrocable {
         // Para el Rey, las direcciones de movimiento y de amenaza son las mismas
         direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
         this.estrategiaDeMovimiento = new MovimientoRey();
-        this.movimientosAmenazadosJaque = new ArrayList<>();
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
@@ -44,7 +44,7 @@ public class Rey extends Pieza implements Enrocable {
         int difY = finY - inicioY;
         // Verificamos si la dirección está entre las permitidas para las amenazas
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 // Verificar que la distancia sea válida (<= 1 casilla para el Rey)
@@ -85,12 +85,7 @@ public class Rey extends Pieza implements Enrocable {
                 movimiento[0] == movimientoPosible[0] && movimiento[1] == movimientoPosible[1]);
     }
 
-    public void setMovimientoAmenazadoJaque(int[] movimiento) {this.movimientosAmenazadosJaque.add(movimiento);}
-
-    public void limpiarListaMovimientosAmenazados(){this.movimientosAmenazadosJaque.clear();}
-
-    public ArrayList<int[]> getMovimientosAmenazadosJaque() {return new ArrayList<>(this.movimientosAmenazadosJaque);}
-
     public Coordenada2D getPosicionActual() {return this.casilleroActual.getPosicion();}
 
+    public ArrayList<Amenaza> getAmenazasRecibidas() {return this.casilleroActual.getAmenazasJaque(color);}
 }

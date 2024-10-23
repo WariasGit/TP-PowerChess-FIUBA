@@ -83,6 +83,10 @@ public class Casillero {
         return this.gestorDeAmenazas.tieneAlMenosUnaAmenaza();
     }
 
+    public ArrayList<Amenaza> getAmenazasJaque(Configuracion.ColoresJugadores color){
+        return this.gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
+    }
+
     public boolean estaAmenazadoPorColorDistinto(Configuracion.ColoresJugadores color) {
         ArrayList<Amenaza> amenazasDistintoColor = gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
         return !amenazasDistintoColor.isEmpty();

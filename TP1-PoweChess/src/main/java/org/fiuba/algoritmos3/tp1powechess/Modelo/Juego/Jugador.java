@@ -56,6 +56,19 @@ public class Jugador {
         return false;
     }
 
+    public boolean puedeOcuparEsteCasillero(int filaNueva, int columnaNueva) {
+        for (Pieza pieza : piezasEnJuego) {
+            ArrayList<int[]> posicionesPosibles = pieza.getMovimientosPosibles();
+            for (int[] posicion : posicionesPosibles) {
+                if(posicion[0] == filaNueva && posicion[1] == columnaNueva) {
+                    System.out.println("Esta posicion puede ser defendida por el jugador actual: " + filaNueva + ", " + columnaNueva);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public Boolean tieneMaterialSuficiente(){
         int valorTotal = 0;
         for (Pieza pieza : piezasEnJuego) {
@@ -69,7 +82,6 @@ public class Jugador {
     }
 
     public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
-
 }
 
 
