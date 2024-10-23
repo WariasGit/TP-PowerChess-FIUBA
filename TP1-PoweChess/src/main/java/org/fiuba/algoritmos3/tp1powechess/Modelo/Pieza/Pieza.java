@@ -4,6 +4,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Freeze;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -112,7 +113,6 @@ public abstract class Pieza implements Movible {
         return caracterFEN;
     }
 
-
     public void setMovimientoDoble(boolean valor) {
         movimientoDoble = valor;
     }
@@ -122,6 +122,18 @@ public abstract class Pieza implements Movible {
     }
 
     public void desactivarPoder(Poder poder) {
-        poderActual = poder;
+        poderActual = null;
+    }
+
+    public boolean tieneFreeze() {
+        return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE;
+    }
+
+    public boolean tieneEscudo() {
+        return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO;
+    }
+
+    public boolean tieneVuelo() {
+        return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.VUELO;
     }
 }

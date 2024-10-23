@@ -5,16 +5,11 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Freeze extends Poder {
     public Freeze(int duracion) {
-        super(Configuracion.CaracteristicasPoderes.FREEZE, duracion, Configuracion.CategoriaPoder.DURACION);
+        super(Configuracion.CaracteristicasPoderes.FREEZE, 3, Configuracion.CategoriaPoder.DURACION, Configuracion.TipoPoder.FREEZE);
     }
 
     @Override
-    public void aplicar(Pieza pieza) {
-        pieza.aplicarPoder(this);
-    }
-
-    @Override
-    public void desactivar(Pieza pieza) {
-        pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
+    public Configuracion.TipoPoder getTipo() {
+        return Configuracion.TipoPoder.FREEZE;
     }
 }

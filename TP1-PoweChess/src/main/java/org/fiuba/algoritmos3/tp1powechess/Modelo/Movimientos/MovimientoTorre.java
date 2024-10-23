@@ -32,6 +32,7 @@ public class MovimientoTorre implements EstrategiaDeMovimiento {
     }
 
     private Pieza moverPiezaYCapturarSiEsNecesario(Pieza piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
+
         piezaAMover.marcarComoMovida();
 
         // Remover la pieza del casillero inicial

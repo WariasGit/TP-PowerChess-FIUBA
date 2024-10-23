@@ -24,6 +24,12 @@ public class Configuracion {
         TABLAS
     }
 
+    public enum TipoPoder {
+        FREEZE,
+        ESCUDO,
+        VUELO
+    }
+
     public enum CategoriaPoder {
         DURACION,
         ACCION,
@@ -121,6 +127,17 @@ public class Configuracion {
         return constructor != null ? constructor.get() : null;
     }
 
+    public boolean esDeDuracion() {
+        return this.categoria == Configuracion.CategoriaPoder.DURACION;
+    }
+
+    public boolean esDeAccion() {
+        return this.categoria == Configuracion.CategoriaPoder.ACCION;
+    }
+
+    public boolean esDeEvolucion() {
+        return this.categoria == Configuracion.CategoriaPoder.EVOLUCION;
+    }
     final static Map<String, String> piezasNegras = Map.ofEntries(
             Map.entry("Caballo", "imagenes/caballo_negro.png"),
             Map.entry("Alfil", "imagenes/alfil_negro.png"),

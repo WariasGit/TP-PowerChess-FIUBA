@@ -10,16 +10,26 @@ public abstract class Poder {
     protected String nombre;
     protected int duracion; 
     protected Configuracion.CategoriaPoder categoria;
+    protected Configuracion.TipoPoder tipo;
 
-    public Poder(String nombre, int duracion, Configuracion.CategoriaPoder categoria) {
+    public Poder(String nombre, int duracion, Configuracion.CategoriaPoder categoria, Configuracion.TipoPoder tipo) {
         this.nombre = nombre;
         this.duracion = duracion;
         this.categoria = categoria;
+        this.tipo = null;
     }
 
-    public abstract void aplicar(Pieza pieza);
+    public void aplicar(Pieza pieza) {
+        pieza.aplicarPoder(this);
+    }
 
-    public abstract void desactivar(Pieza pieza);
+    public void desactivar(Pieza pieza)  {
+        pieza.desactivarPoder(this);
+    }
+
+    public abstract Configuracion.TipoPoder getTipo();
+
+
 
     public boolean esDeDuracion() {
         return this.categoria == Configuracion.CategoriaPoder.DURACION;
@@ -33,10 +43,12 @@ public abstract class Poder {
         return this.categoria == Configuracion.CategoriaPoder.EVOLUCION;
     }
 
-    public void reducirDuracion() {
+    public boolean reducirDuracion() {
         if (this.categoria == Configuracion.CategoriaPoder.DURACION && this.duracion > 0) {
             this.duracion--;
+            return true;
         }
+        return false;
     }
 
     public boolean estaActivo() {

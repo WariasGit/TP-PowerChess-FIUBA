@@ -44,7 +44,6 @@ public class TableroCuadrado {
         if (!esCoordenadaValida(rowInicial, colInicial)) {
             throw new IllegalArgumentException("Coordenadas iniciales fuera de los límites del tablero.");
         }
-
         if (!esCoordenadaValida(rowFinal, colFinal)) {
             throw new IllegalArgumentException("Coordenadas finales fuera de los límites del tablero.");
         }
@@ -56,6 +55,10 @@ public class TableroCuadrado {
         }
 
         Pieza piezaAMover = casilleroInicial.getPieza();
+
+        if(piezaAMover.tieneFreeze()) {
+            throw new IllegalArgumentException("La pieza se encuentra congelada por el Poder de Freeze.");
+        }
 
         Coordenada2D coordenadaInicial = new Coordenada2D(rowInicial, colInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(rowFinal, colFinal);

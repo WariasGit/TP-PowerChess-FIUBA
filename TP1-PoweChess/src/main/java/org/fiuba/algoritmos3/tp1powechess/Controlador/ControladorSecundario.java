@@ -29,8 +29,6 @@ public class ControladorSecundario {
         JugadoresActuales = Jugadores;
         cargarPoderes();
     }
-
-
     private void cargarPoderes(){
         System.out.println("Cargando poderes");
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
