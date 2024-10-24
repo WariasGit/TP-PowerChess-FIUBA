@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 public abstract class Pieza implements Movible {
     protected Configuracion.ColoresJugadores color;
-    protected Coordenada2D posicion;
+    protected Coordenada2D posicionActual;
+    protected Coordenada2D posicionAnterior;
     protected boolean seHaMovido;
     protected int maxDistanciaDeAmenaza;
     protected EstrategiaDeMovimiento estrategiaDeMovimiento;
@@ -37,9 +38,18 @@ public abstract class Pieza implements Movible {
         return color;
     }
 
+    public Coordenada2D getPosicionAnterior(){return this.posicionAnterior;}
+
+    public Coordenada2D getPosicionActual(){return this.posicionActual;}
+
     public boolean seHaMovido() {return seHaMovido;}
 
-    public void setPosicion(Coordenada2D posicion) {this.posicion = posicion;}
+    public void setPosicionActual(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
+
+    public void actualizarPosicion(Coordenada2D posicionNueva) {
+        this.posicionAnterior = this.posicionActual;
+        this.posicionActual = posicionNueva;
+    }
 
     public void marcarComoMovida() {
         this.seHaMovido = true;
@@ -61,7 +71,7 @@ public abstract class Pieza implements Movible {
         ArrayList<Amenaza> amenazas = new ArrayList<>();
         int maxDistancia = getMaxDistanciaDeAmenaza();
         for (int[] direccion : direccionesDeAmenaza) {
-            amenazas.add(new Amenaza(this.color, direccion, maxDistancia, posicion));
+            amenazas.add(new Amenaza(this.color, direccion, maxDistancia, posicionActual));
         }
         return amenazas;
     }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class TableroCuadrado {
     private final Casillero[][] tablero;
     static private final Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
+    private boolean huboEnroqueNegras = false;
+    private boolean huboEnroqueBlancas = false;
 
     //Esto es momentaneo, para ver algo
     public Casillero[][] getTablero() {
@@ -42,12 +44,12 @@ public class TableroCuadrado {
         Casillero casilleroInicial = getCasillero(filaInicial, columnaInicial);
         Pieza piezaAMover = casilleroInicial.getPieza();
         //Verificamos que la posicion de destino este dentro de los movimientos posibles.
-        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
-            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
-        }
+//        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
+//            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
+//        }
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
-        piezaAMover.setPosicion(coordenadaFinal);
+        piezaAMover.actualizarPosicion(coordenadaFinal);
 
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
@@ -85,13 +87,11 @@ public class TableroCuadrado {
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }
-
         Casillero casillero = getCasillero(row, col);
-
         if(!casillero.estaOcupado()){
+            System.out.println("El casillero no esta ocupado.");
             return null;
         }
-
         // Remover la pieza del casillero. El metodo del casillero devuelve la pieza que se elimina
         Pieza piezaARemover = casillero.removerPieza();
 

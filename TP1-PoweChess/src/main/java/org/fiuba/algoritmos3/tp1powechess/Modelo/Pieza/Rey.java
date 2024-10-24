@@ -10,7 +10,6 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Rey extends Pieza implements Enrocable {
     protected Casillero casilleroActual;
@@ -44,7 +43,7 @@ public class Rey extends Pieza implements Enrocable {
         int difY = finY - inicioY;
         // Verificamos si la dirección está entre las permitidas para las amenazas
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 // Verificar que la distancia sea válida (<= 1 casilla para el Rey)
@@ -67,10 +66,14 @@ public class Rey extends Pieza implements Enrocable {
     }
 
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado,int row) {
+        tableroCuadrado.removePieza(this.posicionAnterior);
+        System.out.println("Posicion a eliminar del rey: " + posicionActual.getRow() + "," + posicionActual.getCol());
         tableroCuadrado.setPieza(new Coordenada2D(row,6),this);
     }
 
     public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado,int row) {
+        tableroCuadrado.removePieza(this.posicionAnterior);
+        System.out.println("Posicion a eliminar del rey: " + posicionActual.getRow() + "," + posicionActual.getCol());
         tableroCuadrado.setPieza(new Coordenada2D(row,2),this);
     }
 
@@ -84,8 +87,6 @@ public class Rey extends Pieza implements Enrocable {
         this.movimientosPosibles.removeIf(movimiento ->
                 movimiento[0] == movimientoPosible[0] && movimiento[1] == movimientoPosible[1]);
     }
-
-    public Coordenada2D getPosicionActual() {return this.casilleroActual.getPosicion();}
 
     public ArrayList<Amenaza> getAmenazasRecibidas() {return this.casilleroActual.getAmenazasJaque(color);}
 }

@@ -2,10 +2,6 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoConSalto;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoRey;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -66,7 +62,7 @@ public class Caballo extends Pieza {
 
         for (int[] direccion : this.direccionesDeAmenaza) {
             // Crear la amenaza en la dirección dada
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
 
             // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {

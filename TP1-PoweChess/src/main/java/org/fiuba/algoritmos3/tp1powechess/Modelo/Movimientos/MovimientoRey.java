@@ -10,17 +10,56 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 public class MovimientoRey implements EstrategiaDeMovimiento{
     public Pieza ejecutarMovimientoSiEsValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
         Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
-
         Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());
         Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
-
-        Rey piezaAMover = (Rey) casilleroInicial.getPieza();
-
-        if (esMovimientoValido(piezaAMover,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
-            return moverPiezaYCapturarSiEsNecesario(piezaAMover, coordenadaInicial, coordenadaFinal, tableroCuadrado);
+        Rey rey = (Rey) casilleroInicial.getPieza();
+        // Verificar si es un enroque
+        if (esEnroque(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado)) {
+            return realizarEnroque(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado);
+        }
+        if (esMovimientoValido(rey,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
+            return moverPiezaYCapturarSiEsNecesario(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado);
         }
 
         return null; // Movimiento no válido
+    }
+
+    private boolean esEnroque(Rey rey, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
+        int fila = coordenadaInicial.getRow();
+        int columnaInicial = coordenadaInicial.getCol();
+        int columnaFinal = coordenadaFinal.getCol();
+        // El enroque corto (hacia la derecha)
+        if (!rey.seHaMovido() && columnaFinal == 6 && tablero.caminoEstaDesocupado(fila, columnaInicial, fila, 6)) {
+            Torre torre = (Torre) tablero.getCasillero(fila, 7).getPieza();
+            return torre != null && !torre.seHaMovido();
+        }
+        // El enroque largo (hacia la izquierda)
+        if (!rey.seHaMovido() && columnaFinal == 2 && tablero.caminoEstaDesocupado(fila, columnaInicial, fila, 1)) {
+            Torre torre = (Torre) tablero.getCasillero(fila, 0).getPieza();
+            return torre != null && !torre.seHaMovido();
+        }
+        return false;
+    }
+
+    private Pieza realizarEnroque(Rey rey, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
+        int fila = coordenadaInicial.getRow();
+        int columnaFinal = coordenadaFinal.getCol();
+        // Enroque corto (derecho)
+        if (columnaFinal == 6) {
+            rey.enrocarSegunEnroqueDerecho(tablero, fila); // Mover el rey
+            Torre torre = (Torre) tablero.getCasillero(fila, 7).getPieza();
+            torre.enrocarSegunEnroqueDerecho(tablero, fila);  // Mover la torre
+            return torre;
+        }
+        // Enroque largo (izquierdo)
+        if (columnaFinal == 2) {
+            rey.enrocarSegunEnroqueIzquierdo(tablero, fila); // Mover el rey
+            Torre torre = (Torre) tablero.getCasillero(fila, 0).getPieza();
+            torre.enrocarSegunEnroqueIzquierdo(tablero, fila);  // Mover la torre
+            return torre;
+        }
+        System.out.println("Algo salio mal en el enroque");
+        return null; // Si algo sale mal
     }
 
     private boolean esMovimientoValido(Rey pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {

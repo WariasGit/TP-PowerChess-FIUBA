@@ -22,6 +22,7 @@ public class Juego {
     private int piezasEnJuego;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
+    private Pieza ultimaPiezaCapturada;
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
@@ -54,6 +55,7 @@ public class Juego {
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         try {
             Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+            this.ultimaPiezaCapturada = piezaComida;
             gestionarJaque();
             if(turno.estaEnJaqueJugadorActual()){
                 System.out.print("Debe realizar un movimiento para salir del Jaque");
@@ -165,7 +167,7 @@ public class Juego {
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
                     Coordenada2D posicionActual = new Coordenada2D(fila, columna);
-                    pieza.setPosicion(posicionActual);
+                    pieza.setPosicionActual(posicionActual);
                     guardarPiezaJugador(pieza);
                 }
                 columna++;
@@ -254,6 +256,8 @@ public class Juego {
     public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
         return tablero.getPieza(i, j);
     }
+
+    public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
 
     public void imprimirEstadoDebug() {
         System.out.println("----- Estado de Debug -----");
