@@ -158,6 +158,7 @@ public class ControladorTablero{
         guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
         juego.actualizarMovimientosPieza(fila, columna);
         juego.gestionarJaque();
+        juego.gestionarEnroque();
         mostrarMovimientosPosibles(piezaActual);
     }
 

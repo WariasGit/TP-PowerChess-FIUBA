@@ -22,6 +22,8 @@ public class Juego {
     private int piezasEnJuego;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
+    private final GestorDeEnroqueBlancas gestorDeEnroqueBlancas;
+    private final GestorEnroqueNegras gestorEnroqueNegras;
     private Pieza ultimaPiezaCapturada;
 
 
@@ -37,7 +39,11 @@ public class Juego {
         historialPosiciones = new HashMap<>();
         gestorDeTablas = new GestorDeTablas();
         gestorDeJaque = new GestorDeJaque();
+        gestorDeEnroqueBlancas = new GestorDeEnroqueBlancas();
+        gestorEnroqueNegras = new GestorEnroqueNegras();
         gestorDeJaque.setTablero(tablero);
+        gestorDeEnroqueBlancas.setTablero(tablero);
+        gestorEnroqueNegras.setTablero(tablero);
     }
 
     public void gestionarRendicion() {
@@ -184,10 +190,12 @@ public class Juego {
         if(reyNegroOpcional.isPresent()){
             Rey reyNegro = (Rey) reyNegroOpcional.get();
             gestorDeJaque.setReyNegro(reyNegro);
+            gestorEnroqueNegras.setReyNegro(reyNegro);
         }
         if(reyBlancoOpcional.isPresent()){
             Rey reyBlanco = (Rey) reyBlancoOpcional.get();
             gestorDeJaque.setReyBlanco(reyBlanco);
+            gestorDeEnroqueBlancas.setReyBlanco(reyBlanco);
         }
     }
 
@@ -233,6 +241,10 @@ public class Juego {
             establecerJaqueMate();
             System.out.print("Jaque Mate");
         }
+    }
+
+    public void gestionarEnroque(){
+        gestorDeEnroqueBlancas.gestionarEnroque();
     }
 
     public String getNombreJugadorBlancas() {

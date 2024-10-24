@@ -9,8 +9,6 @@ import java.util.ArrayList;
 public class TableroCuadrado {
     private final Casillero[][] tablero;
     static private final Integer dimensiones = Configuracion.TamanioVentana.DIMENSION_TABLERO;
-    private boolean huboEnroqueNegras = false;
-    private boolean huboEnroqueBlancas = false;
 
     //Esto es momentaneo, para ver algo
     public Casillero[][] getTablero() {
@@ -295,30 +293,6 @@ public class TableroCuadrado {
             estado.append("/");
         }
         return estado.toString();
-    }
-
-    public boolean puedoMoverUnPeonAlCasillero(int filaActual, int columnaActual) {
-        System.out.println("Estoy verificando si hay peones debajo de: " + filaActual + ", " + columnaActual);
-        // Recorrer los dos casilleros inmediatamente debajo
-        for (int i = 1; i <= 2; i++) {
-            if(esCoordenadaValida(filaActual + i, columnaActual)){
-                Casillero casilleroDebajo = getCasillero(filaActual + i, columnaActual);
-                // Verificamos si el casillero contiene un peón
-                if (casilleroDebajo.estaOcupado()) {
-                    if(casilleroDebajo.hayUnPeon()){
-                        Pieza peon = casilleroDebajo.getPieza();
-                        // Si el peón puede moverse al casillero actual, retorna true
-                        System.out.println("El peon tiene esta cantidad de movimientos: " + peon.getMovimientosPosibles().size());
-                        if (peon.puedeMoverseA(filaActual, columnaActual)) {
-                            System.out.println("Se puede salvar el jaque por algun peon");
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        // Si ningún peón puede moverse al casillero, retorna false
-        return false;
     }
 
     public Optional<Pieza> getReyNegroPosicionInicial() {
