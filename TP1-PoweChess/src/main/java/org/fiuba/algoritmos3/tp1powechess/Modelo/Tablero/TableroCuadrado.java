@@ -42,9 +42,9 @@ public class TableroCuadrado {
         Casillero casilleroInicial = getCasillero(filaInicial, columnaInicial);
         Pieza piezaAMover = casilleroInicial.getPieza();
         //Verificamos que la posicion de destino este dentro de los movimientos posibles.
-//        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
-//            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
-//        }
+        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
+            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
+        }
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
         piezaAMover.actualizarPosicion(coordenadaFinal);

@@ -146,8 +146,6 @@ public class Casillero {
         gestorDeAmenazas.moverAmenazasActivasAmasDeUnCasilleroABloqueadas();
     }
 
-    public boolean hayUnPeon(){return Objects.equals(this.pieza.getTipoDePieza(), Constantes.PEON);}
-
     public void desbloquearAmenazasBloqueadas() {
         gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();
     }

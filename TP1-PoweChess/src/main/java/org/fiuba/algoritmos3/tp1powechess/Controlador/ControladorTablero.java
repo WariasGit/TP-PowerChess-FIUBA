@@ -187,7 +187,6 @@ public class ControladorTablero{
             this.posiciones[fila][columna].getChildren().add(imageView);
         }
         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-        limpiarSeleccion();  // Limpiar selección después del segundo click
     }
 
     private void gestionarSiHayEnroque() {

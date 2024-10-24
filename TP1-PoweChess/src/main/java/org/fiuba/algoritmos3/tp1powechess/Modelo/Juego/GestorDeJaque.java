@@ -53,7 +53,7 @@ public class GestorDeJaque {
         for(int[] movimiento: rey.getMovimientosPosibles()){
             Casillero casilleroPosible = tablero.getCasillero(movimiento[0], movimiento[1]);
             //Si un casillero al que se podria mover el rey esta amenazado, entonces deja de ser un movimiento posible.
-            if(casilleroPosible.estaAmenazado()){
+            if(casilleroPosible.estaAmenazadoPorColorDistinto(rey.getColor())){
                 rey.quitarMovimientoPosible(movimiento);
             }
         }
