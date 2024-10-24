@@ -12,7 +12,7 @@ public class Jugador {
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
     private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
-
+    private Rey rey;
 
     public Jugador(Configuracion.ColoresJugadores color, String nombre) {
         this.color = color;
@@ -28,6 +28,10 @@ public class Jugador {
         listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
         listaPoderes.add(new Vuelo());
     }
+
+    public void setRey(Rey rey) {this.rey = rey;}
+
+    public Rey getRey() {return rey;}
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
 

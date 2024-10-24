@@ -22,8 +22,7 @@ public class Juego {
     private int piezasEnJuego;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
-    private final GestorDeEnroqueBlancas gestorDeEnroqueBlancas;
-    private final GestorEnroqueNegras gestorEnroqueNegras;
+    private final GestorDeEnroque gestorDeEnroque;
     private Pieza ultimaPiezaCapturada;
 
 
@@ -39,11 +38,9 @@ public class Juego {
         historialPosiciones = new HashMap<>();
         gestorDeTablas = new GestorDeTablas();
         gestorDeJaque = new GestorDeJaque();
-        gestorDeEnroqueBlancas = new GestorDeEnroqueBlancas();
-        gestorEnroqueNegras = new GestorEnroqueNegras();
+        gestorDeEnroque = new GestorDeEnroque();
         gestorDeJaque.setTablero(tablero);
-        gestorDeEnroqueBlancas.setTablero(tablero);
-        gestorEnroqueNegras.setTablero(tablero);
+        gestorDeEnroque.setTablero(tablero);
     }
 
     public void gestionarRendicion() {
@@ -185,18 +182,20 @@ public class Juego {
     private void calcularMovimientosPosiblesIniciales() {this.tablero.calcularMovimientosPosiblesIniciales();}
 
     private void guardarReferenciaDeReyes(){
-        Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();
         Optional<Pieza> reyBlancoOpcional = tablero.getReyBlancoPosicionInicial();
-        if(reyNegroOpcional.isPresent()){
-            Rey reyNegro = (Rey) reyNegroOpcional.get();
-            gestorDeJaque.setReyNegro(reyNegro);
-            gestorEnroqueNegras.setReyNegro(reyNegro);
-        }
+        Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();
+        ArrayList<Rey> reyes = new ArrayList<>();
         if(reyBlancoOpcional.isPresent()){
             Rey reyBlanco = (Rey) reyBlancoOpcional.get();
             gestorDeJaque.setReyBlanco(reyBlanco);
-            gestorDeEnroqueBlancas.setReyBlanco(reyBlanco);
+            reyes.add(reyBlanco);
         }
+        if(reyNegroOpcional.isPresent()){
+            Rey reyNegro = (Rey) reyNegroOpcional.get();
+            gestorDeJaque.setReyNegro(reyNegro);
+            reyes.add(reyNegro);
+        }
+        turno.setReyes(reyes);
     }
 
     private void guardarPiezaJugador(Pieza pieza) {
@@ -244,7 +243,7 @@ public class Juego {
     }
 
     public void gestionarEnroque(){
-        gestorDeEnroqueBlancas.gestionarEnroque();
+        gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());
     }
 
     public String getNombreJugadorBlancas() {
