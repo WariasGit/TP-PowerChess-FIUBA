@@ -19,7 +19,6 @@ public class Configuracion {
 
     public static enum EstadoJuego {
         EN_JUEGO,
-        ACTIVO,
         JAQUE_MATE,
         FINALIZADO,
         TABLAS

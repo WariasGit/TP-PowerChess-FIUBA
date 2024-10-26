@@ -43,35 +43,64 @@ public class Juego {
         gestorDeEnroque.setTablero(tablero);
     }
 
+    public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
+
     public void gestionarRendicion() {
-        terminarPartida();
         ganador = turno.getNombreOponente();
+        terminarPartida();
     }
 
-    public void establecerJaqueMate() {
+    public void establecerTablas(){
+        this.estado = Configuracion.EstadoJuego.TABLAS;
+    }
+
+    public void establecerJaqueMate(){
         ganador = turno.getNombreOponente();
-        terminarPartida();
+        this.estado = Configuracion.EstadoJuego.JAQUE_MATE;
     }
 
     public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
+        boolean sePuedeMover;
         try {
-            Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
-            this.ultimaPiezaCapturada = piezaComida;
-            gestionarJaque();
-            if(turno.estaEnJaqueJugadorActual()){
-                System.out.print("Debe realizar un movimiento para salir del Jaque");
-                //Se revierte el movimiento
-                tablero.moverPieza(destinoFila, destinoColumna, origenFila, origenColumna);
-                return false;
+            if(esturnoDeMover(origenFila, origenColumna)){
+                Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+                this.ultimaPiezaCapturada = piezaComida;
+                gestionarJaque();
+                //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
+                if(turno.estaEnJaqueJugadorActual()){
+                    revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
+                    sePuedeMover = false;
+                }
+                aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
+                sePuedeMover = true;
             }
-            aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error: " + e.getMessage());
-            return false;
+            else{
+                System.out.println("Espera a tu turno para realizar un movimiento");
+                sePuedeMover = false;
+            }
         }
+        catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+            sePuedeMover = false;
+        }
+        return sePuedeMover;
+    }
+
+    private boolean esturnoDeMover(int fila, int columna){
+        Optional<Pieza> piezaAMover = tablero.getPieza(fila, columna);
+        Pieza piezaActual = null;
+        if(piezaAMover.isPresent()){
+            piezaActual = piezaAMover.get();
+        }
+        return turno.estaPiezaEsDelJugadorActual(piezaActual);
+    }
+
+    private void revertirMovimiento(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
+        System.out.print("Debe realizar un movimiento para evitar el Jaque");
+        //Se revierte el movimiento
+        tablero.moverPieza(destinoFila, destinoColumna, origenFila, origenColumna);
     }
 
     private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
@@ -221,7 +250,7 @@ public class Juego {
             gestorDeTablas.tablasPorMovimientosRepetidos(historialPosiciones);
         }
         if(gestorDeTablas.haytablas()){
-            this.estado = Configuracion.EstadoJuego.TABLAS;
+            establecerTablas();
         }
     }
 
@@ -245,6 +274,10 @@ public class Juego {
     public void gestionarEnroque(){
         gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());
     }
+
+    public Configuracion.EstadoJuego getEstado(){return this.estado;}
+
+    public String getNombreGanador(){return this.ganador;}
 
     public String getNombreJugadorBlancas() {
         return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();

@@ -67,10 +67,24 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
     );
 
     @Override
-    public void handle(EventoJuego cambioDeTurnoEvent) {
-        this.juego.cambiarTurno();
-        this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
-        this.juego.gestionarJaque();
+    public void handle(EventoJuego juegoEvent) {
+        if(juegoEvent.getEventType().equals(EventoJuego.CAMBIO_DE_TURNO_EVENT)){
+            this.juego.cambiarTurno();
+            this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
+            this.juego.gestionarJaque();
+            if(!juego.sigueElJuego()){
+                generarEventoFinDePartida();
+            }
+        }
+        else if (juegoEvent.getEventType().equals(EventoJuego.TABLAS_ACEPTADAS_EVENT)) {
+            this.juego.establecerTablas();
+            generarEventoFinDePartida();
+        }
+        else if (juegoEvent.getEventType().equals(EventoJuego.RENDIRSE_EVENT)) {
+            this.juego.gestionarRendicion();
+            generarEventoFinDePartida();
+        }
+
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {
@@ -83,5 +97,9 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
 
     public void guardarPartida() throws IOException {
         juego.guardarPartida();
+    }
+
+    private void generarEventoFinDePartida(){
+        tablero.fireEvent(new EventoJuego(EventoJuego.TERMINAR_PARTIDA));
     }
 }

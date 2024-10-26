@@ -74,6 +74,7 @@ public class ControladorSecundario {
         vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
+            System.out.println("Hay tablas");
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.TABLAS_ACEPTADAS_EVENT));
         }
         else {
@@ -84,7 +85,8 @@ public class ControladorSecundario {
     public void gestionarAbandono(javafx.event.ActionEvent actionEvent){
         Boolean continuar = VistaJuego.mostrarConfirmacionAbandono();
         if(continuar){
-            //juego.gestionarRendicion();
+            System.out.println("Alguien se rindio");
+            vboxPoderes.fireEvent(new EventoJuego(EventoJuego.RENDIRSE_EVENT));
         }
     }
 }

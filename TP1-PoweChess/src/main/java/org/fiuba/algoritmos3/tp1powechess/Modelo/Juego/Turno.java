@@ -69,11 +69,11 @@ public class Turno {
         getTurno().quitarJaque();
     }
 
-    public Boolean tieneMovimientosJugadorActual() {
-        return getTurno().tieneMovimientosPosibles();
-    }
-
     public Configuracion.ColoresJugadores getColorJugadorActual() {
         return getTurno().getColor();
+    }
+
+    public boolean estaPiezaEsDelJugadorActual(Pieza piezaAMover){
+        return (piezaAMover.getColor() == getColorJugadorActual());
     }
 }
