@@ -275,6 +275,14 @@ public class Juego {
         gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());
     }
 
+    public void setNombreJugadorBlancas(String nombre){
+            jugadores.get(Configuracion.Jugadores.BLANCAS).setNombre(nombre);
+    }
+
+    public void setNombreJugadorNegras(String nombre){
+        jugadores.get(Configuracion.Jugadores.NEGRAS).setNombre(nombre);
+    }
+
     public Configuracion.EstadoJuego getEstado(){return this.estado;}
 
     public String getNombreGanador(){return this.ganador;}

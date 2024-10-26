@@ -85,8 +85,8 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
 
 
     private void iniciarJuego(String path) throws IOException {
-        Jugador jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
-        Jugador jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
+        Jugador jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO);
+        Jugador jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO);
         List<Jugador> jugadores = new ArrayList<>();
         jugadores.add(jugadorBlancas);
         jugadores.add(jugadorNegras);

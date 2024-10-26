@@ -15,6 +15,8 @@ import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJug
 
 public class Configuracion {
 
+    public static String[] NombresJugadoresPorDefecto = new String[]{"BLANCAS", "NEGRAS"};
+
     public static enum ColoresJugadores {BLANCO, NEGRO};
 
     public static enum EstadoJuego {
