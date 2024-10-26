@@ -47,7 +47,6 @@ public class TableroCuadrado {
         }
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
-        piezaAMover.actualizarPosicion(coordenadaFinal);
 
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
@@ -60,7 +59,6 @@ public class TableroCuadrado {
         }
         Casillero casillero = getCasillero(row, col);
         Pieza piezaComida = casillero.getPieza();
-
         // Si el casillero ya está ocupado, eliminamos la pieza existente y sus amenazas
         if(casillero.estaOcupado()){
             // Actualizamos las amenazas de la pieza existente antes de reemplazarla
@@ -72,7 +70,8 @@ public class TableroCuadrado {
             // Quitamos las amenazas qu ahora pasaron a estar bloqueadas
             quitarAmenazasDesdeCoordenadasHastaLimiteUOcupado(casillero.getAmenazasBloqueadas(), row, col);
         }
-
+        piezaAColocar.marcarComoMovida();
+        piezaAColocar.actualizarPosicion(coordenada);
         // Actualizamos las amenazas generadas por la nueva pieza
         agregarAmenazasDesdeCoordenadasHastaLimiteUOcupado(casillero.getAmenzasDePiezaActual(),row, col);
 
@@ -215,9 +214,10 @@ public class TableroCuadrado {
 
     private void filtrarAmenazasYPosicionesPeon(int fila, int columna, Pieza peon){
         PeonBase peonBase = (PeonBase) peon;
-        peonBase.quitarMovimientoDoblePeon();
+        peonBase.quitarOReponerMovimientoDoblePeon();
         ArrayList<Amenaza> amenazas = peon.getAmenazasGeneradas();
         ArrayList<int[]> movimientos = peon.getDireccionesDeMovimiento();
+        System.out.println("Tiene esta cantidadd de direcciones posibles: " + movimientos.size());
         ArrayList<int[]> posicionesValidas = new ArrayList<>();
         for (Amenaza amenaza : amenazas) {
             int[] direccion = amenaza.getDireccion();
@@ -242,6 +242,7 @@ public class TableroCuadrado {
             }
         }
         peon.setMovimientosPosibles(posicionesValidas);
+        System.out.println("Total de movimientos posibles: " + peonBase.getMovimientosPosibles().size());
     }
 
     private void filtrarAmenazasYPosicionesGenerales(int fila, int columna, Pieza piezaActual) {

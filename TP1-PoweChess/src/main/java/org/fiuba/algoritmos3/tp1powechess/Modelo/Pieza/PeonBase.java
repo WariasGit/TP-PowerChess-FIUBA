@@ -20,31 +20,13 @@ public abstract class PeonBase extends Pieza {
         direccionesDeMovimiento.add(new int[]{Constantes.DOS_EN_FILA * getDireccion(), Constantes.CERO_EN_COLUMNA}); // Movimiento inicial doble
     }
 
-    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
-        for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
-            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Meetodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
-        for (int[] direccion : direccionesDeMovimiento) {
-            // Solo debe moverse hacia adelante (sin cambiar la X)
-            if (direccion[0] == difX && direccion[1] == difY) {
-                // El peón puede moverse 1 o 2 casillas adelante solo si no ha sido movido
-                return (!this.seHaMovido || direccion[1] != 2 * getDireccion());
-            }
-        }
-        return false;
-    }
-
-    public void quitarMovimientoDoblePeon() {
+    public void quitarOReponerMovimientoDoblePeon() {
         if (seHaMovido() && tieneMovimientoDoble()) {
             direccionesDeMovimiento.remove(Constantes.INDICE_MOVIMIENTO_DOBLE);
+        }
+        //Esto sirve para reponer el movimiento doble en caso de que se haya revertido el movimiento de un peon al no evitar el jaque.
+        else if(!seHaMovido() && !tieneMovimientoDoble()) {
+            direccionesDeMovimiento.add(new int[]{Constantes.DOS_EN_FILA * getDireccion(), Constantes.CERO_EN_COLUMNA}); // Movimiento inicial doble
         }
     }
 

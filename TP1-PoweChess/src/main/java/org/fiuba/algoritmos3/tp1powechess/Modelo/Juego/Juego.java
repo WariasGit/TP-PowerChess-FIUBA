@@ -62,7 +62,7 @@ public class Juego {
     public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
-        boolean sePuedeMover;
+        boolean sePuedeMover = false;
         try {
             if(esturnoDeMover(origenFila, origenColumna)){
                 Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
@@ -71,19 +71,18 @@ public class Juego {
                 //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
                 if(turno.estaEnJaqueJugadorActual()){
                     revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
-                    sePuedeMover = false;
                 }
-                aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
-                sePuedeMover = true;
+                else{
+                    aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
+                    sePuedeMover = true;
+                }
             }
             else{
                 System.out.println("Espera a tu turno para realizar un movimiento");
-                sePuedeMover = false;
             }
         }
         catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
-            sePuedeMover = false;
         }
         return sePuedeMover;
     }
@@ -99,8 +98,13 @@ public class Juego {
 
     private void revertirMovimiento(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         System.out.print("Debe realizar un movimiento para evitar el Jaque");
-        //Se revierte el movimiento
-        tablero.moverPieza(destinoFila, destinoColumna, origenFila, origenColumna);
+        Optional<Pieza> piezaMovida = tablero.getPieza(destinoFila, destinoColumna);
+        Coordenada2D posicionAnterior = new Coordenada2D(origenFila, origenColumna);
+        if(piezaMovida.isPresent()){
+            Pieza piezaActual = piezaMovida.get();
+            //Se revierte el movimiento
+            tablero.setPieza(posicionAnterior, piezaActual);
+        }
     }
 
     private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {

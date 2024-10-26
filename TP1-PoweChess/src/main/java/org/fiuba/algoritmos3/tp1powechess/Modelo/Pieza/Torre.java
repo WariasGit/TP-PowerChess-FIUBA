@@ -1,7 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoTorre;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -32,7 +32,7 @@ public class Torre extends Pieza implements Enrocable {
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
 
         // Al crear una Torre le asignamos su estrategia de enroque
-        this.estrategiaDeMovimiento = new MovimientoTorre();
+        this.estrategiaDeMovimiento = new MovimientoNormal();
     }
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {

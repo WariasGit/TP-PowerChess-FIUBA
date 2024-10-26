@@ -52,20 +52,12 @@ public abstract class Pieza implements Movible {
     }
 
     public void marcarComoMovida() {
-        this.seHaMovido = true;
-    }
-
-    public boolean esDelMismoColorQue(Pieza otraPieza){
-        return this.color.equals(otraPieza.color);
+        this.seHaMovido = !seHaMovido;
     }
 
     public Pieza ejecutarMovimientoSegunEstrategia(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
         return  this.estrategiaDeMovimiento.ejecutarMovimientoSiEsValido(coordenadaInicial, coordenadaFinal, tableroCuadrado);
     };
-
-    public abstract boolean esDireccionDeMovimientoValida(int difX, int difY);
-
-    public abstract boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY);
 
     public ArrayList<Amenaza> getAmenazasGeneradas() {
         ArrayList<Amenaza> amenazas = new ArrayList<>();

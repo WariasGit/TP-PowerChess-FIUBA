@@ -1,6 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Rey;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 
