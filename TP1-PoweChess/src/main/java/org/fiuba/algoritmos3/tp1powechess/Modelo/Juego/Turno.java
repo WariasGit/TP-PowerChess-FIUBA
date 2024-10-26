@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
@@ -17,6 +18,7 @@ public class Turno {
     }
 
     public void gestionarTurno() {
+        verificarPoderesJugadorActual();
         turnoActual = (turnoActual + 1) % jugadores.size();
     }
 
@@ -60,4 +62,15 @@ public class Turno {
     public Configuracion.ColoresJugadores getColorJugadorActual() {
         return getTurno().getColor();
     }
+
+    private void verificarPoderesJugadorActual() {
+        List<Pieza> piezas = getTurno().getPiezasEnJuego();
+        for (Pieza pieza : piezas) {
+            if (pieza.tienePoderActivo()) {
+                pieza.gestionarPoder();
+            };
+        }
+    }
+
+
 }

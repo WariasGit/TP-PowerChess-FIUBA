@@ -4,6 +4,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Escudo;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Freeze;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
@@ -112,23 +113,41 @@ public abstract class Pieza implements Movible {
         return caracterFEN;
     }
 
-    public void aplicarPoder(Poder poder) {
+    public boolean aplicarPoder(Poder poder) {
+       if (!this.verificarAplicacionPoder()) {
+           return false;
+       }
+       poder.aplicarPoder(this);
+        //poderActual = poder;
+        return true;
+    }
+
+    public void setPoder(Poder poder) {
         poderActual = poder;
     }
 
-    public void desactivarPoder(Poder poder) {
+    public boolean verificarAplicacionPoder() {
+        if (this.esRey()) {
+            return false;
+        }
+        return !this.tienePoderActivo();
+    }
+
+    public void desactivarPoder() {
         poderActual = null;
     }
 
     public boolean tieneFreeze() {
-        return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE;
+        return poderActual instanceof Freeze;
     }
     public boolean tieneEscudo() {
-        return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO;
+        return poderActual instanceof Escudo;
     }
 
-    public boolean tieneVuelo() {
-        return poderActual != null && poderActual.getTipo() == Configuracion.TipoPoder.VUELO;
+
+
+    public boolean tienePoderActivo() {
+        return poderActual != null;
     }
 
     public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
@@ -138,5 +157,16 @@ public abstract class Pieza implements Movible {
             }
         }
         return false;
+    }
+
+    public boolean esRey() {
+        return this.getTipoDePieza().equals("Rey");
+    }
+
+
+    public void gestionarPoder() {
+        if (this.tienePoderActivo()) {
+            this.poderActual.reducirDuracionoDesactivar(this);
+        }
     }
 }

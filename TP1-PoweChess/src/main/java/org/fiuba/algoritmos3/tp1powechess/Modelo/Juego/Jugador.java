@@ -11,6 +11,7 @@ public class Jugador {
     private Boolean jaque;
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
+    private ArrayList<Configuracion.TipoPoder> poderesUsados;
     private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
 
 
@@ -19,6 +20,7 @@ public class Jugador {
         jaque = false;
         this.nombre = nombre;
         piezasEnJuego = new ArrayList<>();
+        poderesUsados = new ArrayList<>();
         cargarPoderes();
     }
 
@@ -26,7 +28,8 @@ public class Jugador {
         listaPoderes = new ArrayList<>();
         listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
         listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
-        listaPoderes.add(new Vuelo());
+        listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.ACCION_LIMPIEZA));
+
     }
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
@@ -82,6 +85,15 @@ public class Jugador {
     }
 
     public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
+
+    public boolean puedeUsarPoder(Poder poder) {
+        return !poderesUsados.contains(poder.getTipo());
+    }
+
+    public void agregarPoderUsado(Poder poder) {
+        poderesUsados.add(poder.getTipo());
+    }
 }
+
 
 

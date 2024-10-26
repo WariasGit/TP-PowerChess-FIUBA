@@ -2,32 +2,44 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Poder;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
-
-import java.util.Objects;
 
 public abstract class Poder {
     protected String nombre;
     protected int duracion; 
     protected Configuracion.CategoriaPoder categoria;
     protected Configuracion.TipoPoder tipo;
+    protected Configuracion.AplicacionPoder aplicacion;
 
-    public Poder(String nombre, int duracion, Configuracion.CategoriaPoder categoria, Configuracion.TipoPoder tipo) {
+    public Poder(String nombre, int duracion, Configuracion.CategoriaPoder categoria, Configuracion.TipoPoder tipo, Configuracion.AplicacionPoder aplicacion) {
         this.nombre = nombre;
         this.duracion = duracion;
         this.categoria = categoria;
         this.tipo = null;
+        this.aplicacion = aplicacion;
     }
 
-    public void aplicar(Pieza pieza) {
-        pieza.aplicarPoder(this);
+    //no se si es necesario verificar la categoria
+    public void reducirDuracionoDesactivar(Pieza pieza) {
+        if (this.categoria == Configuracion.CategoriaPoder.DURACION && this.duracion > 0) {
+            this.duracion--;
+        }
+        else {
+            pieza.desactivarPoder();
+        }
     }
 
-    public void desactivar(Pieza pieza)  {
-        pieza.desactivarPoder(this);
+    public void aplicarPoder(Pieza pieza) {
+        pieza.setPoder(this);
     }
 
-    public abstract Configuracion.TipoPoder getTipo();
+    public abstract Configuracion.AplicacionPoder getTipoPiezaAplicable();
+
+    public Configuracion.TipoPoder getTipo()  {
+        return this.tipo;
+    };
+
+
+
 
     public boolean esDeDuracion() {
         return this.categoria == Configuracion.CategoriaPoder.DURACION;
@@ -41,13 +53,6 @@ public abstract class Poder {
         return this.categoria == Configuracion.CategoriaPoder.EVOLUCION;
     }
 
-    public boolean reducirDuracion() {
-        if (this.categoria == Configuracion.CategoriaPoder.DURACION && this.duracion > 0) {
-            this.duracion--;
-            return true;
-        }
-        return false;
-    }
 
     public boolean estaActivo() {
         return this.duracion > 0 || this.categoria == Configuracion.CategoriaPoder.ACCION;
@@ -55,10 +60,6 @@ public abstract class Poder {
 
     public Configuracion.CategoriaPoder getCategoria() {
         return this.categoria;
-    }
-
-    public boolean esRey(Pieza pieza) {
-        return Objects.equals(pieza.getTipoDePieza(), Constantes.REY);
     }
 
     public String getNombre() {

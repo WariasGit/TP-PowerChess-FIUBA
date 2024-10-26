@@ -50,12 +50,16 @@ public class TableroCuadrado {
         }
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
+
+        //ESTO HAY QUE CAMBIARLO !!!!
+        Casillero casilleroFinal = getCasillero(filaFinal,columnaFinal);
+        if (casilleroFinal.estaOcupado()) {
+            Pieza piezaAComer = casilleroFinal.getPieza();
+            if (piezaAComer.tieneEscudo()) {
+                throw new IllegalArgumentException("La pieza esta protegida por escudo");
+            }
+        }
         piezaAMover.setPosicion(coordenadaFinal);
-
-
-
-        // Verificamos si el movimiento es válido para la pieza
-
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
 

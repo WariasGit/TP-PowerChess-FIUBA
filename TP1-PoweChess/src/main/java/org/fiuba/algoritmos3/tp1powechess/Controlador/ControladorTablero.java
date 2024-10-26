@@ -14,6 +14,7 @@ import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -31,11 +32,13 @@ public class ControladorTablero{
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
+    private GestorPoderes gestorPoderes;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
     private VistaTablero vistaTablero = new VistaTablero(posiciones);
 
 
     public void initialize() {
+
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 StackPane stackPane = new StackPane();
@@ -55,6 +58,10 @@ public class ControladorTablero{
     public void setJuego(Juego juego) {
         this.juego = juego;
         cargarPiezas();
+    }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
     }
 
     public void cargarPiezas() {
@@ -156,6 +163,7 @@ public class ControladorTablero{
     private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
         aplicarColorCasillero(fila, columna);
         guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         juego.actualizarMovimientosPieza(fila, columna);
         juego.gestionarJaque();
         mostrarMovimientosPosibles(piezaActual);
@@ -163,6 +171,7 @@ public class ControladorTablero{
 
     private void manejarSegundoClick(int fila, int columna) {
         if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+            gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
                 moverPieza(fila, columna);

@@ -29,11 +29,12 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     String NombreJugadorBlancas;
     String NombreJugadorNegras;
     ControladorPrimario controladorPrimario;
-    GestorPoderes gestorPoderes = new GestorPoderes(Ajedrez);
+    GestorPoderes gestorPoderes;
     private final Stage stage;
     //Reproductor reproductor = new Reproductor();
 
     public AdministradorPrimarioJuego(Stage stage) {
+
         this.stage = stage;
     }
 
@@ -78,6 +79,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         jugadores.add(jugadorNegras);
         this.Ajedrez = new Juego(jugadores);
         Ajedrez.cargarPartida(path);
+        this.gestorPoderes = new GestorPoderes(Ajedrez);
         iniciarVentanaJuego();
     }
 
@@ -92,6 +94,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root = loader.load();
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
+        juegoController.setGestorPoderes(this.gestorPoderes);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
         root.addEventHandler(EventoJuego.VOLVER_AL_MENU, this);
         root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
