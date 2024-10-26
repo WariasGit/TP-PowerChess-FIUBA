@@ -1,9 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 
@@ -35,7 +32,7 @@ public class Alfil extends Pieza {
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 return true;
             }

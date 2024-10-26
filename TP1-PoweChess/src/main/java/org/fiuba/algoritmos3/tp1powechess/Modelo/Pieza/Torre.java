@@ -11,6 +11,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.util.ArrayList;
 
 public class Torre extends Pieza implements Enrocable {
+    protected boolean enrocado = false;
 
     public Torre(Configuracion.ColoresJugadores color) {
 
@@ -34,13 +35,9 @@ public class Torre extends Pieza implements Enrocable {
         this.estrategiaDeMovimiento = new MovimientoTorre();
     }
 
-    public String getTipoDePieza() {
-        return "Torre";
-    }
-
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 return true;
             }
@@ -60,10 +57,20 @@ public class Torre extends Pieza implements Enrocable {
     }
 
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado, int row) {
-        tableroCuadrado.setPieza(new Coordenada2D(row,5),this);
+        tableroCuadrado.removePieza(posicionActual);
+        Coordenada2D nuevaPosicion = new Coordenada2D(row,5);
+        tableroCuadrado.setPieza(nuevaPosicion,this);
+        this.actualizarPosicion(nuevaPosicion);
+        enrocado = true;
     }
 
     public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado, int row) {
-        tableroCuadrado.setPieza(new Coordenada2D(row,3),this);
+        tableroCuadrado.removePieza(posicionActual);
+        Coordenada2D nuevaPosicion = new Coordenada2D(row,3);
+        tableroCuadrado.setPieza(nuevaPosicion,this);
+        this.actualizarPosicion(nuevaPosicion);
+        enrocado = true;
     }
+
+    public boolean seHaEnrocado(){return enrocado;}
 }

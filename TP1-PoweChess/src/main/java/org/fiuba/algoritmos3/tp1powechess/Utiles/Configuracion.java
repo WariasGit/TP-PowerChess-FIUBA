@@ -14,6 +14,7 @@ import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJug
 import static org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion.ColoresJugadores.NEGRO;
 
 public class Configuracion {
+
     public static enum ColoresJugadores {BLANCO, NEGRO};
 
     public static enum EstadoJuego {
@@ -22,6 +23,13 @@ public class Configuracion {
         JAQUE_MATE,
         FINALIZADO,
         TABLAS
+    }
+
+    public static class PosicionInicialTorres{
+        public static final int FILA_BLANCA = 7;
+        public static final int FILA_NEGRA= 0;
+        public static final int COLUMNA_IZQUIERDA = 0;
+        public static final int COLUMNA_DERECHA= 7;
     }
 
     public enum TipoPoder {

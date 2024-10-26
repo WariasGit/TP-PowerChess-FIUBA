@@ -42,6 +42,9 @@ public class TableroCuadrado {
         Casillero casilleroInicial = getCasillero(filaInicial, columnaInicial);
         Pieza piezaAMover = casilleroInicial.getPieza();
         //Verificamos que la posicion de destino este dentro de los movimientos posibles.
+//        if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
+//            throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
+//        }
         if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
             throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
         }
@@ -50,6 +53,8 @@ public class TableroCuadrado {
         }
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
+        piezaAMover.actualizarPosicion(coordenadaFinal);
+
 
         //ESTO HAY QUE CAMBIARLO !!!!
         Casillero casilleroFinal = getCasillero(filaFinal,columnaFinal);
@@ -96,13 +101,11 @@ public class TableroCuadrado {
         if (!esCoordenadaValida(row, col)) {
             throw new IllegalArgumentException("Coordenadas fuera de los límites del tablero.");
         }
-
         Casillero casillero = getCasillero(row, col);
-
         if(!casillero.estaOcupado()){
+            System.out.println("El casillero no esta ocupado.");
             return null;
         }
-
         // Remover la pieza del casillero. El metodo del casillero devuelve la pieza que se elimina
         Pieza piezaARemover = casillero.removerPieza();
 
@@ -306,30 +309,6 @@ public class TableroCuadrado {
             estado.append("/");
         }
         return estado.toString();
-    }
-
-    public boolean puedoMoverUnPeonAlCasillero(int filaActual, int columnaActual) {
-        System.out.println("Estoy verificando si hay peones debajo de: " + filaActual + ", " + columnaActual);
-        // Recorrer los dos casilleros inmediatamente debajo
-        for (int i = 1; i <= 2; i++) {
-            if(esCoordenadaValida(filaActual + i, columnaActual)){
-                Casillero casilleroDebajo = getCasillero(filaActual + i, columnaActual);
-                // Verificamos si el casillero contiene un peón
-                if (casilleroDebajo.estaOcupado()) {
-                    if(casilleroDebajo.hayUnPeon()){
-                        Pieza peon = casilleroDebajo.getPieza();
-                        // Si el peón puede moverse al casillero actual, retorna true
-                        System.out.println("El peon tiene esta cantidad de movimientos: " + peon.getMovimientosPosibles().size());
-                        if (peon.puedeMoverseA(filaActual, columnaActual)) {
-                            System.out.println("Se puede salvar el jaque por algun peon");
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        // Si ningún peón puede moverse al casillero, retorna false
-        return false;
     }
 
     public Optional<Pieza> getReyNegroPosicionInicial() {

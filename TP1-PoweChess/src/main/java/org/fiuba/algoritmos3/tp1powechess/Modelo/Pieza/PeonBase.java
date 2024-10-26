@@ -22,7 +22,7 @@ public abstract class PeonBase extends Pieza {
 
     public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
         for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicion);
+            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
             if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
                 return true;
             }

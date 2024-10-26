@@ -17,6 +17,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Torre;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
@@ -145,8 +147,6 @@ public class ControladorTablero{
                 else {
                     // Segundo click en un casillero vacío,
                     manejarSegundoClick(fila, columna);  // Ejecutar movimiento
-                    quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-                    limpiarSeleccion();  // Limpiar selección después del segundo click
                     quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 }
             }
@@ -166,6 +166,7 @@ public class ControladorTablero{
         gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         juego.actualizarMovimientosPieza(fila, columna);
         juego.gestionarJaque();
+        juego.gestionarEnroque();
         mostrarMovimientosPosibles(piezaActual);
     }
 
@@ -175,6 +176,7 @@ public class ControladorTablero{
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
                 moverPieza(fila, columna);
+                gestionarSiHayEnroque();
                 juego.actualizarMovimientosPieza(fila, columna);
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
             } else {
@@ -192,6 +194,27 @@ public class ControladorTablero{
         }else{
             this.posiciones[fila][columna].getChildren().remove(Constantes.INDICE_IMAGEN);
             this.posiciones[fila][columna].getChildren().add(imageView);
+        }
+        quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
+        limpiarSeleccion();  // Limpiar selección después del segundo click
+    }
+
+    private void gestionarSiHayEnroque() {
+        Pieza piezaCapturada = juego.getUltimaPiezaCapturada();
+        if(piezaCapturada != null){
+            if(Objects.equals(piezaCapturada.getTipoDePieza(), Constantes.TORRE)){
+                Torre torre = (Torre) piezaCapturada;
+                if(torre.seHaEnrocado()){
+                    System.out.println("Se capturo una torre luego del enroque");
+                    Coordenada2D posicionAnterior = piezaCapturada.getPosicionAnterior();
+                    Coordenada2D posicionActual = piezaCapturada.getPosicionActual();
+                    System.out.println("Posicion anterior: " + posicionAnterior.getRow() + ", " + posicionAnterior.getCol());
+                    System.out.println("Posicion actual: " + posicionActual.getRow() + ", " + posicionActual.getCol());
+                    this.posicionOrigenFila = posicionAnterior.getRow();
+                    this.posicionOrigenColumna = posicionAnterior.getCol();
+                    moverPieza(posicionActual.getRow(), posicionActual.getCol());
+                }
+            }
         }
     }
 
