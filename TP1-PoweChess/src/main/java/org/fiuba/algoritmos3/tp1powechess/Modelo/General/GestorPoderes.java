@@ -1,6 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.General;
 
 import javafx.event.EventHandler;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
@@ -9,6 +10,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
+import javax.sound.sampled.Control;
 import java.util.Optional;
 
 /**
@@ -23,6 +25,7 @@ public class GestorPoderes {
     private Juego juego;
     private Integer posicionFilaPiezaSeleccionada;
     private Integer posicionColumnaPiezaSeleccionada;
+    private ControladorTablero controladorTablero;
 
     public GestorPoderes(Juego juego){
         this.juego = juego;
@@ -32,6 +35,11 @@ public class GestorPoderes {
         this.posicionFilaPiezaSeleccionada = fila;
         this.posicionColumnaPiezaSeleccionada = columna;
     }
+
+    public void setControladorTablero(ControladorTablero controladorTablero) {
+        this.controladorTablero = controladorTablero;
+    }
+
 
     private boolean esPiezaPropia(Optional<Pieza> pieza) {
         return pieza.isPresent() && pieza.get().getColor().equals(juego.getColorJugadorActual());

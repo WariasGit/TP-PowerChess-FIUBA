@@ -7,6 +7,12 @@ public class Constantes {
     public static final String RUTA_ARCHIVO_GUARDAR_PARTIDA = "src/main/resources/PartidaGuardada.txt";
     public static final String RUTA_ARCHIVO_PARTIDDA_GUARDADA = "PartidaGuardada.txt";
 
+    public static final String RUTA_STICKER_ALAS = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/alas.png";
+    public static final String RUTA_STICKER_CONGELADO = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/congelado.png";
+    public static final String RUTA_STICKER_DOBLE = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/doble.png";
+    public static final String RUTA_STICKER_ESCUDO = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/escudo.png";
+    public static final String RUTA_STICKER_EVOLUCION = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/evolucion.png";
+
     public static final String RUTA_MUSICA_MENU = "/sonidos/rock_menu.mp3";
     public static final String RUTA_MUSICA_JUEGO = "/sonidos/rock_partida.mp3";
 

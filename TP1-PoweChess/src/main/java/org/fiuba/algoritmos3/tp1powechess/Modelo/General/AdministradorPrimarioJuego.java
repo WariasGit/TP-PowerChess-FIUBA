@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorPrimario;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
@@ -23,13 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
-    Jugador jugadorBlancas;
-    Jugador jugadorNegras;
-    Juego Ajedrez;
-    String NombreJugadorBlancas;
-    String NombreJugadorNegras;
-    ControladorPrimario controladorPrimario;
-    GestorPoderes gestorPoderes;
+    private Juego Ajedrez;
+    private GestorPoderes gestorPoderes;
     private final Stage stage;
     //Reproductor reproductor = new Reproductor();
 
@@ -98,8 +93,8 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         jugadores.add(jugadorBlancas);
         jugadores.add(jugadorNegras);
         this.Ajedrez = new Juego(jugadores);
-        Ajedrez.cargarPartida(path);
         this.gestorPoderes = new GestorPoderes(Ajedrez);
+        Ajedrez.cargarPartida(path);
         iniciarVentanaJuego();
     }
 
@@ -115,6 +110,8 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
         juegoController.setGestorPoderes(this.gestorPoderes);
+        ControladorTablero controladorTablero= juegoController.getControladorTablero();
+        this.gestorPoderes.setControladorTablero(controladorTablero);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
         root.addEventHandler(EventoJuego.TABLAS_ACEPTADAS_EVENT, juegoController);
         root.addEventHandler(EventoJuego.RENDIRSE_EVENT, juegoController);

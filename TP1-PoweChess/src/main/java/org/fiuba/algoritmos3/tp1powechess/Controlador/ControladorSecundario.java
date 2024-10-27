@@ -21,17 +21,15 @@ public class ControladorSecundario {
     @FXML public FlowPane poderesBlancas;
     @FXML VBox vboxPoderes;
     @FXML private Button botonOfrecerTablasNegras;
-    @FXML private Button botonRendirseNegras;
     @FXML private Button botonOfrecerTablasBlancas;
-    @FXML private Button botonRendirseBlancas;
     private ArrayList<Jugador> JugadoresActuales;
 
     public void setJuego(ArrayList<Jugador> Jugadores) {
         JugadoresActuales = Jugadores;
         cargarPoderes();
     }
+
     private void cargarPoderes(){
-        //System.out.println("Cargando poderes");
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
         cargarPoderesNegras(JugadoresActuales.get(Configuracion.Jugadores.NEGRAS));
     }
@@ -91,7 +89,6 @@ public class ControladorSecundario {
         vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
-            System.out.println("Hay tablas");
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.TABLAS_ACEPTADAS_EVENT));
         }
         else {
@@ -102,7 +99,6 @@ public class ControladorSecundario {
     public void gestionarAbandono(javafx.event.ActionEvent actionEvent){
         Boolean continuar = VistaJuego.mostrarConfirmacionAbandono();
         if(continuar){
-            System.out.println("Alguien se rindio");
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.RENDIRSE_EVENT));
         }
     }

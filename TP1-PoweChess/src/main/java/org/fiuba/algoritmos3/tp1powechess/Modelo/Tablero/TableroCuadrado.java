@@ -231,7 +231,6 @@ public class TableroCuadrado {
         peonBase.quitarOReponerMovimientoDoblePeon();
         ArrayList<Amenaza> amenazas = peon.getAmenazasGeneradas();
         ArrayList<int[]> movimientos = peon.getDireccionesDeMovimiento();
-        System.out.println("Tiene esta cantidadd de direcciones posibles: " + movimientos.size());
         ArrayList<int[]> posicionesValidas = new ArrayList<>();
         for (Amenaza amenaza : amenazas) {
             int[] direccion = amenaza.getDireccion();
@@ -256,7 +255,6 @@ public class TableroCuadrado {
             }
         }
         peon.setMovimientosPosibles(posicionesValidas);
-        System.out.println("Total de movimientos posibles: " + peonBase.getMovimientosPosibles().size());
     }
 
     private void filtrarAmenazasYPosicionesGenerales(int fila, int columna, Pieza piezaActual) {

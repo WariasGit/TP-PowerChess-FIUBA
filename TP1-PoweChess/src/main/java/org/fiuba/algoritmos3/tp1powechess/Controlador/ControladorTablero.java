@@ -1,7 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -23,9 +21,6 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,23 +31,24 @@ public class ControladorTablero{
     private Integer posicionOrigenColumna;
     private GestorPoderes gestorPoderes;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
-    private VistaTablero vistaTablero = new VistaTablero(posiciones);
-
+    private final VistaTablero vistaTablero = new VistaTablero(posiciones);
+    private final VistaPoderes vistaPoderes = new VistaPoderes(posiciones);
 
     public void initialize() {
-
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                StackPane stackPane = new StackPane();
-                stackPane.setOnMouseClicked(this::handleEventoClick);
-                Rectangle rectangle = new Rectangle(75, 75);
-                rectangle.setArcHeight(2.0);
-                rectangle.setArcWidth(2.0);
-                rectangle.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));
-                rectangle.setStroke(Color.BLACK);
-                rectangle.setStrokeType(StrokeType.INSIDE);
-                stackPane.getChildren().add(rectangle);
-                tableroGrid.add(stackPane, col, row);
+                StackPane celdaPrincipal = new StackPane();
+                StackPane celdaSecundaria = new StackPane();
+                celdaPrincipal.setOnMouseClicked(this::handleEventoClick);
+                Rectangle rectanguloColor = new Rectangle(75, 75);
+                rectanguloColor.setArcHeight(2.0);
+                rectanguloColor.setArcWidth(2.0);
+                rectanguloColor.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));
+                rectanguloColor.setStroke(Color.BLACK);
+                rectanguloColor.setStrokeType(StrokeType.INSIDE);
+                celdaPrincipal.getChildren().add(rectanguloColor);
+                celdaPrincipal.getChildren().add(celdaSecundaria);
+                tableroGrid.add(celdaPrincipal, col, row);
             }
         }
     }
@@ -74,6 +70,7 @@ public class ControladorTablero{
             Integer i = fila != null ? fila : 0;
             Integer j = columna != null ? columna : 0;
             this.posiciones[i][j] = (StackPane) stackPane;
+            StackPane celdaSecundaria = (StackPane) ((StackPane) stackPane).getChildren().get(1);
             Optional<Pieza> pieza = tablero.getPieza(i, j);
             if (pieza.isPresent()) {
                 Pieza piezaActual = pieza.get();
@@ -81,7 +78,7 @@ public class ControladorTablero{
                 vistaImagen.setFitWidth(70);
                 vistaImagen.setFitHeight(70);
                 vistaImagen.setPreserveRatio(true);
-                this.posiciones[i][j].getChildren().add(vistaImagen);
+                celdaSecundaria.getChildren().add(vistaImagen);
             }
         }
     }
@@ -117,28 +114,17 @@ public class ControladorTablero{
                     guardarPosicionOrigen(fila, columna);  // Guardar la selección
                 }
             }
-            else {
-                // Si se selecciona un casillero vacío en el primer click, no se hace nada
-                //System.out.println("Primer click en casillero vacío, no se hace nada");
-            }
         }
         else {
-            // Segundo click
-            //System.out.println("Segundo click");
             if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
-
                 if (piezaActual.isPresent()) {
                     Pieza pieza = piezaActual.get();
                     if (juego.getColorJugadorActual() == pieza.getColor()) {
-                        // Click en una nueva pieza propia, cambiar la selección
-                        //System.out.println("Cambiando selección a una nueva pieza del mismo jugador");
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         manejarPrimerClick(pieza, fila, columna);  // Cambiar selección y pintar el nuevo casillero
                     }
                     else {
-                        // Segundo click en pieza del rival, deseleccionar
-                        //System.out.println("Click en pieza rival");
                         manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
@@ -146,20 +132,17 @@ public class ControladorTablero{
                     }
                 }
                 else {
-                    // Segundo click en un casillero vacío,
                     manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                     quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 }
             }
             else {
-                //Segundo click en la misma pieza, deseleccionar
                 quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                 limpiarSeleccion();  // No se cambia turno
             }
         }
     }
-
 
     private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
         aplicarColorCasillero(fila, columna);
@@ -185,16 +168,23 @@ public class ControladorTablero{
         }
     }
 
-    private void moverPieza(int fila, int columna) {
-        System.out.println("Moviendo pieza");
-        ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
+    private void moverPieza(int destinoFila, int destinoColumna) {
+        // Obtener la celda de origen y destino
+        StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
+        StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
+        // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
+        StackPane contenidoOrigen = (StackPane) celdaOrigen.getChildren().get(Constantes.INDICE_IMAGEN);
 
-        if (this.posiciones[fila][columna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
-            this.posiciones[fila][columna].getChildren().add(imageView);
+        if (this.posiciones[destinoFila][destinoColumna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
+            // Mover el contenido (pieza + stickers) a la celda de destino
+            celdaDestino.getChildren().add(contenidoOrigen);
         }else{
-            this.posiciones[fila][columna].getChildren().remove(Constantes.INDICE_IMAGEN);
-            this.posiciones[fila][columna].getChildren().add(imageView);
+            this.posiciones[destinoFila][destinoColumna].getChildren().remove(Constantes.INDICE_IMAGEN);
+            // Mover el contenido (pieza + stickers) a la celda de destino
+            celdaDestino.getChildren().add(contenidoOrigen);
         }
+        // Limpiar la celda de origen
+        celdaOrigen.getChildren().remove(contenidoOrigen);
         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
     }
 
@@ -204,11 +194,8 @@ public class ControladorTablero{
             if(Objects.equals(piezaCapturada.getTipoDePieza(), Constantes.TORRE)){
                 Torre torre = (Torre) piezaCapturada;
                 if(torre.seHaEnrocado()){
-                    System.out.println("Se capturo una torre luego del enroque");
                     Coordenada2D posicionAnterior = piezaCapturada.getPosicionAnterior();
                     Coordenada2D posicionActual = piezaCapturada.getPosicionActual();
-                    System.out.println("Posicion anterior: " + posicionAnterior.getRow() + ", " + posicionAnterior.getCol());
-                    System.out.println("Posicion actual: " + posicionActual.getRow() + ", " + posicionActual.getCol());
                     this.posicionOrigenFila = posicionAnterior.getRow();
                     this.posicionOrigenColumna = posicionAnterior.getCol();
                     moverPieza(posicionActual.getRow(), posicionActual.getCol());
@@ -227,20 +214,23 @@ public class ControladorTablero{
         this.posicionOrigenColumna = null;
     }
 
-    private void aplicarColorCasillero(Integer fila, Integer columna) {
-        vistaTablero.pintarCasilleroSeleccionado(fila, columna);
-    }
+    private void aplicarColorCasillero(Integer fila, Integer columna) {vistaTablero.pintarCasilleroSeleccionado(fila, columna);}
 
-    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {
-        vistaTablero.pintarCasilleroColorOriginal(fila, columna);
-    }
+    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {vistaTablero.pintarCasilleroColorOriginal(fila, columna);}
 
-    private void mostrarMovimientosPosibles(Pieza piezaActual) {
-            vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());
-    }
+    private void mostrarMovimientosPosibles(Pieza piezaActual) {vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());}
 
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
     }
 
+    public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarAlas(){vistaPoderes.setAlas(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarCongelado(){vistaPoderes.setCongelado(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarMovimientoDoble(){vistaPoderes.setMovimientoDoble(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarEvolucion(){vistaPoderes.setEvolucion(posicionOrigenFila, posicionOrigenColumna);}
 }
