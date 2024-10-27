@@ -28,7 +28,6 @@ public class ControladorSecundario {
         cargarPoderes();
     }
 
-
     private void cargarPoderes(){
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
         cargarPoderesNegras(JugadoresActuales.get(Configuracion.Jugadores.NEGRAS));
@@ -55,7 +54,6 @@ public class ControladorSecundario {
         String nombrePoder = boton.getText();
         EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
         vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
-        System.out.println("Poder: " + nombrePoder);
     }
 
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){
@@ -69,7 +67,6 @@ public class ControladorSecundario {
         vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
-            System.out.println("Hay tablas");
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.TABLAS_ACEPTADAS_EVENT));
         }
         else {
@@ -80,7 +77,6 @@ public class ControladorSecundario {
     public void gestionarAbandono(javafx.event.ActionEvent actionEvent){
         Boolean continuar = VistaJuego.mostrarConfirmacionAbandono();
         if(continuar){
-            System.out.println("Alguien se rindio");
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.RENDIRSE_EVENT));
         }
     }

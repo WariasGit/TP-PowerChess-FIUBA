@@ -1,7 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -12,8 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Torre;
@@ -22,9 +18,6 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,7 +29,6 @@ public class ControladorTablero{
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
     private final VistaTablero vistaTablero = new VistaTablero(posiciones);
     private final VistaPoderes vistaPoderes = new VistaPoderes(posiciones);
-
 
     public void initialize() {
         for (int row = 0; row < 8; row++) {
@@ -114,27 +106,17 @@ public class ControladorTablero{
                     guardarPosicionOrigen(fila, columna);  // Guardar la selección
                 }
             }
-            else {
-                // Si se selecciona un casillero vacío en el primer click, no se hace nada
-                //System.out.println("Primer click en casillero vacío, no se hace nada");
-            }
         }
         else {
-            // Segundo click
-            //System.out.println("Segundo click");
             if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
                 if (piezaActual.isPresent()) {
                     Pieza pieza = piezaActual.get();
                     if (juego.getColorJugadorActual() == pieza.getColor()) {
-                        // Click en una nueva pieza propia, cambiar la selección
-                        //System.out.println("Cambiando selección a una nueva pieza del mismo jugador");
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         manejarPrimerClick(pieza, fila, columna);  // Cambiar selección y pintar el nuevo casillero
                     }
                     else {
-                        // Segundo click en pieza del rival, deseleccionar
-                        //System.out.println("Click en pieza rival");
                         manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
@@ -142,20 +124,17 @@ public class ControladorTablero{
                     }
                 }
                 else {
-                    // Segundo click en un casillero vacío,
                     manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                     quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 }
             }
             else {
-                //Segundo click en la misma pieza, deseleccionar
                 quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                 limpiarSeleccion();  // No se cambia turno
             }
         }
     }
-
 
     private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
         aplicarColorCasillero(fila, columna);
@@ -180,12 +159,11 @@ public class ControladorTablero{
     }
 
     private void moverPieza(int destinoFila, int destinoColumna) {
-        System.out.println("Moviendo pieza");
         // Obtener la celda de origen y destino
         StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
         StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
         // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
-        StackPane contenidoOrigen = (StackPane) celdaOrigen.getChildren().get(1);
+        StackPane contenidoOrigen = (StackPane) celdaOrigen.getChildren().get(Constantes.INDICE_IMAGEN);
 
         if (this.posiciones[destinoFila][destinoColumna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
             // Mover el contenido (pieza + stickers) a la celda de destino
@@ -206,11 +184,8 @@ public class ControladorTablero{
             if(Objects.equals(piezaCapturada.getTipoDePieza(), Constantes.TORRE)){
                 Torre torre = (Torre) piezaCapturada;
                 if(torre.seHaEnrocado()){
-                    System.out.println("Se capturo una torre luego del enroque");
                     Coordenada2D posicionAnterior = piezaCapturada.getPosicionAnterior();
                     Coordenada2D posicionActual = piezaCapturada.getPosicionActual();
-                    System.out.println("Posicion anterior: " + posicionAnterior.getRow() + ", " + posicionAnterior.getCol());
-                    System.out.println("Posicion actual: " + posicionActual.getRow() + ", " + posicionActual.getCol());
                     this.posicionOrigenFila = posicionAnterior.getRow();
                     this.posicionOrigenColumna = posicionAnterior.getCol();
                     moverPieza(posicionActual.getRow(), posicionActual.getCol());
@@ -229,17 +204,11 @@ public class ControladorTablero{
         this.posicionOrigenColumna = null;
     }
 
-    private void aplicarColorCasillero(Integer fila, Integer columna) {
-        vistaTablero.pintarCasilleroSeleccionado(fila, columna);
-    }
+    private void aplicarColorCasillero(Integer fila, Integer columna) {vistaTablero.pintarCasilleroSeleccionado(fila, columna);}
 
-    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {
-        vistaTablero.pintarCasilleroColorOriginal(fila, columna);
-    }
+    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {vistaTablero.pintarCasilleroColorOriginal(fila, columna);}
 
-    private void mostrarMovimientosPosibles(Pieza piezaActual) {
-            vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());
-    }
+    private void mostrarMovimientosPosibles(Pieza piezaActual) {vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());}
 
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
