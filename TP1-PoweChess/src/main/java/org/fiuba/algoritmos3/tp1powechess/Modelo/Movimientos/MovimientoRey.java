@@ -9,19 +9,13 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 
 public class MovimientoRey implements EstrategiaDeMovimiento{
     public Pieza ejecutarMovimientoSiEsValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
-        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
         Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
         Rey rey = (Rey) casilleroInicial.getPieza();
         // Verificar si es un enroque
         if (esEnroque(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado)) {
             return realizarEnroque(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado);
         }
-        if (esMovimientoValido(rey,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
-            return moverPiezaYCapturarSiEsNecesario(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado);
-        }
-
-        return null; // Movimiento no válido
+        return moverPiezaYCapturarSiEsNecesario(rey, coordenadaInicial, coordenadaFinal, tableroCuadrado);
     }
 
     private boolean esEnroque(Rey rey, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
@@ -62,16 +56,7 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
         return null; // Si algo sale mal
     }
 
-    private boolean esMovimientoValido(Rey pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {
-        // Verificar si es un movimiento simple o una captura
-        boolean esMovimientoNormal = !casilleroFinal.estaOcupado() && pieza.esDireccionDeMovimientoValida(diferencias.getRow(), diferencias.getCol());
-        boolean esCaptura = casilleroFinal.estaOcupado() && !casilleroFinal.getPieza().esDelMismoColorQue(pieza) &&
-                pieza.esCapturaValida(diferencias.getRow(), diferencias.getCol(), diferencias.getRow(), diferencias.getCol());
-        return (esMovimientoNormal || esCaptura) && tablero.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol());
-    }
-
     private Pieza moverPiezaYCapturarSiEsNecesario(Rey piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
-        piezaAMover.marcarComoMovida();
         // Remover la pieza del casillero inicial
         tablero.removePieza(coordenadaInicial);
         Casillero casilleroNuevo = tablero.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());

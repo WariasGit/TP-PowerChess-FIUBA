@@ -7,22 +7,23 @@ import java.util.ArrayList;
 
 
 public class Jugador {
-    private Configuracion.ColoresJugadores color;
+    private final Configuracion.ColoresJugadores color;
     private Boolean jaque;
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
     private ArrayList<Configuracion.TipoPoder> poderesUsados;
     private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
+    private Rey rey;
 
-
-    public Jugador(Configuracion.ColoresJugadores color, String nombre) {
+    public Jugador(Configuracion.ColoresJugadores color) {
         this.color = color;
         jaque = false;
-        this.nombre = nombre;
         piezasEnJuego = new ArrayList<>();
         poderesUsados = new ArrayList<>();
         cargarPoderes();
     }
+
+    public void setNombre(String nombre) {this.nombre = nombre;}
 
     private void cargarPoderes() {
         listaPoderes = new ArrayList<>();
@@ -30,6 +31,10 @@ public class Jugador {
         listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
 
     }
+
+    public void setRey(Rey rey) {this.rey = rey;}
+
+    public Rey getRey() {return rey;}
 
     public void setPiezasEnJuego(Pieza pieza) { piezasEnJuego.add(pieza); }
 

@@ -23,8 +23,7 @@ public class Juego {
     private int piezasEnJuego;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
-    private final GestorDeEnroqueBlancas gestorDeEnroqueBlancas;
-    private final GestorEnroqueNegras gestorEnroqueNegras;
+    private final GestorDeEnroque gestorDeEnroque;
     private Pieza ultimaPiezaCapturada;
 
 
@@ -40,41 +39,72 @@ public class Juego {
         historialPosiciones = new HashMap<>();
         gestorDeTablas = new GestorDeTablas();
         gestorDeJaque = new GestorDeJaque();
-        gestorDeEnroqueBlancas = new GestorDeEnroqueBlancas();
-        gestorEnroqueNegras = new GestorEnroqueNegras();
+        gestorDeEnroque = new GestorDeEnroque();
         gestorDeJaque.setTablero(tablero);
-        gestorDeEnroqueBlancas.setTablero(tablero);
-        gestorEnroqueNegras.setTablero(tablero);
+        gestorDeEnroque.setTablero(tablero);
     }
+
+    public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
 
     public void gestionarRendicion() {
-        terminarPartida();
         ganador = turno.getNombreOponente();
+        terminarPartida();
     }
 
-    public void establecerJaqueMate() {
+    public void establecerTablas(){
+        this.estado = Configuracion.EstadoJuego.TABLAS;
+    }
+
+    public void establecerJaqueMate(){
         ganador = turno.getNombreOponente();
-        terminarPartida();
+        this.estado = Configuracion.EstadoJuego.JAQUE_MATE;
     }
 
     public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
+        boolean sePuedeMover = false;
         try {
-            Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
-            this.ultimaPiezaCapturada = piezaComida;
-            gestionarJaque();
-            if(turno.estaEnJaqueJugadorActual()){
-                System.out.print("Debe realizar un movimiento para salir del Jaque");
-                //Se revierte el movimiento
-                tablero.moverPieza(destinoFila, destinoColumna, origenFila, origenColumna);
-                return false;
+            if(esturnoDeMover(origenFila, origenColumna)){
+                Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+                this.ultimaPiezaCapturada = piezaComida;
+                gestionarJaque();
+                //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
+                if(turno.estaEnJaqueJugadorActual()){
+                    revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
+                }
+                else{
+                    aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
+                    sePuedeMover = true;
+                }
             }
-            aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
-            return true;
-        } catch (Exception e) {
+            else{
+                System.out.println("Espera a tu turno para realizar un movimiento");
+            }
+        }
+        catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
-            return false;
+        }
+        return sePuedeMover;
+    }
+
+    private boolean esturnoDeMover(int fila, int columna){
+        Optional<Pieza> piezaAMover = tablero.getPieza(fila, columna);
+        Pieza piezaActual = null;
+        if(piezaAMover.isPresent()){
+            piezaActual = piezaAMover.get();
+        }
+        return turno.estaPiezaEsDelJugadorActual(piezaActual);
+    }
+
+    private void revertirMovimiento(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
+        System.out.print("Debe realizar un movimiento para evitar el Jaque");
+        Optional<Pieza> piezaMovida = tablero.getPieza(destinoFila, destinoColumna);
+        Coordenada2D posicionAnterior = new Coordenada2D(origenFila, origenColumna);
+        if(piezaMovida.isPresent()){
+            Pieza piezaActual = piezaMovida.get();
+            //Se revierte el movimiento
+            tablero.setPieza(posicionAnterior, piezaActual);
         }
     }
 
@@ -186,18 +216,20 @@ public class Juego {
     private void calcularMovimientosPosiblesIniciales() {this.tablero.calcularMovimientosPosiblesIniciales();}
 
     private void guardarReferenciaDeReyes(){
-        Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();
         Optional<Pieza> reyBlancoOpcional = tablero.getReyBlancoPosicionInicial();
-        if(reyNegroOpcional.isPresent()){
-            Rey reyNegro = (Rey) reyNegroOpcional.get();
-            gestorDeJaque.setReyNegro(reyNegro);
-            gestorEnroqueNegras.setReyNegro(reyNegro);
-        }
+        Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();
+        ArrayList<Rey> reyes = new ArrayList<>();
         if(reyBlancoOpcional.isPresent()){
             Rey reyBlanco = (Rey) reyBlancoOpcional.get();
             gestorDeJaque.setReyBlanco(reyBlanco);
-            gestorDeEnroqueBlancas.setReyBlanco(reyBlanco);
+            reyes.add(reyBlanco);
         }
+        if(reyNegroOpcional.isPresent()){
+            Rey reyNegro = (Rey) reyNegroOpcional.get();
+            gestorDeJaque.setReyNegro(reyNegro);
+            reyes.add(reyNegro);
+        }
+        turno.setReyes(reyes);
     }
 
     private void guardarPiezaJugador(Pieza pieza) {
@@ -223,7 +255,7 @@ public class Juego {
             gestorDeTablas.tablasPorMovimientosRepetidos(historialPosiciones);
         }
         if(gestorDeTablas.haytablas()){
-            this.estado = Configuracion.EstadoJuego.TABLAS;
+            establecerTablas();
         }
     }
 
@@ -245,8 +277,20 @@ public class Juego {
     }
 
     public void gestionarEnroque(){
-        gestorDeEnroqueBlancas.gestionarEnroque();
+        gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());
     }
+
+    public void setNombreJugadorBlancas(String nombre){
+            jugadores.get(Configuracion.Jugadores.BLANCAS).setNombre(nombre);
+    }
+
+    public void setNombreJugadorNegras(String nombre){
+        jugadores.get(Configuracion.Jugadores.NEGRAS).setNombre(nombre);
+    }
+
+    public Configuracion.EstadoJuego getEstado(){return this.estado;}
+
+    public String getNombreGanador(){return this.ganador;}
 
     public String getNombreJugadorBlancas() {
         return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();

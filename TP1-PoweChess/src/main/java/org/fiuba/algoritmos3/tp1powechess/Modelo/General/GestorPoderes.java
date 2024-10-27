@@ -90,7 +90,7 @@ public class GestorPoderes {
         // Si el poder fue aplicado correctamente, se agrega a la lista de poderes usados
         jugador.agregarPoderUsado(poder);
         System.out.println("Poder aplicado correctamente.");
-        jugador.poderUsado(poder.getTipo());
+        jugador.eliminarPoderUsado(poder.getTipo());
 
         //ESTO HAY QUE SACARLO, ES PARA PRUEBAS
         System.out.println("Poder aplicado correctamente a la pieza: " + pieza.getClass().getSimpleName());

@@ -62,6 +62,26 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
                 throw new RuntimeException(e);
             }
         }
+        else if(evento.getEventType().equals(EventoJuego.TERMINAR_PARTIDA)) {
+            Configuracion.EstadoJuego estadoJuego = Ajedrez.getEstado();
+            String nombreGanador = Ajedrez.getNombreGanador();
+            System.out.println("El ganador es: " + nombreGanador);
+            boolean jugarDeNuevo =  VistaPrimaria.mostrarMensajeFinDePartida(estadoJuego, nombreGanador);
+            if (jugarDeNuevo){
+                try {
+                    iniciarJuego(Constantes.RUTA_ARCHIVO_INICIO_FEN);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else{
+                try {
+                    iniciarVentanaPrincipal();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
         else if (evento.getEventType().equals(EventoJuego.SALIR_JUEGO)){
             System.out.println("Saliendo del juego");
             stage.close();
@@ -72,8 +92,8 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
 
 
     private void iniciarJuego(String path) throws IOException {
-        this.jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO, "Uno");
-        this.jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO, "Dos");
+        Jugador jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO);
+        Jugador jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO);
         List<Jugador> jugadores = new ArrayList<>();
         jugadores.add(jugadorBlancas);
         jugadores.add(jugadorNegras);
@@ -96,7 +116,10 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         juegoController.setJuego(Ajedrez);
         juegoController.setGestorPoderes(this.gestorPoderes);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
+        root.addEventHandler(EventoJuego.TABLAS_ACEPTADAS_EVENT, juegoController);
+        root.addEventHandler(EventoJuego.RENDIRSE_EVENT, juegoController);
         root.addEventHandler(EventoJuego.VOLVER_AL_MENU, this);
+        root.addEventHandler(EventoJuego.TERMINAR_PARTIDA, this);
         root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
         root.addEventHandler(EventoPoder.ESCUDO, evento -> gestorPoderes.activarEscudo());
         root.addEventHandler(EventoPoder.EVOLUCION, evento -> gestorPoderes.activarEvolucion());
@@ -114,7 +137,6 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         //reproductor.reproducirMusicaMenu();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_INICIO_FXML));
         Pane root = loader.load();
-        this.controladorPrimario = loader.getController();
         root.addEventHandler(EventoJuego.INICIAR_JUEGO, this);
         root.addEventHandler(EventoJuego.SALIR_JUEGO, this);
         root.addEventHandler(EventoJuego.CARGAR_PARTIDA_GUARDADA, this);

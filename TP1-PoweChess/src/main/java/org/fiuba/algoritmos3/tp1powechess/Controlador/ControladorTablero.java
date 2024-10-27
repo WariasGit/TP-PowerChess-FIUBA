@@ -177,7 +177,6 @@ public class ControladorTablero{
             if (movimientoValido) {
                 moverPieza(fila, columna);
                 gestionarSiHayEnroque();
-                juego.actualizarMovimientosPieza(fila, columna);
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
             } else {
                 System.out.println("Movimiento invalido, se muestra la vista del error");
@@ -196,7 +195,6 @@ public class ControladorTablero{
             this.posiciones[fila][columna].getChildren().add(imageView);
         }
         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-        limpiarSeleccion();  // Limpiar selección después del segundo click
     }
 
     private void gestionarSiHayEnroque() {

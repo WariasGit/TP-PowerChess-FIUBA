@@ -13,13 +13,12 @@ public class RobarPoder extends Poder {
     }
 
 
-    @Override
+    //@Override
     public void aplicarPoder(Jugador jugador, Jugador oponente, Poder poder, Pieza pieza) {
 
         if (oponente.puedeUsarPoder(poder)) {
             jugador.agregarPoder(poder);
             oponente.eliminarPoderUsado(poder.getTipo());
         }
-        System.out.println("Poder robado: " + poderRobado.getTipo() + " del jugador oponente.");
     }
 }
