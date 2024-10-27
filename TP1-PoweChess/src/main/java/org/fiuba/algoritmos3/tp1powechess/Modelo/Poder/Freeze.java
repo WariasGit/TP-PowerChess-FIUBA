@@ -7,8 +7,5 @@ public class Freeze extends Poder {
         super(Configuracion.CaracteristicasPoderes.FREEZE, 3, Configuracion.CategoriaPoder.DURACION, Configuracion.TipoPoder.FREEZE, Configuracion.AplicacionPoder.RIVAL);
     }
 
-    public Configuracion.AplicacionPoder getTipoPiezaAplicable() {
-        return this.aplicacion;
-    }
 
 }

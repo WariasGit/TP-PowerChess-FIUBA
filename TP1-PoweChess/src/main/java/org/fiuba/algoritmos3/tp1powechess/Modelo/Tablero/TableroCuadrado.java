@@ -48,9 +48,9 @@ public class TableroCuadrado {
         if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
             throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
         }
-        if(piezaAMover.tieneFreeze()) {
-            throw new IllegalArgumentException("La pieza se encuentra congelada por el Poder de Freeze.");
-        }
+        //if(piezaAMover.tieneFreeze()) {
+          //  throw new IllegalArgumentException("La pieza se encuentra congelada por el Poder de Freeze.");
+        //}
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
         piezaAMover.actualizarPosicion(coordenadaFinal);
@@ -64,7 +64,7 @@ public class TableroCuadrado {
                 throw new IllegalArgumentException("La pieza esta protegida por escudo");
             }
         }
-        piezaAMover.setPosicion(coordenadaFinal);
+        piezaAMover.actualizarPosicion(coordenadaFinal);
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
 

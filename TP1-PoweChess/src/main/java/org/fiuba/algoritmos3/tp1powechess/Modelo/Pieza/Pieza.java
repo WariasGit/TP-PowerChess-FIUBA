@@ -104,6 +104,13 @@ public abstract class Pieza implements Movible {
     }
 
     public boolean tieneMovimientosPosibles() {
+        System.out.println("tiene freeze??: " + this.tieneFreeze());
+        System.out.println("tiene poder??: " + this.poderActual);
+
+        if (this.tieneFreeze()) {
+            return false;
+        }
+
         return !movimientosPosibles.isEmpty();
     }
 
@@ -123,17 +130,20 @@ public abstract class Pieza implements Movible {
         return caracterFEN;
     }
 
+    //esto se deberia llamar directamente de poder
     public boolean aplicarPoder(Poder poder) {
-       if (!this.verificarAplicacionPoder()) {
+
+        if (!this.verificarAplicacionPoder()) {
            return false;
        }
-       poder.aplicarPoder(this);
-        //poderActual = poder;
+       //poder.aplicarPoder(this);
+        this.poderActual = poder;
+
         return true;
     }
 
     public void setPoder(Poder poder) {
-        poderActual = poder;
+        this.poderActual = poder;
     }
 
     public boolean verificarAplicacionPoder() {
@@ -148,10 +158,11 @@ public abstract class Pieza implements Movible {
     }
 
     public boolean tieneFreeze() {
-        return poderActual instanceof Freeze;
+        System.out.println("Poder de la piezaaa: " + this.poderActual);
+        return this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE;
     }
     public boolean tieneEscudo() {
-        return poderActual instanceof Escudo;
+        return this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO;
     }
 
 

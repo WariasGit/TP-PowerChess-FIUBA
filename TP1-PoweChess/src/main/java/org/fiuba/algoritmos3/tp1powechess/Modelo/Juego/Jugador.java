@@ -28,7 +28,6 @@ public class Jugador {
         listaPoderes = new ArrayList<>();
         listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
         listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
-        listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.ACCION_LIMPIEZA));
 
     }
 
@@ -93,6 +92,18 @@ public class Jugador {
     public void agregarPoderUsado(Poder poder) {
         poderesUsados.add(poder.getTipo());
     }
+
+    public void eliminarPoderUsado(Configuracion.TipoPoder tipo) {
+        System.out.println("pderes jugador: " + this.listaPoderes);
+        listaPoderes.removeIf(poder -> poder.getTipo().equals(tipo));
+    }
+
+    public void agregarPoder(Poder poder) {
+        this.listaPoderes.add(poder);
+
+    }
+
+
 }
 
 

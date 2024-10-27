@@ -8,9 +8,4 @@ public class Escudo extends Poder {
         super(Configuracion.CaracteristicasPoderes.ESCUDO, 3, Configuracion.CategoriaPoder.DURACION, Configuracion.TipoPoder.ESCUDO, Configuracion.AplicacionPoder.PROPIA);
     }
 
-    public Configuracion.AplicacionPoder getTipoPiezaAplicable() {
-        return this.aplicacion;
-    }
-
-
 }

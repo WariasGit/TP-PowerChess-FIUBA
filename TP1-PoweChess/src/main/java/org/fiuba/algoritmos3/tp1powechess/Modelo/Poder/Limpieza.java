@@ -14,7 +14,4 @@ public class Limpieza extends Poder {
         pieza.desactivarPoder();
     }
 
-    public Configuracion.AplicacionPoder getTipoPiezaAplicable() {
-        return this.aplicacion;
-    }
 }

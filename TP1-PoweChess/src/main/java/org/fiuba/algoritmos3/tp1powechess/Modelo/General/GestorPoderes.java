@@ -49,6 +49,7 @@ public class GestorPoderes {
         Optional<Pieza> optionalPieza = juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
         Pieza pieza;
 
+
         if (optionalPieza.isPresent()) {
             pieza = optionalPieza.get();
         } else {
@@ -89,6 +90,11 @@ public class GestorPoderes {
         // Si el poder fue aplicado correctamente, se agrega a la lista de poderes usados
         jugador.agregarPoderUsado(poder);
         System.out.println("Poder aplicado correctamente.");
+        jugador.poderUsado(poder.getTipo());
+
+        //ESTO HAY QUE SACARLO, ES PARA PRUEBAS
+        System.out.println("Poder aplicado correctamente a la pieza: " + pieza.getClass().getSimpleName());
+        System.out.println("Poder aplicado en posición: (" + this.posicionFilaPiezaSeleccionada + ", " + this.posicionColumnaPiezaSeleccionada + ")");
     }
 
     public void activarEscudo() {
@@ -96,8 +102,6 @@ public class GestorPoderes {
             Escudo escudo = new Escudo(3);
               verificarAplicacionPoder(escudo);
     }
-
-    public void activarEvolucion() {System.out.println("Activando Evolucion");}
 
     public void activarFreeze() {
         Freeze freeze = new Freeze(3);
@@ -109,5 +113,7 @@ public class GestorPoderes {
         System.out.println("Activando Limpieza");
     }
     public void activarRobar() {System.out.println("Activando Robar");}
+    public void activarEvolucion() {System.out.println("Activando Evolucion");}
+
     public void activarVuelo() {System.out.println("Activando Vuelo");}
 }

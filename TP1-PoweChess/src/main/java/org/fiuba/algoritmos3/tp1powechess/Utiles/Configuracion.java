@@ -37,6 +37,7 @@ public class Configuracion {
         ESCUDO,
         VUELO,
         LIMPIEZA,
+        ROBAR,
 
     }
 
