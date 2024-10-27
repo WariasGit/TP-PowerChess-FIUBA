@@ -65,8 +65,4 @@ public class Amenaza {
     public boolean seExtiendeMasAllaDe(int numeroDeCasilleros) {
         return this.cantidadCasilleros > numeroDeCasilleros;
     }
-
-    public boolean seExtiendeMenosOIgualA(int numeroDeCasilleros) {
-        return this.cantidadCasilleros <= numeroDeCasilleros;
-    }
 }

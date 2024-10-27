@@ -21,24 +21,4 @@ public class Coordenada2D {
         return coordenadas[1];
     }
 
-    // Setters
-    public void setRow(int x) {
-        this.coordenadas[0] = x;
-    }
-
-    public void setCol(int y) {
-        this.coordenadas[1] = y;
-    }
-
-    // Método para calcular la diferencia entre dos coordenadas 2D
-    public Coordenada2D calcularDiferenciaCon(Coordenada2D otra) {
-        int diferenciaX = this.coordenadas[0] - otra.getRow();
-        int diferenciaY = this.coordenadas[1] - otra.getCol();
-        return new Coordenada2D(diferenciaX, diferenciaY);
-    }
-
-    // Método para comparar si dos coordenadas son iguales
-    public boolean esIgual(Coordenada2D otra) {
-        return this.coordenadas[0] == otra.getRow() && this.coordenadas[1] == otra.getCol();
-    }
 }
