@@ -20,9 +20,7 @@ public class ControladorSecundario {
     @FXML public FlowPane poderesBlancas;
     @FXML VBox vboxPoderes;
     @FXML private Button botonOfrecerTablasNegras;
-    @FXML private Button botonRendirseNegras;
     @FXML private Button botonOfrecerTablasBlancas;
-    @FXML private Button botonRendirseBlancas;
     private ArrayList<Jugador> JugadoresActuales;
 
     public void setJuego(ArrayList<Jugador> Jugadores) {
@@ -32,13 +30,11 @@ public class ControladorSecundario {
 
 
     private void cargarPoderes(){
-        //System.out.println("Cargando poderes");
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
         cargarPoderesNegras(JugadoresActuales.get(Configuracion.Jugadores.NEGRAS));
     }
 
     private void cargarPoderesBlancas(Jugador jugador) {
-        //System.out.println("Cargando blancas");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
             botonPoder.setOnAction(this::gestorPoderes);
@@ -47,7 +43,6 @@ public class ControladorSecundario {
     }
 
     private void cargarPoderesNegras(Jugador jugador) {
-        //System.out.println("Cargando negras");
         for(Poder poder: jugador.getListaPoderes()){
             Button botonPoder = new Button(poder.getNombre());
             botonPoder.setOnAction(this::gestorPoderes);
@@ -60,7 +55,7 @@ public class ControladorSecundario {
         String nombrePoder = boton.getText();
         EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
         vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
-        //System.out.println("Poder: " + nombrePoder);
+        System.out.println("Poder: " + nombrePoder);
     }
 
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){

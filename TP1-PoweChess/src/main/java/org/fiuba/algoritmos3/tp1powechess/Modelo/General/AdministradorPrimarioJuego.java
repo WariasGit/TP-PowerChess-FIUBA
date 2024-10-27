@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorJuego;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     private Juego Ajedrez;
-    private final GestorPoderes gestorPoderes = new GestorPoderes(Ajedrez);
+    private GestorPoderes gestorPoderes;
     private final Stage stage;
     //Reproductor reproductor = new Reproductor();
 
@@ -91,6 +92,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         jugadores.add(jugadorBlancas);
         jugadores.add(jugadorNegras);
         this.Ajedrez = new Juego(jugadores);
+        this.gestorPoderes = new GestorPoderes(Ajedrez);
         Ajedrez.cargarPartida(path);
         iniciarVentanaJuego();
     }
@@ -106,6 +108,8 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root = loader.load();
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
+        ControladorTablero controladorTablero= juegoController.getControladorTablero();
+        this.gestorPoderes.setControladorTablero(controladorTablero);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
         root.addEventHandler(EventoJuego.TABLAS_ACEPTADAS_EVENT, juegoController);
         root.addEventHandler(EventoJuego.RENDIRSE_EVENT, juegoController);

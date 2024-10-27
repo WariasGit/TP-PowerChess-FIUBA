@@ -1,6 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.General;
 
 import javafx.event.EventHandler;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 
@@ -14,23 +15,47 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 
 public class GestorPoderes {
     private Juego juego;
-    private Integer posicionFilaPiezaSeleccionada;
-    private Integer posicionColumnaPiezaSeleccionada;
+    private ControladorTablero controladorTablero;
 
     public GestorPoderes(Juego juego){
         this.juego = juego;
     }
 
-    public void setPosiciones(Integer fila, Integer columna){
-        this.posicionFilaPiezaSeleccionada = fila;
-        this.posicionColumnaPiezaSeleccionada = columna;
+    public void setControladorTablero(ControladorTablero controladorTablero) {
+        this.controladorTablero = controladorTablero;
     }
 
-    public void activarDobleJuego() {System.out.println("Activando doble Juego");}
-    public void activarEscudo() {System.out.println("Activando Escudo");}
-    public void activarEvolucion() {System.out.println("Activando Evolucion");}
-    public void activarFreeze() {System.out.println("Activando Freeze");}
-    public void activarLimpieza() {System.out.println("Activando Limpieza");}
-    public void activarRobar() {System.out.println("Activando Robar");}
-    public void activarVuelo() {System.out.println("Activando Vuelo");}
+    public void activarDobleJuego() {
+        System.out.println("Activando doble Juego");
+        controladorTablero.agregarMovimientoDoble();
+    }
+
+    public void activarEscudo() {
+        System.out.println("Activando Escudo");
+        controladorTablero.agregarEscudo();
+    }
+
+    public void activarEvolucion() {
+        System.out.println("Activando Evolucion");
+        controladorTablero.agregarEvolucion();
+    }
+
+    public void activarFreeze() {
+        System.out.println("Activando Freeze");
+        controladorTablero.agregarCongelado();
+    }
+
+    public void activarLimpieza() {
+        System.out.println("Activando Limpieza");
+    }
+
+    public void activarRobar() {
+        System.out.println("Activando Robar");
+    }
+
+    public void activarVuelo() {
+        System.out.println("Activando Vuelo");
+        controladorTablero.agregarAlas();
+    }
+
 }

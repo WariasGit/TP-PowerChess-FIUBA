@@ -34,22 +34,25 @@ public class ControladorTablero{
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
-    private VistaTablero vistaTablero = new VistaTablero(posiciones);
+    private final VistaTablero vistaTablero = new VistaTablero(posiciones);
+    private final VistaPoderes vistaPoderes = new VistaPoderes(posiciones);
 
 
     public void initialize() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                StackPane stackPane = new StackPane();
-                stackPane.setOnMouseClicked(this::handleEventoClick);
-                Rectangle rectangle = new Rectangle(75, 75);
-                rectangle.setArcHeight(2.0);
-                rectangle.setArcWidth(2.0);
-                rectangle.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));
-                rectangle.setStroke(Color.BLACK);
-                rectangle.setStrokeType(StrokeType.INSIDE);
-                stackPane.getChildren().add(rectangle);
-                tableroGrid.add(stackPane, col, row);
+                StackPane celdaPrincipal = new StackPane();
+                StackPane celdaSecundaria = new StackPane();
+                celdaPrincipal.setOnMouseClicked(this::handleEventoClick);
+                Rectangle rectanguloColor = new Rectangle(75, 75);
+                rectanguloColor.setArcHeight(2.0);
+                rectanguloColor.setArcWidth(2.0);
+                rectanguloColor.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));
+                rectanguloColor.setStroke(Color.BLACK);
+                rectanguloColor.setStrokeType(StrokeType.INSIDE);
+                celdaPrincipal.getChildren().add(rectanguloColor);
+                celdaPrincipal.getChildren().add(celdaSecundaria);
+                tableroGrid.add(celdaPrincipal, col, row);
             }
         }
     }
@@ -67,6 +70,7 @@ public class ControladorTablero{
             Integer i = fila != null ? fila : 0;
             Integer j = columna != null ? columna : 0;
             this.posiciones[i][j] = (StackPane) stackPane;
+            StackPane celdaSecundaria = (StackPane) ((StackPane) stackPane).getChildren().get(1);
             Optional<Pieza> pieza = tablero.getPieza(i, j);
             if (pieza.isPresent()) {
                 Pieza piezaActual = pieza.get();
@@ -74,7 +78,7 @@ public class ControladorTablero{
                 vistaImagen.setFitWidth(70);
                 vistaImagen.setFitHeight(70);
                 vistaImagen.setPreserveRatio(true);
-                this.posiciones[i][j].getChildren().add(vistaImagen);
+                celdaSecundaria.getChildren().add(vistaImagen);
             }
         }
     }
@@ -175,16 +179,24 @@ public class ControladorTablero{
         }
     }
 
-    private void moverPieza(int fila, int columna) {
+    private void moverPieza(int destinoFila, int destinoColumna) {
         System.out.println("Moviendo pieza");
-        ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
+        // Obtener la celda de origen y destino
+        StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
+        StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
+        // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
+        StackPane contenidoOrigen = (StackPane) celdaOrigen.getChildren().get(1);
 
-        if (this.posiciones[fila][columna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
-            this.posiciones[fila][columna].getChildren().add(imageView);
+        if (this.posiciones[destinoFila][destinoColumna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
+            // Mover el contenido (pieza + stickers) a la celda de destino
+            celdaDestino.getChildren().add(contenidoOrigen);
         }else{
-            this.posiciones[fila][columna].getChildren().remove(Constantes.INDICE_IMAGEN);
-            this.posiciones[fila][columna].getChildren().add(imageView);
+            this.posiciones[destinoFila][destinoColumna].getChildren().remove(Constantes.INDICE_IMAGEN);
+            // Mover el contenido (pieza + stickers) a la celda de destino
+            celdaDestino.getChildren().add(contenidoOrigen);
         }
+        // Limpiar la celda de origen
+        celdaOrigen.getChildren().remove(contenidoOrigen);
         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
     }
 
@@ -233,4 +245,13 @@ public class ControladorTablero{
         vistaTablero.limpiarCasillerosPintados();
     }
 
+    public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarAlas(){vistaPoderes.setAlas(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarCongelado(){vistaPoderes.setCongelado(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarMovimientoDoble(){vistaPoderes.setMovimientoDoble(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarEvolucion(){vistaPoderes.setEvolucion(posicionOrigenFila, posicionOrigenColumna);}
 }

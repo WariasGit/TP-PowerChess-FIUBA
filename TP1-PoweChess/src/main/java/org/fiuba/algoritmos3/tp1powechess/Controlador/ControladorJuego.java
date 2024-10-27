@@ -113,4 +113,8 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         juego.setNombreJugadorNegras(nombreNegras);
         System.out.println("Nombres establecidos: Blancas - " + nombreBlancas + ", Negras - " + nombreNegras);
     }
+
+    public ControladorTablero getControladorTablero() {
+        return controladorTablero;
+    }
 }
