@@ -27,8 +27,9 @@ public class Jugador {
 
     private void cargarPoderes() {
         listaPoderes = new ArrayList<>();
-        listaPoderes.add(new Escudo(Configuracion.CaracteristicasPoderes.DURACION_ESCUDO));
-        listaPoderes.add(new Freeze(Configuracion.CaracteristicasPoderes.DURACION_FREEZE));
+        listaPoderes.add(new Escudo());
+        listaPoderes.add(new Freeze());
+        listaPoderes.add(new Limpieza());
 
     }
 

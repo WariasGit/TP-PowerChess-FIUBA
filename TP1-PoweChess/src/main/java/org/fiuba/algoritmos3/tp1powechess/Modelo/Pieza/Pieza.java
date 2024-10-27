@@ -74,6 +74,10 @@ public abstract class Pieza implements Movible {
         return maxDistanciaDeAmenaza;
     }
 
+    public Poder getPoderActual() {
+        return poderActual;
+    }
+
     public ArrayList<int[]> getDireccionesDeMovimiento() {
         return new ArrayList<int[]> (direccionesDeMovimiento);
     }
@@ -96,9 +100,6 @@ public abstract class Pieza implements Movible {
     }
 
     public boolean tieneMovimientosPosibles() {
-        System.out.println("tiene freeze??: " + this.tieneFreeze());
-        System.out.println("tiene poder??: " + this.poderActual);
-
         if (this.tieneFreeze()) {
             return false;
         }
@@ -125,11 +126,11 @@ public abstract class Pieza implements Movible {
     //esto se deberia llamar directamente de poder
     public boolean aplicarPoder(Poder poder) {
 
-        if (!this.verificarAplicacionPoder()) {
+        if (!this.verificarAplicacionPoder(poder)) {
            return false;
        }
-       //poder.aplicarPoder(this);
-        this.poderActual = poder;
+       poder.aplicarPoder(this);
+        //this.poderActual = poder;
 
         return true;
     }
@@ -138,9 +139,12 @@ public abstract class Pieza implements Movible {
         this.poderActual = poder;
     }
 
-    public boolean verificarAplicacionPoder() {
+    public boolean verificarAplicacionPoder(Poder poder) {
         if (this.esRey()) {
             return false;
+        }
+        if (poder.getTipo() == Configuracion.TipoPoder.LIMPIEZA) {
+            return true;
         }
         return !this.tienePoderActivo();
     }
@@ -150,20 +154,20 @@ public abstract class Pieza implements Movible {
     }
 
     public boolean tieneFreeze() {
-        System.out.println("Poder de la piezaaa: " + this.poderActual);
-        return this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE;
+        return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE);
     }
     public boolean tieneEscudo() {
-        return this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO;
+        return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO);
     }
-
-
 
     public boolean tienePoderActivo() {
         return poderActual != null;
     }
 
     public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
+        if (this.tieneFreeze()) {
+            return false;
+        }
         for(int[] movimiento : movimientosPosibles) {
             if(movimiento[0] == filaFinal && movimiento[1] == columnaFinal) {
                 return true;

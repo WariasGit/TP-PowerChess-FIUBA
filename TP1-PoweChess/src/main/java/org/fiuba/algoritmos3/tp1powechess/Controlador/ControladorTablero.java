@@ -126,6 +126,7 @@ public class ControladorTablero{
             // Segundo click
             //System.out.println("Segundo click");
             if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+
                 if (piezaActual.isPresent()) {
                     Pieza pieza = piezaActual.get();
                     if (juego.getColorJugadorActual() == pieza.getColor()) {

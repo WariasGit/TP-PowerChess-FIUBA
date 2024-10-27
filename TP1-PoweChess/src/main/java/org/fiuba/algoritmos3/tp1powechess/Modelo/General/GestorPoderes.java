@@ -8,6 +8,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Turno;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Escudo;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Freeze;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Limpieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
@@ -57,9 +58,15 @@ public class GestorPoderes {
             return;
         }
 
+
+
+
         Turno turno = this.juego.getTurno();
         Jugador jugador = turno.getTurno();
-        System.out.println(jugador);
+
+        System.out.println("Turno actual: " + jugador.getColor());
+        System.out.println("Color de la pieza seleccionada: " + pieza.getColor());
+
 
         // Verificar si el poder es para piezas propias o del oponente
         boolean esPiezaPropia = pieza.getColor() == jugador.getColor();
@@ -74,6 +81,10 @@ public class GestorPoderes {
             return;
         }
 
+        System.out.println("Turno actual: " + jugador.getColor());
+        System.out.println("Color de la pieza seleccionada: " + pieza.getColor());
+        System.out.println("Aplicable para tipo de pieza: " + tipoPiezaAplicable);
+
 
         // Verificar si el jugador ya usó este poder antes de aplicarlo
         if (!jugador.puedeUsarPoder(poder)) {
@@ -87,6 +98,10 @@ public class GestorPoderes {
             return;
         }
 
+        System.out.println("Turno actual: " + jugador.getColor());
+        System.out.println("Color de la pieza seleccionada: " + pieza.getColor());
+        System.out.println("Aplicable para tipo de pieza: " + tipoPiezaAplicable);
+
         // Si el poder fue aplicado correctamente, se agrega a la lista de poderes usados
         jugador.agregarPoderUsado(poder);
         System.out.println("Poder aplicado correctamente.");
@@ -99,18 +114,18 @@ public class GestorPoderes {
 
     public void activarEscudo() {
 
-            Escudo escudo = new Escudo(3);
+            Escudo escudo = new Escudo();
               verificarAplicacionPoder(escudo);
     }
 
     public void activarFreeze() {
-        Freeze freeze = new Freeze(3);
+        Freeze freeze = new Freeze();
         verificarAplicacionPoder(freeze);
     }
 
     public void activarLimpieza() {
-
-        System.out.println("Activando Limpieza");
+        Limpieza limpieza = new Limpieza();
+        verificarAplicacionPoder(limpieza);
     }
     public void activarRobar() {System.out.println("Activando Robar");}
     public void activarEvolucion() {System.out.println("Activando Evolucion");}

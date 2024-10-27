@@ -1,5 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Poder;
 
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
@@ -28,9 +29,7 @@ public abstract class Poder {
         }
     }
 
-    public void aplicarPoder(Pieza pieza) {
-        pieza.setPoder(this);
-    }
+    public abstract void aplicarPoder(Pieza pieza);
 
     public Configuracion.AplicacionPoder getTipoPiezaAplicable() {
         return this.aplicacion;
