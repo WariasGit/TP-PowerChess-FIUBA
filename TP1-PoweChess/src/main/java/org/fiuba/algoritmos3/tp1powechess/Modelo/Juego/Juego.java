@@ -50,9 +50,7 @@ public class Juego {
         terminarPartida();
     }
 
-    public void establecerTablas(){
-        this.estado = Configuracion.EstadoJuego.TABLAS;
-    }
+    public void establecerTablas(){this.estado = Configuracion.EstadoJuego.TABLAS;}
 
     public void establecerJaqueMate(){
         ganador = turno.getNombreOponente();
@@ -135,17 +133,11 @@ public class Juego {
         }
     }
 
-    private void restarUnaPieza() {
-        piezasEnJuego--;
-    }
+    private void restarUnaPieza() {piezasEnJuego--;}
 
-    private void reiniciarContadorMovimientosParaChequearPosiciones() {
-        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-    }
+    private void reiniciarContadorMovimientosParaChequearPosiciones() {contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;}
 
-    private void limpiarHistorialPosiciones() {
-        historialPosiciones.clear();
-    }
+    private void limpiarHistorialPosiciones() {historialPosiciones.clear();}
 
     private void guardarEstadoTablero() {
         String estadoTablero = tablero.estadoActualTablero();
@@ -239,9 +231,7 @@ public class Juego {
         }
     }
 
-    public void actualizarMovimientosPieza(int fila, int columna) {
-        tablero.actualizarMovimientosPieza(fila, columna);
-    }
+    public void actualizarMovimientosPieza(int fila, int columna) {tablero.actualizarMovimientosPieza(fila, columna);}
 
     private void gestionarTablas() {
         Jugador jugadorActual = turno.getTurno();
@@ -259,59 +249,37 @@ public class Juego {
     }
 
     public void gestionarJaque(){
-        gestorDeJaque.restarMovimientosPosiblesALosReyes();
         Jugador jugadorActual = turno.getTurno();
-        Configuracion.ColoresJugadores colorJugadorActual = turno.getColorJugadorActual();
-        if(gestorDeJaque.jugadorActualEnJaque(colorJugadorActual)){
-            turno.ponerEnJaqueJugadorActual();
-            System.out.print("Jaque al jugador " + turno.getNombreTurno());
-        }
-        else{
-            turno.quitarJaqueJugadorActual();
-        }
+        gestorDeJaque.gestionarJaque(jugadorActual);
         if(gestorDeJaque.mateJugadorActual(jugadorActual)){
             establecerJaqueMate();
             System.out.print("Jaque Mate");
         }
     }
 
-    public void gestionarEnroque(){
-        gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());
-    }
+    public void gestionarEnroque(){gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());}
 
-    public void setNombreJugadorBlancas(String nombre){
-            jugadores.get(Configuracion.Jugadores.BLANCAS).setNombre(nombre);
-    }
+    public void setNombreJugadorBlancas(String nombre){jugadores.get(Configuracion.Jugadores.BLANCAS).setNombre(nombre);}
 
-    public void setNombreJugadorNegras(String nombre){
-        jugadores.get(Configuracion.Jugadores.NEGRAS).setNombre(nombre);
-    }
+    public void setNombreJugadorNegras(String nombre){jugadores.get(Configuracion.Jugadores.NEGRAS).setNombre(nombre);}
 
     public Configuracion.EstadoJuego getEstado(){return this.estado;}
 
     public String getNombreGanador(){return this.ganador;}
 
-    public String getNombreJugadorBlancas() {
-        return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
-    }
+    public String getNombreJugadorBlancas() {return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();}
 
-    public String getNombreJugadorNegras() {
-        return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
-    }
+    public String getNombreJugadorNegras() {return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();}
 
     public String getNombreJugadorActual() {return turno.getNombreTurno();}
 
     public TableroCuadrado getTablero() {return tablero;}
 
-    public ArrayList<Jugador> getJugadores() {
-        return new ArrayList<>(jugadores);
-    }
+    public ArrayList<Jugador> getJugadores() {return new ArrayList<>(jugadores);}
 
     public Configuracion.ColoresJugadores getColorJugadorActual() {return turno.getColorJugadorActual();}
 
-    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
-        return tablero.getPieza(i, j);
-    }
+    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {return tablero.getPieza(i, j);}
 
     public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
 
