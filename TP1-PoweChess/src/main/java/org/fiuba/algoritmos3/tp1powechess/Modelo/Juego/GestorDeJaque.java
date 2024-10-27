@@ -98,11 +98,11 @@ public class GestorDeJaque {
         restarMovimientosPosiblesALosReyes();
         Configuracion.ColoresJugadores colorJugadorActual = jugadorActual.getColor();
         if(jugadorActualEnJaque(colorJugadorActual)){
-            jugadorActual.estaEnJaque();
-            System.out.print("Jaque al jugador " + jugadorActual.getNombre());
+            jugadorActual.establecerJaque();
+            System.out.print("Jaque al jugador " + jugadorActual.getNombre() + "\n");
         }
         else{
-            jugadorActual.estaEnJaque();
+            jugadorActual.quitarJaque();
         }
     }
 }

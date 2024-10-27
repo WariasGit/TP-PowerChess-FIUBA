@@ -15,11 +15,6 @@ public class Juego {
     private final Turno turno;
     private final TableroCuadrado tablero;
     private String ganador;
-    private int contadorMovimientosParaTablas;
-    private int contadorMovimientosParaChequearPosiciones;
-    private int contadorMovimientosTotales;
-    private final HashMap<String, Integer> historialPosiciones;
-    private int piezasEnJuego;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
@@ -31,11 +26,6 @@ public class Juego {
         this.jugadores = jugadores;
         turno = new Turno(jugadores);
         tablero = new TableroCuadrado();
-        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        contadorMovimientosTotales = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        piezasEnJuego = Constantes.CANTIDAD_PIEZAS_INICIALES;
-        historialPosiciones = new HashMap<>();
         gestorDeTablas = new GestorDeTablas();
         gestorDeJaque = new GestorDeJaque();
         gestorDeEnroque = new GestorDeEnroque();
@@ -106,23 +96,23 @@ public class Juego {
     }
 
     private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
-        contadorMovimientosTotales++;
+        gestorDeTablas.aumentarContadorDeMovimientosTotales();
         calcularMovimientosPosiblesIniciales();
         if(piezaComida != null){
             quitarPiezaDeJuador(piezaComida);
-            restarUnaPieza();
-            reiniciarContadorMovimientoParaTablas();
-            reiniciarContadorMovimientosParaChequearPosiciones();
-            limpiarHistorialPosiciones();
+            gestorDeTablas.restarUnaPieza();
+            gestorDeTablas.reiniciarContadorMovimientoParaTablas();
+            gestorDeTablas.reiniciarContadorMovimientosParaChequearPosiciones();
+            gestorDeTablas.limpiarHistorialPosiciones();
         }else{
             gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
-            if (contadorMovimientosTotales >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
+            if (gestorDeTablas.getContadorDeMovimientosTotales() >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
                 guardarEstadoTablero();
             }
         }
         gestionarTablas();
         imprimirTablero();
-        //imprimirEstadoDebug();
+        gestorDeTablas.imprimirEstadoDebug();
     }
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
@@ -133,27 +123,16 @@ public class Juego {
         }
     }
 
-    private void restarUnaPieza() {piezasEnJuego--;}
-
-    private void reiniciarContadorMovimientosParaChequearPosiciones() {contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;}
-
-    private void limpiarHistorialPosiciones() {historialPosiciones.clear();}
-
     private void guardarEstadoTablero() {
         String estadoTablero = tablero.estadoActualTablero();
-        historialPosiciones.put(estadoTablero, historialPosiciones.getOrDefault(estadoTablero, Constantes.CERO) + Constantes.UNO);
-        contadorMovimientosParaChequearPosiciones++;
-    }
-
-    private void reiniciarContadorMovimientoParaTablas() {
-        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+        gestorDeTablas.guardarEstadoTablero(estadoTablero);
     }
 
     private void gestionarContadorMovimientosParaTablas(int fila, int columna) {
         if(movioPeon(fila, columna)){
-            reiniciarContadorMovimientoParaTablas();
+            gestorDeTablas.reiniciarContadorMovimientoParaTablas();
         } else {
-            contadorMovimientosParaTablas++;
+            gestorDeTablas.aumentarContadorDeMovimientosParaTablas();
         }
     }
 
@@ -234,24 +213,15 @@ public class Juego {
     public void actualizarMovimientosPieza(int fila, int columna) {tablero.actualizarMovimientosPieza(fila, columna);}
 
     private void gestionarTablas() {
-        Jugador jugadorActual = turno.getTurno();
-        gestorDeTablas.tablasPorAhogado(jugadorActual);
-        if(piezasEnJuego <= Constantes.MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS) {
-            gestorDeTablas.tablasPorMaterialInsuficiente(jugadores);
-        }
-        gestorDeTablas.tablasPorMovimientos(contadorMovimientosParaTablas);
-        if(contadorMovimientosParaChequearPosiciones >= Constantes.CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES) {
-            gestorDeTablas.tablasPorMovimientosRepetidos(historialPosiciones);
-        }
+        gestorDeTablas.gestionarTablas(turno.getTurno(), jugadores);
         if(gestorDeTablas.haytablas()){
             establecerTablas();
         }
     }
 
     public void gestionarJaque(){
-        Jugador jugadorActual = turno.getTurno();
-        gestorDeJaque.gestionarJaque(jugadorActual);
-        if(gestorDeJaque.mateJugadorActual(jugadorActual)){
+        gestorDeJaque.gestionarJaque(turno.getTurno());
+        if(gestorDeJaque.mateJugadorActual(turno.getTurno())){
             establecerJaqueMate();
             System.out.print("Jaque Mate");
         }
@@ -282,16 +252,6 @@ public class Juego {
     public Optional<Pieza> getPiezaActual(Integer i, Integer j) {return tablero.getPieza(i, j);}
 
     public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
-
-    public void imprimirEstadoDebug() {
-        System.out.println("----- Estado de Debug -----");
-        System.out.println("Movimientos para tablas: " + contadorMovimientosParaTablas);
-        System.out.println("Movimientos para chequear posiciones: " + contadorMovimientosParaChequearPosiciones);
-        System.out.println("Movimientos totales: " + contadorMovimientosTotales);
-        System.out.println("Tamaño del historial de posiciones: " + historialPosiciones.size());
-        System.out.println("Piezas en juego: " + piezasEnJuego);
-        System.out.println("---------------------------");
-    }
 
     private void imprimirTablero() {
         Casillero[][] casilleros = tablero.getTablero();

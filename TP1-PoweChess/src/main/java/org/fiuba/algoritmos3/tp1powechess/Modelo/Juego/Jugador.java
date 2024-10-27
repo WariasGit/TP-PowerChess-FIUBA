@@ -38,8 +38,6 @@ public class Jugador {
 
     public void quitarPiezaEnJuego(Pieza pieza) { piezasEnJuego.remove(pieza); }
 
-    public ArrayList<Pieza> getPiezasEnJuego() { return new ArrayList<>(piezasEnJuego); }
-
     public String getNombre() { return this.nombre; }
 
     public Configuracion.ColoresJugadores getColor() { return this.color; }
