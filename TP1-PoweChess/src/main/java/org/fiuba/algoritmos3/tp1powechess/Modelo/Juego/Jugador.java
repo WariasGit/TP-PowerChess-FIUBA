@@ -4,6 +4,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Jugador {
@@ -11,26 +13,26 @@ public class Jugador {
     private Boolean jaque;
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
-    private ArrayList<Configuracion.TipoPoder> poderesUsados;
-    private ArrayList<Poder> listaPoderes; //Lo tomo como una lista de enteros, para poder enlazar los botones momentaneamente
-    private Rey rey;
+    private Map<String, Integer> listaPoderes;    private Rey rey;
 
     public Jugador(Configuracion.ColoresJugadores color) {
         this.color = color;
         jaque = false;
         piezasEnJuego = new ArrayList<>();
-        poderesUsados = new ArrayList<>();
+        listaPoderes = new HashMap<>();
         cargarPoderes();
+
+
     }
 
     public void setNombre(String nombre) {this.nombre = nombre;}
 
     private void cargarPoderes() {
-        listaPoderes = new ArrayList<>();
-        listaPoderes.add(new Escudo());
-        listaPoderes.add(new Freeze());
-        listaPoderes.add(new Limpieza());
-
+        // Agregar poderes iniciales con un conteo de 1
+        listaPoderes.put("Escudo", 1);
+        listaPoderes.put("Freeze", 1);
+        listaPoderes.put("Limpieza", 1);
+        listaPoderes.put("Robar", 1);
     }
 
     public void setRey(Rey rey) {this.rey = rey;}
@@ -89,24 +91,32 @@ public class Jugador {
         return valorTotal >= Configuracion.ValorPiezas.VALOR_MINIMO_PIEZAS;
     }
 
-    public ArrayList<Poder> getListaPoderes() {return new ArrayList<>(listaPoderes);}
+    public Map<String, Integer> getListaPoderes() {
+        return this.listaPoderes;
+    }
 
     public boolean puedeUsarPoder(Poder poder) {
-        return !poderesUsados.contains(poder.getTipo());
+        String nombrePoder = poder.getNombre();
+        Integer usos = listaPoderes.get(nombrePoder);
+
+        if (usos != null && usos > 0) {
+            return true;
+        }
+        return false;
     }
 
-    public void agregarPoderUsado(Poder poder) {
-        poderesUsados.add(poder.getTipo());
+
+    public void eliminarPoderUsado(String nombrePoder) {
+        Integer usos = listaPoderes.get(nombrePoder);
+
+        if (usos != null && usos > 0) {
+            listaPoderes.put(nombrePoder, usos - 1);
+        }
     }
 
-    public void eliminarPoderUsado(Configuracion.TipoPoder tipo) {
-        System.out.println("pderes jugador: " + this.listaPoderes);
-        listaPoderes.removeIf(poder -> poder.getTipo().equals(tipo));
-    }
 
-    public void agregarPoder(Poder poder) {
-        this.listaPoderes.add(poder);
-
+    public void agregarPoder(String nombrePoder) {
+        listaPoderes.put(nombrePoder, listaPoderes.getOrDefault(nombrePoder, 0) + 1);
     }
 
 

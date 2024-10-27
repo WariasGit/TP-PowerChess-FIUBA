@@ -14,6 +14,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ControladorSecundario {
     @FXML public FlowPane poderesNegras;
@@ -36,30 +37,48 @@ public class ControladorSecundario {
     }
 
     private void cargarPoderesBlancas(Jugador jugador) {
-        //System.out.println("Cargando blancas");
-        for(Poder poder: jugador.getListaPoderes()){
-            Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(this::gestorPoderes);
-            poderesBlancas.getChildren().add(botonPoder);
+        // Cargando poderes de los jugadores blancos
+        for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
+            String nombrePoder = entry.getKey();
+            int cantidadUsos = entry.getValue();
+
+            // Aquí necesitas un método para obtener el objeto Poder
+            if (cantidadUsos > 0) {
+                Button botonPoder = new Button(nombrePoder + " (" + cantidadUsos + ")");
+                botonPoder.setOnAction(this::gestorPoderes);
+                poderesBlancas.getChildren().add(botonPoder); // Cambié a poderesBlancas
+            }
         }
     }
 
     private void cargarPoderesNegras(Jugador jugador) {
-        //System.out.println("Cargando negras");
-        for(Poder poder: jugador.getListaPoderes()){
-            Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(this::gestorPoderes);
-            poderesNegras.getChildren().add(botonPoder);
+        // Cargando poderes de los jugadores negros
+        for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
+            String nombrePoder = entry.getKey();
+            int cantidadUsos = entry.getValue();
+
+            if (cantidadUsos > 0) {
+                Button botonPoder = new Button( nombrePoder + " (" + cantidadUsos + ")");
+                botonPoder.setOnAction(this::gestorPoderes);
+                poderesNegras.getChildren().add(botonPoder);
+            }
         }
     }
 
     private void gestorPoderes(javafx.event.ActionEvent actionEvent) {
         Button boton = (Button) actionEvent.getSource();
-        String nombrePoder = boton.getText();
+        String nombrePoder = boton.getText().split(" \\(")[0].trim(); // 'Escudo', 'Freeze', etc.
+
         EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
-        vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
-        System.out.println("Poder: " + nombrePoder);
+
+        if (eventoPoder != null) {
+            vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
+            System.out.println("Poder: " + nombrePoder);
+        } else {
+            System.out.println("Poder no encontrado: " + nombrePoder);
+        }
     }
+
 
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){
         String NombreJugadorTablas = "";

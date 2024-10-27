@@ -62,15 +62,16 @@ public class Configuracion {
     }
 
     private static Map<String, EventType<EventoPoder>> mapaEventos = new HashMap<>();
-    static{
-        mapaEventos.put(CaracteristicasPoderes.DOBLE_JUEGO, EventoPoder.DOBLE_JUEGO);
-        mapaEventos.put(CaracteristicasPoderes.ESCUDO, EventoPoder.ESCUDO);
-        mapaEventos.put(CaracteristicasPoderes.EVOLUCION, EventoPoder.EVOLUCION);
-        mapaEventos.put(CaracteristicasPoderes.FREEZE, EventoPoder.FREEZE);
-        mapaEventos.put(CaracteristicasPoderes.LIMPIEZA, EventoPoder.LIMPIEZA);
-        mapaEventos.put(CaracteristicasPoderes.ROBAR, EventoPoder.ROBAR);
-        mapaEventos.put(CaracteristicasPoderes.VUELO, EventoPoder.VUELO);
+    static {
+        mapaEventos.put("Doble Juego", EventoPoder.DOBLE_JUEGO);
+        mapaEventos.put("Escudo", EventoPoder.ESCUDO);
+        mapaEventos.put("Evolución", EventoPoder.EVOLUCION);
+        mapaEventos.put("Freeze", EventoPoder.FREEZE);
+        mapaEventos.put("Limpieza", EventoPoder.LIMPIEZA);
+        mapaEventos.put("Robar", EventoPoder.ROBAR);
+        mapaEventos.put("Vuelo", EventoPoder.VUELO);
     }
+
 
     public static EventType<EventoPoder> getEventoPoder(String nombrePoder) {
         return mapaEventos.get(nombrePoder);

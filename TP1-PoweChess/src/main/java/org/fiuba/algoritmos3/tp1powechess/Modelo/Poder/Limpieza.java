@@ -10,7 +10,6 @@ public class Limpieza extends Poder {
             super("Limpieza", -1, Configuracion.CategoriaPoder.ACCION, Configuracion.TipoPoder.LIMPIEZA, Configuracion.AplicacionPoder.AMBOS);
     }
 
-
     public void aplicarPoder(Pieza pieza) {
         pieza.desactivarPoder();
     }

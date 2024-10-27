@@ -100,10 +100,6 @@ public abstract class Pieza implements Movible {
     }
 
     public boolean tieneMovimientosPosibles() {
-        if (this.tieneFreeze()) {
-            return false;
-        }
-
         return !movimientosPosibles.isEmpty();
     }
 
@@ -125,13 +121,10 @@ public abstract class Pieza implements Movible {
 
     //esto se deberia llamar directamente de poder
     public boolean aplicarPoder(Poder poder) {
-
         if (!this.verificarAplicacionPoder(poder)) {
            return false;
        }
        poder.aplicarPoder(this);
-        //this.poderActual = poder;
-
         return true;
     }
 
