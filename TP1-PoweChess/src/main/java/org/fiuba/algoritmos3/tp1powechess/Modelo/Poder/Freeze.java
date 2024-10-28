@@ -8,8 +8,10 @@ public class Freeze extends Poder {
         super("Freeze", 3, Configuracion.CategoriaPoder.DURACION, Configuracion.TipoPoder.FREEZE, Configuracion.AplicacionPoder.RIVAL);
     }
 
-    public void aplicarPoder(Pieza pieza) {
+    public String  accionarPoder(Pieza pieza) {
         pieza.setSePuedeMover(false);
         pieza.setPoder(this);
+        return this.getNombre();
+
     }
 }

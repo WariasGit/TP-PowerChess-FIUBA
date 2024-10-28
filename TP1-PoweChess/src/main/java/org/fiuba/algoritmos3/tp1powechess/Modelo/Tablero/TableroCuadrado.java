@@ -1,6 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Vuelo;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;

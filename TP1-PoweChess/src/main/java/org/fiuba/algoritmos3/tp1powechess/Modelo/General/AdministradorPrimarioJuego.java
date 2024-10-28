@@ -117,12 +117,10 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root.addEventHandler(EventoJuego.RENDIRSE_EVENT, juegoController);
         root.addEventHandler(EventoJuego.VOLVER_AL_MENU, this);
         root.addEventHandler(EventoJuego.TERMINAR_PARTIDA, this);
-        root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
         root.addEventHandler(EventoPoder.ESCUDO, evento -> gestorPoderes.activarEscudo());
         root.addEventHandler(EventoPoder.FREEZE, evento -> gestorPoderes.activarFreeze());
         root.addEventHandler(EventoPoder.LIMPIEZA, evento -> gestorPoderes.activarLimpieza());
         root.addEventHandler(EventoPoder.ROBAR, evento -> gestorPoderes.activarRobar());
-        root.addEventHandler(EventoPoder.VUELO, evento -> gestorPoderes.activarVuelo());
         Scene scene = new Scene(root, Configuracion.TamanioVentana.ANCHO, Configuracion.TamanioVentana.ALTO);
         stage.setScene(scene);
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);

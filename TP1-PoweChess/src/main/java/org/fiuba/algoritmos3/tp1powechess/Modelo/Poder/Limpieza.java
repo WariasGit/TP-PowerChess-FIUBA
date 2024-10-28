@@ -10,10 +10,11 @@ public class Limpieza extends Poder {
             super("Limpieza", -1, Configuracion.CategoriaPoder.ACCION, Configuracion.TipoPoder.LIMPIEZA, Configuracion.AplicacionPoder.AMBOS);
     }
 
-    public void aplicarPoder(Pieza pieza) {
-        pieza.desactivarPoder();
+    public String accionarPoder(Pieza pieza) {
+        String nombrePoderDesactivado = pieza.desactivarPoder();
         pieza.setPuedeVolar(false);
         pieza.setSePuedeMover(true);
         pieza.setSePuedeCapturar(true);
+        return nombrePoderDesactivado;
     }
 }

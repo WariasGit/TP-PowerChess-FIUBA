@@ -40,8 +40,7 @@ public class GestorPoderes {
         this.controladorTablero = controladorTablero;
     }
 
-
-    public void verificarAplicacionPoder(Poder poder) {
+    public String verificarAplicacionPoder(Poder poder) {
         Optional<Pieza> optionalPieza = juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
         Pieza pieza;
 
@@ -49,7 +48,7 @@ public class GestorPoderes {
             pieza = optionalPieza.get();
         } else {
             System.out.println("No hay pieza en la posición seleccionada.");
-            return;
+            return null;
         }
         Turno turno = this.juego.getTurno();
         Jugador jugador = turno.getTurno();
@@ -61,55 +60,67 @@ public class GestorPoderes {
         Configuracion.AplicacionPoder tipoPiezaAplicable = poder.getTipoPiezaAplicable();
         if (tipoPiezaAplicable == Configuracion.AplicacionPoder.PROPIA && !esPiezaPropia) {
             System.out.println("El poder solo se puede aplicar en piezas propias.");
-            return;
+            return null;
         } else if (tipoPiezaAplicable == Configuracion.AplicacionPoder.RIVAL && esPiezaPropia) {
             System.out.println("El poder solo se puede aplicar en piezas del oponente.");
-            return;
+            return null;
         }
 
         // Verificar si el jugador ya usó este poder antes de aplicarlo
         if (!jugador.puedeUsarPoder(poder.getNombre())) {
             System.out.println("El poder ya fue utilizado.");
-            return;
+            return null;
         }
 
         // Si la pieza no puede aplicar el poder (por ejemplo, si es un rey, o ya tiene poder
-        if (!pieza.aplicarPoder(poder)) {
+        if (!pieza.verificarAplicacionPoder(poder)) {
             System.out.println("No se puede aplicar el poder a esta pieza");
-            return;
+            return null;
         }
 
-        // Si el poder fue aplicado correctamente, se agrega a la lista de poderes usados
-        jugador.eliminarPoderUsado(poder.getNombre());
-        System.out.println("Poder aplicado correctamente.");
+        String poderAccionado = pieza.aplicarPoder(poder);
+
+        if (poderAccionado != null) {
+            jugador.eliminarPoderUsado(poder.getNombre());
+        }
+        return poderAccionado;
+
     }
 
-    public void activarDobleJuego() {
-        DobleTurno doble = new DobleTurno();
-        verificarAplicacionPoder(doble);
-    }
     public void activarEscudo() {
             Escudo escudo = new Escudo();
-            verificarAplicacionPoder(escudo);
+            if (verificarAplicacionPoder(escudo) != null) {
+                System.out.println("ESCUDO ACCIONADO CORRECTAMENTE");
+            } else {
+                System.out.println("NO se pudo accionar el poder");
+            }
     }
 
     public void activarFreeze() {
         Freeze freeze = new Freeze();
-        verificarAplicacionPoder(freeze);
-    }
+        if (verificarAplicacionPoder(freeze) != null) {
+            System.out.println("FREEZE ACCIONADO CORRECTAMENTE");
+        } else {
+            System.out.println("NO se pudo accionar el poder");
+        }    }
 
     public void activarLimpieza() {
         Limpieza limpieza = new Limpieza();
-        verificarAplicacionPoder(limpieza);
+        String poder = verificarAplicacionPoder(limpieza);
+        if (poder != null) {
+            System.out.println("SE LIMPIO EL PODER DE " + poder);
+        } else {
+            System.out.println("No se pudo accionar el poder");
+        }
     }
+
     public void activarRobar() {
         Robar robar = new Robar(juego.getTurno());
-        verificarAplicacionPoder(robar);
+        String poder = verificarAplicacionPoder(robar);
+        if (poder != null) {
+            System.out.println("SE ROBO EL PODER DE " + poder);
+        } else {
+            System.out.println("No se pudo accionar el poder");
+        }
     }
-
-    public void activarVuelo() {
-        Vuelo vuelo = new Vuelo();
-        verificarAplicacionPoder(vuelo);
     }
-
-}

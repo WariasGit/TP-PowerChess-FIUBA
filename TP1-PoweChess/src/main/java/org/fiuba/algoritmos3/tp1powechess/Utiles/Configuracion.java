@@ -36,11 +36,8 @@ public class Configuracion {
     public enum TipoPoder {
         FREEZE,
         ESCUDO,
-        VUELO,
         LIMPIEZA,
         ROBAR,
-        DOBLETURNO,
-
     }
 
     public static class PosicionInicialReyes{
@@ -53,7 +50,6 @@ public class Configuracion {
     public enum CategoriaPoder {
         DURACION,
         ACCION,
-        EVOLUCION
     }
 
     public enum AplicacionPoder {
@@ -64,34 +60,14 @@ public class Configuracion {
 
     private static Map<String, EventType<EventoPoder>> mapaEventos = new HashMap<>();
     static {
-        mapaEventos.put("Doble", EventoPoder.DOBLE_JUEGO);
         mapaEventos.put("Escudo", EventoPoder.ESCUDO);
-        mapaEventos.put("Evolución", EventoPoder.EVOLUCION);
         mapaEventos.put("Freeze", EventoPoder.FREEZE);
         mapaEventos.put("Limpieza", EventoPoder.LIMPIEZA);
         mapaEventos.put("Robar", EventoPoder.ROBAR);
-        mapaEventos.put("Vuelo", EventoPoder.VUELO);
     }
-
 
     public static EventType<EventoPoder> getEventoPoder(String nombrePoder) {
         return mapaEventos.get(nombrePoder);
-    }
-
-
-    public class CaracteristicasPoderes{
-        public static final int DURACION_ESCUDO = 3;
-        public static final int DURACION_FREEZE = 2;
-        public static final int ACCION_LIMPIEZA = 1;
-        public static final int[] PRIMER_MOVIMIENTO_EXTRA = new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA}; // Diagonal derecha arriba
-        public static final int[] SEGUNDO_MOVIMIENTO_EXTRA = new int[]{Constantes.UNO_EN_FILA, Constantes.CERO_EN_COLUMNA}; //Abajo
-        public static final String DOBLE_JUEGO = "Doble";
-        public static final String ESCUDO = "Escudo";
-        public static final String EVOLUCION = "Evolucion";
-        public static final String FREEZE = "Freeze";
-        public static final String LIMPIEZA = "Limpieza";
-        public static final String ROBAR = "Robar";
-        public static final String VUELO = "Vuelo";
     }
 
     public static class TamanioVentana{

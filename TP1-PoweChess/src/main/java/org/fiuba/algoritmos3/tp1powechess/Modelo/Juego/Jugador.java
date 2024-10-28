@@ -115,8 +115,9 @@ public class Jugador {
     }
 
     public boolean puedeUsarPoder(String nombrePoder) {
-        return listaPoderes.getOrDefault(nombrePoder, 0) > 0; // Verifica si se puede usar el poder
+        return listaPoderes.getOrDefault(nombrePoder, 0) > 0;
     }
+
 
 
 }

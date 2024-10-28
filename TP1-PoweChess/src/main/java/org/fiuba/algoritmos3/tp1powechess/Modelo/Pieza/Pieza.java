@@ -3,11 +3,8 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Capturable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Voladora;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Escudo;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Freeze;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -15,7 +12,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
 
-public abstract class Pieza implements Movible, Capturable, Voladora {
+public abstract class Pieza implements Movible, Capturable {
     protected Configuracion.ColoresJugadores color;
     protected Coordenada2D posicionActual;
     protected Coordenada2D posicionAnterior;
@@ -125,13 +122,8 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
         return caracterFEN;
     }
 
-    //esto se deberia llamar directamente de poder
-    public boolean aplicarPoder(Poder poder) {
-        if (!this.verificarAplicacionPoder(poder)) {
-           return false;
-       }
-       poder.aplicarPoder(this);
-        return true;
+    public String aplicarPoder(Poder poder) {
+        return poder.accionarPoder(this);
     }
 
     public void setPoder(Poder poder) {
@@ -148,11 +140,16 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
         return !this.tienePoderActivo();
     }
 
-    public void desactivarPoder() {
+    public String desactivarPoder() {
+        String nombrePoderActual = null;
+        if (poderActual != null) {
+            nombrePoderActual = poderActual.getNombre();
+        }
         poderActual = null;
         this.sePuedeMover = true;
         this.puedeVolar = false;
         this.sePuedeCapturar = true;
+        return nombrePoderActual;
     }
 
     public boolean tieneEscudo() {

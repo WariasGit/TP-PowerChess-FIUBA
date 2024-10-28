@@ -19,8 +19,7 @@ public abstract class Poder {
         this.aplicacion = aplicacion;
     }
 
-
-    public abstract void aplicarPoder(Pieza pieza);
+    public abstract String accionarPoder(Pieza pieza);
 
     public Configuracion.AplicacionPoder getTipoPiezaAplicable() {
         return this.aplicacion;
@@ -37,7 +36,6 @@ public abstract class Poder {
     public void reducirDuracionoDesactivar(Pieza pieza) {
         if (this.duracion > 0) {
             this.duracion--;
-            return;
         }
     }
 
