@@ -19,15 +19,6 @@ public abstract class Poder {
         this.aplicacion = aplicacion;
     }
 
-    //no se si es necesario verificar la categoria
-    public void reducirDuracionoDesactivar(Pieza pieza) {
-        if (this.categoria == Configuracion.CategoriaPoder.DURACION && this.duracion > 0) {
-            this.duracion--;
-        }
-        else {
-            pieza.desactivarPoder();
-        }
-    }
 
     public abstract void aplicarPoder(Pieza pieza);
 
@@ -42,4 +33,12 @@ public abstract class Poder {
     public String getNombre() {
         return this.nombre;
     }
+
+    public void reducirDuracionoDesactivar(Pieza pieza) {
+        if (this.duracion > 0) {
+            this.duracion--;
+            return;
+        }
+    }
+
 }

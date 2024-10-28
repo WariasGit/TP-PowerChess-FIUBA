@@ -55,10 +55,6 @@ public class Turno {
         return getTurno().getNombre();
     }
 
-    public ArrayList<Pieza> getPiezasJugadorActual() {
-        return getTurno().getPiezasEnJuego();
-    }
-
     public Boolean estaEnJaqueJugadorActual() {
         return getTurno().estaEnJaque();
     }
@@ -88,5 +84,6 @@ public class Turno {
         }
     }
 
-
 }
+
+

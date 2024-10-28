@@ -12,5 +12,8 @@ public class Limpieza extends Poder {
 
     public void aplicarPoder(Pieza pieza) {
         pieza.desactivarPoder();
+        pieza.setPuedeVolar(false);
+        pieza.setSePuedeMover(true);
+        pieza.setSePuedeCapturar(true);
     }
 }

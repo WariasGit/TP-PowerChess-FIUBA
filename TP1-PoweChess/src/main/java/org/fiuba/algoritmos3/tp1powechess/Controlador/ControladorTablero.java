@@ -155,11 +155,12 @@ public class ControladorTablero{
     }
 
     private void manejarSegundoClick(int fila, int columna) {
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
             gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
-                moverPieza(fila, columna);
+                    moverPieza(fila, columna);
                 gestionarSiHayEnroque();
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
             } else {
@@ -223,6 +224,8 @@ public class ControladorTablero{
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
     }
+
+
 
     public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
 

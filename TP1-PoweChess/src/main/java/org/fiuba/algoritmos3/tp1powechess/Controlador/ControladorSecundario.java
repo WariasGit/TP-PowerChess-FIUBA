@@ -2,6 +2,7 @@ package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -35,43 +36,42 @@ public class ControladorSecundario {
     }
 
     private void cargarPoderesBlancas(Jugador jugador) {
-        // Cargando poderes de los jugadores blancos
+        poderesBlancas.getChildren().clear(); // Limpiar antes de recargar
         for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
             String nombrePoder = entry.getKey();
             int cantidadUsos = entry.getValue();
-
-            // Aquí necesitas un método para obtener el objeto Poder
             if (cantidadUsos > 0) {
                 Button botonPoder = new Button(nombrePoder + " (" + cantidadUsos + ")");
                 botonPoder.setOnAction(this::gestorPoderes);
-                poderesBlancas.getChildren().add(botonPoder); // Cambié a poderesBlancas
+                poderesBlancas.getChildren().add(botonPoder);
             }
         }
     }
 
     private void cargarPoderesNegras(Jugador jugador) {
-        // Cargando poderes de los jugadores negros
+        poderesNegras.getChildren().clear(); // Limpiar antes de recargar
         for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
             String nombrePoder = entry.getKey();
             int cantidadUsos = entry.getValue();
-
             if (cantidadUsos > 0) {
-                Button botonPoder = new Button( nombrePoder + " (" + cantidadUsos + ")");
+                Button botonPoder = new Button(nombrePoder + " (" + cantidadUsos + ")");
                 botonPoder.setOnAction(this::gestorPoderes);
                 poderesNegras.getChildren().add(botonPoder);
             }
         }
     }
 
+
     private void gestorPoderes(javafx.event.ActionEvent actionEvent) {
         Button boton = (Button) actionEvent.getSource();
         String nombrePoder = boton.getText().split(" \\(")[0].trim(); // 'Escudo', 'Freeze', etc.
 
         EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
-
         if (eventoPoder != null) {
             vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
             System.out.println("Poder: " + nombrePoder);
+            cargarPoderes();
+
         } else {
             System.out.println("Poder no encontrado: " + nombrePoder);
         }

@@ -119,7 +119,6 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root.addEventHandler(EventoJuego.TERMINAR_PARTIDA, this);
         root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
         root.addEventHandler(EventoPoder.ESCUDO, evento -> gestorPoderes.activarEscudo());
-        root.addEventHandler(EventoPoder.EVOLUCION, evento -> gestorPoderes.activarEvolucion());
         root.addEventHandler(EventoPoder.FREEZE, evento -> gestorPoderes.activarFreeze());
         root.addEventHandler(EventoPoder.LIMPIEZA, evento -> gestorPoderes.activarLimpieza());
         root.addEventHandler(EventoPoder.ROBAR, evento -> gestorPoderes.activarRobar());

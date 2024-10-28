@@ -26,8 +26,7 @@ public class Robar extends Poder{
             int cantidad = entry.getValue();
 
             if (cantidad > 0 && !nombrePoder.equals("Robar")) {
-                String poderRobado = nombrePoder;
-                jugador.agregarPoder(poderRobado);
+                jugador.agregarPoder(nombrePoder); // Se añade a la misma lista
                 oponente.eliminarPoderUsado(nombrePoder);
 
                 System.out.println("Poder robado: " + nombrePoder);

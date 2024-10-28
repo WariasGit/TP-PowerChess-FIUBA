@@ -41,20 +41,9 @@ public class GestorPoderes {
     }
 
 
-    private boolean esPiezaPropia(Optional<Pieza> pieza) {
-        return pieza.isPresent() && pieza.get().getColor().equals(juego.getColorJugadorActual());
-    }
-
-    private boolean esPiezaOponente(Optional<Pieza> pieza) {
-        return pieza.isPresent() && !pieza.get().getColor().equals(juego.getColorJugadorActual());
-    }
-
-    public void activarDobleJuego() {System.out.println("Activando doble Juego");}
-
     public void verificarAplicacionPoder(Poder poder) {
         Optional<Pieza> optionalPieza = juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
         Pieza pieza;
-
 
         if (optionalPieza.isPresent()) {
             pieza = optionalPieza.get();
@@ -62,7 +51,6 @@ public class GestorPoderes {
             System.out.println("No hay pieza en la posición seleccionada.");
             return;
         }
-
         Turno turno = this.juego.getTurno();
         Jugador jugador = turno.getTurno();
 
@@ -79,9 +67,8 @@ public class GestorPoderes {
             return;
         }
 
-
         // Verificar si el jugador ya usó este poder antes de aplicarlo
-        if (!jugador.puedeUsarPoder(poder)) {
+        if (!jugador.puedeUsarPoder(poder.getNombre())) {
             System.out.println("El poder ya fue utilizado.");
             return;
         }
@@ -95,14 +82,15 @@ public class GestorPoderes {
         // Si el poder fue aplicado correctamente, se agrega a la lista de poderes usados
         jugador.eliminarPoderUsado(poder.getNombre());
         System.out.println("Poder aplicado correctamente.");
-        jugador.eliminarPoderUsado(poder.getNombre());
-
     }
 
+    public void activarDobleJuego() {
+        DobleTurno doble = new DobleTurno();
+        verificarAplicacionPoder(doble);
+    }
     public void activarEscudo() {
-
             Escudo escudo = new Escudo();
-              verificarAplicacionPoder(escudo);
+            verificarAplicacionPoder(escudo);
     }
 
     public void activarFreeze() {
@@ -118,7 +106,10 @@ public class GestorPoderes {
         Robar robar = new Robar(juego.getTurno());
         verificarAplicacionPoder(robar);
     }
-    public void activarEvolucion() {System.out.println("Activando Evolucion");}
 
-    public void activarVuelo() {System.out.println("Activando Vuelo");}
+    public void activarVuelo() {
+        Vuelo vuelo = new Vuelo();
+        verificarAplicacionPoder(vuelo);
+    }
+
 }

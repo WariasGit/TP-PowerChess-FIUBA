@@ -13,7 +13,8 @@ public class Jugador {
     private Boolean jaque;
     private String nombre;
     ArrayList<Pieza> piezasEnJuego;
-    private Map<String, Integer> listaPoderes;    private Rey rey;
+    private Map<String, Integer> listaPoderes;
+    private Rey rey;
 
     public Jugador(Configuracion.ColoresJugadores color) {
         this.color = color;
@@ -21,14 +22,11 @@ public class Jugador {
         piezasEnJuego = new ArrayList<>();
         listaPoderes = new HashMap<>();
         cargarPoderes();
-
-
     }
 
     public void setNombre(String nombre) {this.nombre = nombre;}
 
     private void cargarPoderes() {
-        // Agregar poderes iniciales con un conteo de 1
         listaPoderes.put("Escudo", 1);
         listaPoderes.put("Freeze", 1);
         listaPoderes.put("Limpieza", 1);
@@ -95,28 +93,29 @@ public class Jugador {
         return this.listaPoderes;
     }
 
-    public boolean puedeUsarPoder(Poder poder) {
-        String nombrePoder = poder.getNombre();
-        Integer usos = listaPoderes.get(nombrePoder);
-
-        if (usos != null && usos > 0) {
-            return true;
-        }
-        return false;
-    }
-
 
     public void eliminarPoderUsado(String nombrePoder) {
+        System.out.println("ANTES: " + listaPoderes);
+
         Integer usos = listaPoderes.get(nombrePoder);
 
         if (usos != null && usos > 0) {
-            listaPoderes.put(nombrePoder, usos - 1);
+            listaPoderes.put(nombrePoder, usos - 1); // Decrementar el uso
+            System.out.println("DESPUES: " + listaPoderes);
+
+        }
+        if (listaPoderes.get(nombrePoder) == 0){
+            listaPoderes.remove(nombrePoder);
+            System.out.println("DESPUES2: " + listaPoderes);
+
         }
     }
-
-
     public void agregarPoder(String nombrePoder) {
-        listaPoderes.put(nombrePoder, listaPoderes.getOrDefault(nombrePoder, 0) + 1);
+        listaPoderes.put(nombrePoder, listaPoderes.getOrDefault(nombrePoder, 0) + 1); // Incrementar el uso
+    }
+
+    public boolean puedeUsarPoder(String nombrePoder) {
+        return listaPoderes.getOrDefault(nombrePoder, 0) > 0; // Verifica si se puede usar el poder
     }
 
 

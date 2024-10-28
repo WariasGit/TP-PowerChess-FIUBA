@@ -39,6 +39,7 @@ public class Configuracion {
         VUELO,
         LIMPIEZA,
         ROBAR,
+        DOBLETURNO,
 
     }
 
@@ -63,7 +64,7 @@ public class Configuracion {
 
     private static Map<String, EventType<EventoPoder>> mapaEventos = new HashMap<>();
     static {
-        mapaEventos.put("Doble Juego", EventoPoder.DOBLE_JUEGO);
+        mapaEventos.put("Doble", EventoPoder.DOBLE_JUEGO);
         mapaEventos.put("Escudo", EventoPoder.ESCUDO);
         mapaEventos.put("Evolución", EventoPoder.EVOLUCION);
         mapaEventos.put("Freeze", EventoPoder.FREEZE);
@@ -84,7 +85,7 @@ public class Configuracion {
         public static final int ACCION_LIMPIEZA = 1;
         public static final int[] PRIMER_MOVIMIENTO_EXTRA = new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA}; // Diagonal derecha arriba
         public static final int[] SEGUNDO_MOVIMIENTO_EXTRA = new int[]{Constantes.UNO_EN_FILA, Constantes.CERO_EN_COLUMNA}; //Abajo
-        public static final String DOBLE_JUEGO = "Doble_juego";
+        public static final String DOBLE_JUEGO = "Doble";
         public static final String ESCUDO = "Escudo";
         public static final String EVOLUCION = "Evolucion";
         public static final String FREEZE = "Freeze";

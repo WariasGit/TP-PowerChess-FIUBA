@@ -1,7 +1,9 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Capturable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Voladora;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Escudo;
@@ -13,7 +15,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
 
-public abstract class Pieza implements Movible {
+public abstract class Pieza implements Movible, Capturable, Voladora {
     protected Configuracion.ColoresJugadores color;
     protected Coordenada2D posicionActual;
     protected Coordenada2D posicionAnterior;
@@ -28,12 +30,20 @@ public abstract class Pieza implements Movible {
     protected int valor;
     protected Boolean movimientoDoble;
     protected Poder poderActual;
+    protected boolean sePuedeMover;
+    protected boolean sePuedeCapturar;
+    protected boolean puedeVolar;
+    private boolean dobleMovimientoActivo = false;
+
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
         this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
         this.seHaMovido = false;
+        this.sePuedeMover = true;
+        this.sePuedeCapturar = true;
+        this.puedeVolar = false;
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -72,10 +82,6 @@ public abstract class Pieza implements Movible {
 
     public int getMaxDistanciaDeAmenaza() {
         return maxDistanciaDeAmenaza;
-    }
-
-    public Poder getPoderActual() {
-        return poderActual;
     }
 
     public ArrayList<int[]> getDireccionesDeMovimiento() {
@@ -144,11 +150,11 @@ public abstract class Pieza implements Movible {
 
     public void desactivarPoder() {
         poderActual = null;
+        this.sePuedeMover = true;
+        this.puedeVolar = false;
+        this.sePuedeCapturar = true;
     }
 
-    public boolean tieneFreeze() {
-        return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE);
-    }
     public boolean tieneEscudo() {
         return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO);
     }
@@ -158,7 +164,7 @@ public abstract class Pieza implements Movible {
     }
 
     public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
-        if (this.tieneFreeze()) {
+        if (!this.sePuedeMover()) {
             return false;
         }
         for(int[] movimiento : movimientosPosibles) {
@@ -179,4 +185,34 @@ public abstract class Pieza implements Movible {
             this.poderActual.reducirDuracionoDesactivar(this);
         }
     }
+
+    public boolean puedeSerCapturada() {
+        return this.sePuedeCapturar;
+    }
+
+    public boolean puedeVolar() {
+        return this.puedeVolar;
+    }
+
+    public boolean sePuedeMover() {
+        return this.sePuedeMover;
+    }
+
+    public void setPuedeVolar(boolean puedeVolar) {
+        this.puedeVolar = puedeVolar;
+    }
+
+    public void setSePuedeMover(boolean puedeMoverse) {
+        this.sePuedeMover = puedeMoverse;
+    }
+
+    public void setSePuedeCapturar(boolean sePuedeCapturar) {
+        this.sePuedeCapturar = sePuedeCapturar;
+    }
+
+    public void activarDobleMovimiento() {
+        this.dobleMovimientoActivo = true;
+    }
+
+
 }

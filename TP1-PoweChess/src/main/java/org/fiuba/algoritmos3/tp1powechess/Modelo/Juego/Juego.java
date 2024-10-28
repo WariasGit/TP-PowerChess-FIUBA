@@ -25,6 +25,7 @@ public class Juego {
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
     private Pieza ultimaPiezaCapturada;
+    private Pieza piezaConDobleMovimiento; 
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
