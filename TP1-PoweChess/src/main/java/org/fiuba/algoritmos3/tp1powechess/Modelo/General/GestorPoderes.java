@@ -91,6 +91,7 @@ public class GestorPoderes {
             Escudo escudo = new Escudo();
             if (verificarAplicacionPoder(escudo) != null) {
                 System.out.println("ESCUDO ACCIONADO CORRECTAMENTE");
+                controladorTablero.agregarEscudo();
             } else {
                 System.out.println("NO se pudo accionar el poder");
             }
@@ -100,6 +101,7 @@ public class GestorPoderes {
         Freeze freeze = new Freeze();
         if (verificarAplicacionPoder(freeze) != null) {
             System.out.println("FREEZE ACCIONADO CORRECTAMENTE");
+            controladorTablero.agregarCongelado();
         } else {
             System.out.println("NO se pudo accionar el poder");
         }    }
