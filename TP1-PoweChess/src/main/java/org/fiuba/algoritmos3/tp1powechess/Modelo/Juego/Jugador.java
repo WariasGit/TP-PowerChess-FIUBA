@@ -48,6 +48,8 @@ public class Jugador {
         return jaque;
     }
 
+    public Boolean elReyTieneMovimientosPosibles(){return rey.tieneMovimientosPosibles();}
+
     public void establecerJaque(){jaque = true;}
 
     public void quitarJaque(){jaque = false;}

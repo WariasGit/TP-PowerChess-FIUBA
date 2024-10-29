@@ -70,10 +70,12 @@ public class Juego {
                 gestionarJaque();
                 //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
                 if(turno.estaEnJaqueJugadorActual()){
+                    System.out.println("Se revierte el movimiento \n");
                     revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
                 }
                 else{
                     aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
+                    System.out.println("Se se puede mover \n");
                     sePuedeMover = true;
                 }
             }
@@ -203,7 +205,7 @@ public class Juego {
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
                     Coordenada2D posicionActual = new Coordenada2D(fila, columna);
-                    pieza.setPosicionActual(posicionActual);
+                    pieza.setPosicionInicial(posicionActual);
                     guardarPiezaJugador(pieza);
                 }
                 columna++;

@@ -35,32 +35,13 @@ public class Torre extends Pieza implements Enrocable {
         this.estrategiaDeMovimiento = new MovimientoNormal();
     }
 
-    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
-        for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
-            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
-        for (int[] direccion : direccionesDeMovimiento) {
-            if ((direccion[0] == 0 && difX == 0 && difY * direccion[1] > 0) ||  // Movimiento vertical
-                    (direccion[1] == 0 && difY == 0 && difX * direccion[0] > 0)) {  // Movimiento horizontal
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado, int row) {
         tableroCuadrado.removePieza(posicionActual);
         Coordenada2D nuevaPosicion = new Coordenada2D(row,5);
         tableroCuadrado.setPieza(nuevaPosicion,this);
-        this.actualizarPosicion(nuevaPosicion);
+        System.out.println("Actualizo la posicion de la torre");
+        System.out.println("Posicion actual: " + posicionActual.getRow() + "," + posicionActual.getCol());
+        System.out.println("Posicion nueva: " + nuevaPosicion.getRow() + nuevaPosicion.getCol() + "\n");
         enrocado = true;
     }
 
@@ -68,7 +49,9 @@ public class Torre extends Pieza implements Enrocable {
         tableroCuadrado.removePieza(posicionActual);
         Coordenada2D nuevaPosicion = new Coordenada2D(row,3);
         tableroCuadrado.setPieza(nuevaPosicion,this);
-        this.actualizarPosicion(nuevaPosicion);
+        System.out.println("Actualizo la posicion de la torre");
+        System.out.println("Posicion actual: " + posicionActual.getRow() + "," + posicionActual.getCol());
+        System.out.println("Posicion nueva: " + nuevaPosicion.getRow() + nuevaPosicion.getCol() + "\n");
         enrocado = true;
     }
 

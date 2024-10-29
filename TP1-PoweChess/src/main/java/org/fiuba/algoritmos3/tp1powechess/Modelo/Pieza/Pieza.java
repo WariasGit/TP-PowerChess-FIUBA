@@ -44,11 +44,13 @@ public abstract class Pieza implements Movible {
 
     public boolean seHaMovido() {return seHaMovido;}
 
-    public void setPosicionActual(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
+    public void setPosicionInicial(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
 
     public void actualizarPosicion(Coordenada2D posicionNueva) {
+        System.out.println("posiciones antes de actualizar: " + posicionAnterior.getRow() + posicionAnterior.getCol() + posicionActual.getRow() + posicionActual.getCol());
         this.posicionAnterior = this.posicionActual;
         this.posicionActual = posicionNueva;
+        System.out.println("posiciones despues de actualizar: " + posicionAnterior.getRow() + posicionAnterior.getCol() + posicionActual.getRow() + posicionActual.getCol());
     }
 
     public void marcarComoMovida() {

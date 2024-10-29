@@ -160,6 +160,8 @@ public class ControladorTablero{
 
     private void moverPieza(int destinoFila, int destinoColumna) {
         // Obtener la celda de origen y destino
+        System.out.println("La posicion de origen es: " + posicionOrigenFila + ", " + posicionOrigenColumna);
+        System.out.println("La posicion de destino es: " + destinoFila + ", " + destinoColumna);
         StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
         StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
         // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
