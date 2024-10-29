@@ -1,4 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -24,6 +25,7 @@ public class Juego {
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
     private Pieza ultimaPiezaCapturada;
+    private Pieza piezaConDobleMovimiento; 
 
 
     public Juego(List<Jugador> jugadores) throws IOException {
@@ -356,6 +358,10 @@ public class Juego {
             System.out.print(col + "  ");
         }
         System.out.println();
+    }
+
+    public Turno getTurno() {
+        return this.turno;
     }
 }
 

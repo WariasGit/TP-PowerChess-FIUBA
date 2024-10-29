@@ -29,6 +29,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     //Reproductor reproductor = new Reproductor();
 
     public AdministradorPrimarioJuego(Stage stage) {
+
         this.stage = stage;
     }
 
@@ -108,6 +109,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root = loader.load();
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
+        juegoController.setGestorPoderes(this.gestorPoderes);
         ControladorTablero controladorTablero= juegoController.getControladorTablero();
         this.gestorPoderes.setControladorTablero(controladorTablero);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
@@ -117,7 +119,6 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root.addEventHandler(EventoJuego.TERMINAR_PARTIDA, this);
         root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
         root.addEventHandler(EventoPoder.ESCUDO, evento -> gestorPoderes.activarEscudo());
-        root.addEventHandler(EventoPoder.EVOLUCION, evento -> gestorPoderes.activarEvolucion());
         root.addEventHandler(EventoPoder.FREEZE, evento -> gestorPoderes.activarFreeze());
         root.addEventHandler(EventoPoder.LIMPIEZA, evento -> gestorPoderes.activarLimpieza());
         root.addEventHandler(EventoPoder.ROBAR, evento -> gestorPoderes.activarRobar());

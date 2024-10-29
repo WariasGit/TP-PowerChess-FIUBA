@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Torre;
@@ -26,6 +29,7 @@ public class ControladorTablero{
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
+    private GestorPoderes gestorPoderes;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
     private final VistaTablero vistaTablero = new VistaTablero(posiciones);
     private final VistaPoderes vistaPoderes = new VistaPoderes(posiciones);
@@ -52,6 +56,10 @@ public class ControladorTablero{
     public void setJuego(Juego juego) {
         this.juego = juego;
         cargarPiezas();
+    }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
     }
 
     public void cargarPiezas() {
@@ -139,6 +147,7 @@ public class ControladorTablero{
     private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
         aplicarColorCasillero(fila, columna);
         guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         juego.actualizarMovimientosPieza(fila, columna);
         juego.gestionarJaque();
         juego.gestionarEnroque();
@@ -146,10 +155,12 @@ public class ControladorTablero{
     }
 
     private void manejarSegundoClick(int fila, int columna) {
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+            gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
-                moverPieza(fila, columna);
+                    moverPieza(fila, columna);
                 gestionarSiHayEnroque();
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
             } else {
@@ -215,6 +226,8 @@ public class ControladorTablero{
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
     }
+
+
 
     public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
 

@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 public class ControladorJuego implements EventHandler<EventoJuego>{
     private Juego juego;
+    private GestorPoderes gestorPoderes;
     private ControladorTablero controladorTablero;
     private ControladorSecundario controladorSecundario;
     @FXML private VBox poderes;
@@ -61,6 +63,11 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         this.nombreJugadorActual.setText("Es turno de: " + juego.getNombreJugadorActual());
         controladorTablero.setJuego(juego);
         controladorSecundario.setJuego(juego.getJugadores());
+    }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
+        controladorTablero.setGestorPoderes(gestorPoderes);
     }
 
     private static final Map<Configuracion.ColoresJugadores, Color> colores = Map.ofEntries(

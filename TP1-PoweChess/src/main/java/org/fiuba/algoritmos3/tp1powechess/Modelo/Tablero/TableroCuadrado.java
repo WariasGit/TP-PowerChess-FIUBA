@@ -1,5 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Vuelo;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
@@ -45,9 +46,23 @@ public class TableroCuadrado {
         if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
             throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
         }
+
+        //if(piezaAMover.tieneFreeze()) {
+          //  throw new IllegalArgumentException("La pieza se encuentra congelada por el Poder de Freeze.");
+        //}
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
 
+
+        //ESTO HAY QUE CAMBIARLO !!!!
+        Casillero casilleroFinal = getCasillero(filaFinal,columnaFinal);
+        if (casilleroFinal.estaOcupado()) {
+            Pieza piezaAComer = casilleroFinal.getPieza();
+            if (piezaAComer.tieneEscudo()) {
+                throw new IllegalArgumentException("La pieza esta protegida por escudo");
+            }
+        }
+        piezaAMover.actualizarPosicion(coordenadaFinal);
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
 
@@ -164,12 +179,14 @@ public class TableroCuadrado {
         int filaActual = rowInicial + incrementoFila;
         int colActual = colInicial + incrementoColumna;
 
+        System.out.println("PUEDE VOLAR" + getCasillero(filaActual, colActual).getPieza().puedeVolar());
         // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
         while (filaActual != rowFinal || colActual != colFinal) {
-            if (getCasillero(filaActual, colActual).estaOcupado()) {
+
+            //VERIFICAR VUELO VOLAR
+            if (getCasillero(filaActual, colActual).estaOcupado() && !getCasillero(filaActual, colActual).getPieza().puedeVolar()) {
                 return false;  // El camino está bloqueado
             }
-
             filaActual += incrementoFila;
             colActual += incrementoColumna;
         }
@@ -200,6 +217,10 @@ public class TableroCuadrado {
     public void actualizarMovimientosPieza(int fila, int columna) {
         Optional<Pieza> pieza = getPieza(fila, columna);
         pieza.ifPresent(value -> filtrarAmenazasYPosiciones(fila, columna, value));
+    }
+
+    private boolean esPosicionValida(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8; // Asumiendo un tablero 8x8
     }
 
     private void filtrarAmenazasYPosiciones(int fila, int columna, Pieza piezaActual) {

@@ -4,6 +4,14 @@ import javafx.event.EventHandler;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Turno;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
+import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
+
+import javax.sound.sampled.Control;
+import java.util.Optional;
 
 /**
  * Esta clase maneja los poderes en el juego de PowerChess.
@@ -15,47 +23,93 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 
 public class GestorPoderes {
     private Juego juego;
+    private Integer posicionFilaPiezaSeleccionada;
+    private Integer posicionColumnaPiezaSeleccionada;
     private ControladorTablero controladorTablero;
 
     public GestorPoderes(Juego juego){
         this.juego = juego;
     }
 
+    public void setPosiciones(Integer fila, Integer columna){
+        this.posicionFilaPiezaSeleccionada = fila;
+        this.posicionColumnaPiezaSeleccionada = columna;
+    }
+
     public void setControladorTablero(ControladorTablero controladorTablero) {
         this.controladorTablero = controladorTablero;
     }
 
+
+    public void verificarAplicacionPoder(Poder poder) {
+        Optional<Pieza> optionalPieza = juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
+        Pieza pieza;
+
+        if (optionalPieza.isPresent()) {
+            pieza = optionalPieza.get();
+        } else {
+            System.out.println("No hay pieza en la posición seleccionada.");
+            return;
+        }
+        Turno turno = this.juego.getTurno();
+        Jugador jugador = turno.getTurno();
+
+        // Verificar si el poder es para piezas propias o del oponente
+        boolean esPiezaPropia = pieza.getColor() == jugador.getColor();
+
+        // Verificar si el poder se puede aplicar según el tipo de pieza (propia, oponente, o ambos)
+        Configuracion.AplicacionPoder tipoPiezaAplicable = poder.getTipoPiezaAplicable();
+        if (tipoPiezaAplicable == Configuracion.AplicacionPoder.PROPIA && !esPiezaPropia) {
+            System.out.println("El poder solo se puede aplicar en piezas propias.");
+            return;
+        } else if (tipoPiezaAplicable == Configuracion.AplicacionPoder.RIVAL && esPiezaPropia) {
+            System.out.println("El poder solo se puede aplicar en piezas del oponente.");
+            return;
+        }
+
+        // Verificar si el jugador ya usó este poder antes de aplicarlo
+        if (!jugador.puedeUsarPoder(poder.getNombre())) {
+            System.out.println("El poder ya fue utilizado.");
+            return;
+        }
+
+        // Si la pieza no puede aplicar el poder (por ejemplo, si es un rey, o ya tiene poder
+        if (!pieza.aplicarPoder(poder)) {
+            System.out.println("No se puede aplicar el poder a esta pieza");
+            return;
+        }
+
+        // Si el poder fue aplicado correctamente, se agrega a la lista de poderes usados
+        jugador.eliminarPoderUsado(poder.getNombre());
+        System.out.println("Poder aplicado correctamente.");
+    }
+
     public void activarDobleJuego() {
-        System.out.println("Activando doble Juego");
-        controladorTablero.agregarMovimientoDoble();
+        DobleTurno doble = new DobleTurno();
+        verificarAplicacionPoder(doble);
     }
-
     public void activarEscudo() {
-        System.out.println("Activando Escudo");
-        controladorTablero.agregarEscudo();
-    }
-
-    public void activarEvolucion() {
-        System.out.println("Activando Evolucion");
-        controladorTablero.agregarEvolucion();
+            Escudo escudo = new Escudo();
+            verificarAplicacionPoder(escudo);
     }
 
     public void activarFreeze() {
-        System.out.println("Activando Freeze");
-        controladorTablero.agregarCongelado();
+        Freeze freeze = new Freeze();
+        verificarAplicacionPoder(freeze);
     }
 
     public void activarLimpieza() {
-        System.out.println("Activando Limpieza");
+        Limpieza limpieza = new Limpieza();
+        verificarAplicacionPoder(limpieza);
     }
-
     public void activarRobar() {
-        System.out.println("Activando Robar");
+        Robar robar = new Robar(juego.getTurno());
+        verificarAplicacionPoder(robar);
     }
 
     public void activarVuelo() {
-        System.out.println("Activando Vuelo");
-        controladorTablero.agregarAlas();
+        Vuelo vuelo = new Vuelo();
+        verificarAplicacionPoder(vuelo);
     }
 
 }
