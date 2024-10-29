@@ -42,7 +42,7 @@ public abstract class Pieza implements Movible {
 
     public boolean seHaMovido() {return seHaMovido;}
 
-    public void setPosicionActual(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
+    public void setPosicionInicial(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
 
     public void actualizarPosicion(Coordenada2D posicionNueva) {
         this.posicionAnterior = this.posicionActual;

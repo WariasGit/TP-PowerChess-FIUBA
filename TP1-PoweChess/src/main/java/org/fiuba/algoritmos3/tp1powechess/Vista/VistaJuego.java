@@ -52,6 +52,10 @@ public class VistaJuego {
             botonAceptar.setDisable(nombreBlancas.getText().trim().isEmpty() || nombreNegras.getText().trim().isEmpty());
         });
 
+        DialogPane dialogPane = dialogoNombres.getDialogPane();
+        dialogPane.getStylesheets().add(VistaAlerta.class.getResource("/org/fiuba/algoritmos3/tp1powechess/css/styles.css").toExternalForm());
+        dialogPane.getStyleClass().add("dialog-pane");
+
         // Mostrar la alerta y esperar la respuesta del usuario
         Optional<ButtonType> resultado = dialogoNombres.showAndWait();
         if (resultado.isPresent() && resultado.get() == aceptar) {

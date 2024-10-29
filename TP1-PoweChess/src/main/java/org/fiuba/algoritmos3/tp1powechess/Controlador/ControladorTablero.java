@@ -10,8 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
@@ -173,6 +171,8 @@ public class ControladorTablero{
 
     private void moverPieza(int destinoFila, int destinoColumna) {
         // Obtener la celda de origen y destino
+        System.out.println("La posicion de origen es: " + posicionOrigenFila + ", " + posicionOrigenColumna);
+        System.out.println("La posicion de destino es: " + destinoFila + ", " + destinoColumna);
         StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
         StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
         // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
@@ -226,6 +226,8 @@ public class ControladorTablero{
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
     }
+
+    public void quitarVistaDelPoder(int fila, int columna) {vistaPoderes.quitarPoder(fila, columna);}
 
     public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
 

@@ -101,10 +101,8 @@ public class TableroCuadrado {
         }
         // Remover la pieza del casillero. El metodo del casillero devuelve la pieza que se elimina
         Pieza piezaARemover = casillero.removerPieza();
-
         // Actualizar las amenazas de la pieza a remover (solo las activas)
         quitarAmenazasDesdeCoordenadasHastaLimiteUOcupado(piezaARemover.getAmenazasGeneradas(), row, col);
-
         //Actualizamos las amenazas que anteriormente estaban bloqueadas
         ArrayList<Amenaza> amenazasAExtender = casillero.obtenerAmenazasActivasQueSeExtiendenMasQueUnCasillero();
         agregarAmenazasDesdeCoordenadasHastaLimiteUOcupado(amenazasAExtender,row, col);
