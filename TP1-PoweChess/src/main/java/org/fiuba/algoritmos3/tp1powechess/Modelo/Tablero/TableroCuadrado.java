@@ -180,12 +180,11 @@ public class TableroCuadrado {
         int filaActual = rowInicial + incrementoFila;
         int colActual = colInicial + incrementoColumna;
 
-        System.out.println("PUEDE VOLAR" + getCasillero(filaActual, colActual).getPieza().puedeVolar());
         // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
         while (filaActual != rowFinal || colActual != colFinal) {
 
             //VERIFICAR VUELO VOLAR
-            if (getCasillero(filaActual, colActual).estaOcupado() && !getCasillero(filaActual, colActual).getPieza().puedeVolar()) {
+            if (getCasillero(filaActual, colActual).estaOcupado()) {
                 return false;  // El camino está bloqueado
             }
             filaActual += incrementoFila;

@@ -187,9 +187,6 @@ public abstract class Pieza implements Movible, Capturable {
         return this.sePuedeCapturar;
     }
 
-    public boolean puedeVolar() {
-        return this.puedeVolar;
-    }
 
     public boolean sePuedeMover() {
         return this.sePuedeMover;
