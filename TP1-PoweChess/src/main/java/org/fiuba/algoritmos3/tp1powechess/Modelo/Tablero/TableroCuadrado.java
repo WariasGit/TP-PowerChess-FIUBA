@@ -1,6 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Vuelo;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
@@ -179,12 +178,11 @@ public class TableroCuadrado {
         int filaActual = rowInicial + incrementoFila;
         int colActual = colInicial + incrementoColumna;
 
-        System.out.println("PUEDE VOLAR" + getCasillero(filaActual, colActual).getPieza().puedeVolar());
         // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
         while (filaActual != rowFinal || colActual != colFinal) {
 
             //VERIFICAR VUELO VOLAR
-            if (getCasillero(filaActual, colActual).estaOcupado() && !getCasillero(filaActual, colActual).getPieza().puedeVolar()) {
+            if (getCasillero(filaActual, colActual).estaOcupado()) {
                 return false;  // El camino está bloqueado
             }
             filaActual += incrementoFila;

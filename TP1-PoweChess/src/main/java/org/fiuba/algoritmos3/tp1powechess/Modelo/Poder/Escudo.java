@@ -9,9 +9,9 @@ public class Escudo extends Poder {
         super("Escudo",3,Configuracion.CategoriaPoder.DURACION, Configuracion.TipoPoder.ESCUDO, Configuracion.AplicacionPoder.PROPIA);
 
     }
-    public void aplicarPoder(Pieza pieza) {
-        pieza.setSePuedeCapturar(false);
+    public String accionarPoder(Pieza pieza) {
         pieza.setPoder(this);
+        return this.getNombre();
     }
 
 }

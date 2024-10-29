@@ -1,13 +1,9 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Capturable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Movible;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Movible.Voladora;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.EstrategiaDeMovimiento;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Escudo;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Freeze;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -15,7 +11,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 import java.util.ArrayList;
 
-public abstract class Pieza implements Movible, Capturable, Voladora {
+public abstract class Pieza implements Movible {
     protected Configuracion.ColoresJugadores color;
     protected Coordenada2D posicionActual;
     protected Coordenada2D posicionAnterior;
@@ -28,22 +24,12 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
     protected String tipoDePieza;
     protected char caracterFEN;
     protected int valor;
-    protected Boolean movimientoDoble;
     protected Poder poderActual;
-    protected boolean sePuedeMover;
-    protected boolean sePuedeCapturar;
-    protected boolean puedeVolar;
-    private boolean dobleMovimientoActivo = false;
-
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
-        this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
         this.seHaMovido = false;
-        this.sePuedeMover = true;
-        this.sePuedeCapturar = true;
-        this.puedeVolar = false;
     }
 
     public Configuracion.ColoresJugadores getColor() {
@@ -118,7 +104,7 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
     public void asignarCaracterFEN(char opcionBlanca, char opcionNegra) {
         if(this.color == Configuracion.ColoresJugadores.BLANCO){
             caracterFEN = opcionBlanca;
-        }else {
+        } else {
             caracterFEN = opcionNegra;
         }
     }
@@ -127,13 +113,8 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
         return caracterFEN;
     }
 
-    //esto se deberia llamar directamente de poder
-    public boolean aplicarPoder(Poder poder) {
-        if (!this.verificarAplicacionPoder(poder)) {
-           return false;
-       }
-       poder.aplicarPoder(this);
-        return true;
+    public String aplicarPoder(Poder poder) {
+        return poder.accionarPoder(this);
     }
 
     public void setPoder(Poder poder) {
@@ -150,15 +131,21 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
         return !this.tienePoderActivo();
     }
 
-    public void desactivarPoder() {
+    public String desactivarPoder() {
+        String nombrePoderActual = null;
+        if (poderActual != null) {
+            nombrePoderActual = poderActual.getNombre();
+        }
         poderActual = null;
-        this.sePuedeMover = true;
-        this.puedeVolar = false;
-        this.sePuedeCapturar = true;
+        return nombrePoderActual;
     }
 
     public boolean tieneEscudo() {
         return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO);
+    }
+
+    public boolean tieneFreeze() {
+        return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE);
     }
 
     public boolean tienePoderActivo() {
@@ -166,7 +153,7 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
     }
 
     public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
-        if (!this.sePuedeMover()) {
+        if (this.tieneFreeze()) {
             return false;
         }
         for(int[] movimiento : movimientosPosibles) {
@@ -181,39 +168,10 @@ public abstract class Pieza implements Movible, Capturable, Voladora {
         return this.getTipoDePieza().equals("Rey");
     }
 
-
     public void gestionarPoder() {
         if (this.tienePoderActivo()) {
             this.poderActual.reducirDuracionoDesactivar(this);
         }
-    }
-
-    public boolean puedeSerCapturada() {
-        return this.sePuedeCapturar;
-    }
-
-    public boolean puedeVolar() {
-        return this.puedeVolar;
-    }
-
-    public boolean sePuedeMover() {
-        return this.sePuedeMover;
-    }
-
-    public void setPuedeVolar(boolean puedeVolar) {
-        this.puedeVolar = puedeVolar;
-    }
-
-    public void setSePuedeMover(boolean puedeMoverse) {
-        this.sePuedeMover = puedeMoverse;
-    }
-
-    public void setSePuedeCapturar(boolean sePuedeCapturar) {
-        this.sePuedeCapturar = sePuedeCapturar;
-    }
-
-    public void activarDobleMovimiento() {
-        this.dobleMovimientoActivo = true;
     }
 
 

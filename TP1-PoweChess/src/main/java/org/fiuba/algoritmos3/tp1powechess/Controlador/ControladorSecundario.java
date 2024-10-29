@@ -61,7 +61,6 @@ public class ControladorSecundario {
         }
     }
 
-
     private void gestorPoderes(javafx.event.ActionEvent actionEvent) {
         Button boton = (Button) actionEvent.getSource();
         String nombrePoder = boton.getText().split(" \\(")[0].trim(); // 'Escudo', 'Freeze', etc.
@@ -77,7 +76,6 @@ public class ControladorSecundario {
         }
     }
 
-
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){
         String NombreJugadorTablas = "";
         Button boton = (Button) actionEvent.getSource();
@@ -90,8 +88,7 @@ public class ControladorSecundario {
         Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.TABLAS_ACEPTADAS_EVENT));
-        }
-        else {
+        } else {
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         }
     }

@@ -17,22 +17,32 @@ public class Robar extends Poder{
         this.turno = turno;
     }
 
-    public void aplicarPoder(Pieza pieza) {
+    public String accionarPoder(Pieza pieza) {
         Jugador oponente = this.turno.getOponente();
         Jugador jugador = this.turno.getTurno();
 
+        // Crear una lista de poderes válidos (que no sean "Robar" y tengan usos disponibles)
+        List<String> poderesDisponibles = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : oponente.getListaPoderes().entrySet()) {
             String nombrePoder = entry.getKey();
             int cantidad = entry.getValue();
-
             if (cantidad > 0 && !nombrePoder.equals("Robar")) {
-                jugador.agregarPoder(nombrePoder); // Se añade a la misma lista
-                oponente.eliminarPoderUsado(nombrePoder);
-
-                System.out.println("Poder robado: " + nombrePoder);
-                return;
+                poderesDisponibles.add(nombrePoder);
             }
         }
-        System.out.println("El oponente no tiene poderes para robar.");
+
+        // Si hay poderes válidos, selecciona uno al azar
+        if (!poderesDisponibles.isEmpty()) {
+            Random random = new Random();
+            String poderRobado = poderesDisponibles.get(random.nextInt(poderesDisponibles.size()));
+
+            // Transferir el poder al jugador y eliminarlo del oponente
+            jugador.agregarPoder(poderRobado);
+            oponente.eliminarPoderUsado(poderRobado);
+
+            return poderRobado;
+        }
+
+        return null; // Si no hay poderes disponibles para robar
     }
 }

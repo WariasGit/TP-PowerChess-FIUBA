@@ -227,8 +227,6 @@ public class ControladorTablero{
         vistaTablero.limpiarCasillerosPintados();
     }
 
-
-
     public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
 
     public void agregarAlas(){vistaPoderes.setAlas(posicionOrigenFila, posicionOrigenColumna);}
