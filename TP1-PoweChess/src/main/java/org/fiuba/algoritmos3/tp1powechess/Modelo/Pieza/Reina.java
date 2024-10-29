@@ -28,26 +28,4 @@ public class Reina extends Pieza {
         // Para la Reina, las direcciones de movimiento y de amenaza son las mismas
         this.direccionesDeAmenaza = new ArrayList<>(this.direccionesDeMovimiento);
     }
-
-    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
-        for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
-            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Nuevo metodo para verificar si una dirección está en las direcciones de movimiento permitidas
-    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
-        for (int[] direccion : direccionesDeMovimiento) {
-            if ((direccion[0] == 0 && difX == 0 && difY * direccion[1] > 0) ||  // Movimiento vertical
-                    (direccion[1] == 0 && difY == 0 && difX * direccion[0] > 0) ||  // Movimiento horizontal
-                    (direccion[0] != 0 && direccion[1] != 0 && difX * direccion[1] == difY * direccion[0])) {  // Movimiento diagonal proporcional
-                return true;
-            }
-        }
-        return false;
-    }
 }

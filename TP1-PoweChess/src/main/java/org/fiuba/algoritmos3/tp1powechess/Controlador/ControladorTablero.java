@@ -227,15 +227,8 @@ public class ControladorTablero{
         vistaTablero.limpiarCasillerosPintados();
     }
 
-    public void quitarVistaDelPoder(int fila, int columna) {vistaPoderes.quitarPoder(fila, columna);}
-
     public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
-
-    public void agregarAlas(){vistaPoderes.setAlas(posicionOrigenFila, posicionOrigenColumna);}
 
     public void agregarCongelado(){vistaPoderes.setCongelado(posicionOrigenFila, posicionOrigenColumna);}
 
-    public void agregarMovimientoDoble(){vistaPoderes.setMovimientoDoble(posicionOrigenFila, posicionOrigenColumna);}
-
-    public void agregarEvolucion(){vistaPoderes.setEvolucion(posicionOrigenFila, posicionOrigenColumna);}
 }

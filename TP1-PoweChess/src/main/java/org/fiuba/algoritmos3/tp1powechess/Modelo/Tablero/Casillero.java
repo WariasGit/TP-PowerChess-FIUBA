@@ -27,12 +27,6 @@ public class Casillero {
         return color;
     }
 
-    public Coordenada2D getPosicion() {return posicion;}
-
-    public EstadoDeOcupacionCasillero getEstadoCasillero() {
-        return estadoDeOcupacionCasillero;
-    }
-
     public Pieza getPieza() {
         return pieza;
     }
@@ -79,10 +73,6 @@ public class Casillero {
         this.gestorDeAmenazas.quitarAmenazasIguales(amenazasAEliminar);
     }
 
-    public boolean estaAmenazado(){
-        return this.gestorDeAmenazas.tieneAlMenosUnaAmenaza();
-    }
-
     public ArrayList<Amenaza> getAmenazasJaque(Configuracion.ColoresJugadores color){
         return this.gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(color);
     }
@@ -92,50 +82,8 @@ public class Casillero {
         return !amenazasDistintoColor.isEmpty();
     }
 
-    public boolean estaAmenazadoPorMismoColor(Configuracion.ColoresJugadores color) {
-        ArrayList<Amenaza> amenazasMiscoColor = gestorDeAmenazas.obtenerAmenazasTotalesMismoColor(color);
-        return !amenazasMiscoColor.isEmpty();
-    }
-
-    public boolean estaActivamenteAmenazadoPorColorDistinto(Configuracion.ColoresJugadores color) {
-        ArrayList<Amenaza> amenazasActivasDistintoColor = gestorDeAmenazas.obtenerAmenazasActivasDistintoColor(color);
-        return !amenazasActivasDistintoColor.isEmpty();
-    }
-
-    public ArrayList<Amenaza> getAmenazasActivas(){
-        return this.gestorDeAmenazas.getAmenazasActivas();
-    }
-
     public ArrayList<Amenaza> getAmenazasBloqueadas(){
         return this.gestorDeAmenazas.getAmenazasBloqueadas();
-    }
-
-    public ArrayList<Amenaza> getAmenazas(){
-        return this.gestorDeAmenazas.getAmenazas();
-    }
-
-    public ArrayList<Amenaza> getAmenazasActivasDistintoColor(Configuracion.ColoresJugadores colorAmenaza){
-        return this.gestorDeAmenazas.obtenerAmenazasActivasDistintoColor(colorAmenaza);
-    }
-
-    public ArrayList<Amenaza> getAmenazasBloqueadasDistintoColor(Configuracion.ColoresJugadores colorAmenaza){
-        return this.gestorDeAmenazas.obtenerAmenazasBloqueadasDistintoColor(colorAmenaza);
-    }
-
-    public ArrayList<Amenaza> getAmenazasDistintoColor(Configuracion.ColoresJugadores colorAmenaza){
-        return this.gestorDeAmenazas.obtenerAmenazasTotalesDistintoColor(colorAmenaza);
-    }
-
-    public ArrayList<Amenaza> getAmenazasActivasMismoColor(Configuracion.ColoresJugadores colorAmenaza){
-        return this.gestorDeAmenazas.obtenerAmenazasActivasPorColor(colorAmenaza);
-    }
-
-    public ArrayList<Amenaza> getAmenazasBloqueadasMismoColor(Configuracion.ColoresJugadores colorAmenaza){
-        return this.gestorDeAmenazas.obtenerAmenazasBloqueadasPorColor(colorAmenaza);
-    }
-
-    public ArrayList<Amenaza> getAmenazasMismoColor(Configuracion.ColoresJugadores colorAmenaza){
-        return this.gestorDeAmenazas.obtenerAmenazasTotalesPorColor(colorAmenaza);
     }
 
     public ArrayList<Amenaza> obtenerAmenazasActivasQueSeExtiendenMasQueUnCasillero(){
@@ -149,4 +97,5 @@ public class Casillero {
     public void desbloquearAmenazasBloqueadas() {
         gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();
     }
+
 }

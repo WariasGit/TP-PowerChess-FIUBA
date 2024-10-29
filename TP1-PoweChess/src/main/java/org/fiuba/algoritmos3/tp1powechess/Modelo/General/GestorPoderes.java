@@ -128,4 +128,4 @@ public class GestorPoderes {
             System.out.println("No se pudo accionar el poder");
         }
     }
-    }
+}

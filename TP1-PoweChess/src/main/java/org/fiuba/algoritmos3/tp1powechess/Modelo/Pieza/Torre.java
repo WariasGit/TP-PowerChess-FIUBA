@@ -21,7 +21,6 @@ public class Torre extends Pieza implements Enrocable {
         this.movimientosPosibles = new ArrayList<>();
         this.valor = Configuracion.ValorPiezas.VALOR_TORRE;
         asignarCaracterFEN(Configuracion.CaracterFenParaPiezas.TORRE_BLANCA, Configuracion.CaracterFenParaPiezas.TORRE_NEGRA);
-        // Inicializamos las direcciones de movimiento
         this.direccionesDeMovimiento = new ArrayList<>();
         this.direccionesDeMovimiento.add(new int[]{Constantes.CERO_EN_FILA, Constantes.UNO_EN_COLUMNA});   // Derecha
         this.direccionesDeMovimiento.add(new int[]{Constantes.CERO_EN_FILA, -Constantes.UNO_EN_COLUMNA});  // Izquierda

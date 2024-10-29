@@ -25,8 +25,6 @@ public class Juego {
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
     private Pieza ultimaPiezaCapturada;
-    private Pieza piezaConDobleMovimiento; 
-
 
     public Juego(List<Jugador> jugadores) throws IOException {
         this.estado = Configuracion.EstadoJuego.EN_JUEGO;
@@ -318,16 +316,6 @@ public class Juego {
     }
 
     public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
-
-    public void imprimirEstadoDebug() {
-        System.out.println("----- Estado de Debug -----");
-        System.out.println("Movimientos para tablas: " + contadorMovimientosParaTablas);
-        System.out.println("Movimientos para chequear posiciones: " + contadorMovimientosParaChequearPosiciones);
-        System.out.println("Movimientos totales: " + contadorMovimientosTotales);
-        System.out.println("Tamaño del historial de posiciones: " + historialPosiciones.size());
-        System.out.println("Piezas en juego: " + piezasEnJuego);
-        System.out.println("---------------------------");
-    }
 
     private void imprimirTablero() {
         Casillero[][] casilleros = tablero.getTablero();

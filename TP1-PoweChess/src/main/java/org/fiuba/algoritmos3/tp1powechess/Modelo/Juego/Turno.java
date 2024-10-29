@@ -1,12 +1,9 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Rey;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Turno {
@@ -80,7 +77,7 @@ public class Turno {
         for (Pieza pieza : piezas) {
             if (pieza.tienePoderActivo()) {
                 pieza.gestionarPoder();
-            };
+            }
         }
     }
 

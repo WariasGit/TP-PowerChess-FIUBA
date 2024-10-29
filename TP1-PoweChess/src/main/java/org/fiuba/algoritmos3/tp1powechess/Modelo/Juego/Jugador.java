@@ -95,7 +95,6 @@ public class Jugador {
         return this.listaPoderes;
     }
 
-
     public void eliminarPoderUsado(String nombrePoder) {
         System.out.println("ANTES: " + listaPoderes);
 
@@ -119,9 +118,6 @@ public class Jugador {
     public boolean puedeUsarPoder(String nombrePoder) {
         return listaPoderes.getOrDefault(nombrePoder, 0) > 0;
     }
-
-
-
 }
 
 
