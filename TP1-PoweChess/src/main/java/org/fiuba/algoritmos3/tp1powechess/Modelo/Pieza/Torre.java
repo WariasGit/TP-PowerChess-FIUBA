@@ -39,9 +39,6 @@ public class Torre extends Pieza implements Enrocable {
         tableroCuadrado.removePieza(posicionActual);
         Coordenada2D nuevaPosicion = new Coordenada2D(row,5);
         tableroCuadrado.setPieza(nuevaPosicion,this);
-        System.out.println("Actualizo la posicion de la torre");
-        System.out.println("Posicion actual: " + posicionActual.getRow() + "," + posicionActual.getCol());
-        System.out.println("Posicion nueva: " + nuevaPosicion.getRow() + nuevaPosicion.getCol() + "\n");
         enrocado = true;
     }
 
@@ -49,9 +46,6 @@ public class Torre extends Pieza implements Enrocable {
         tableroCuadrado.removePieza(posicionActual);
         Coordenada2D nuevaPosicion = new Coordenada2D(row,3);
         tableroCuadrado.setPieza(nuevaPosicion,this);
-        System.out.println("Actualizo la posicion de la torre");
-        System.out.println("Posicion actual: " + posicionActual.getRow() + "," + posicionActual.getCol());
-        System.out.println("Posicion nueva: " + nuevaPosicion.getRow() + nuevaPosicion.getCol() + "\n");
         enrocado = true;
     }
 
