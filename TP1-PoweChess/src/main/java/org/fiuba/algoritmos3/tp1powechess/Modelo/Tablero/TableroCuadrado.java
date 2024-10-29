@@ -45,10 +45,6 @@ public class TableroCuadrado {
         if(!piezaAMover.puedeMoverseA(filaFinal, columnaFinal)){
             throw new IllegalArgumentException("La pieza no puede moverse a esa posicion");
         }
-
-        //if(piezaAMover.tieneFreeze()) {
-          //  throw new IllegalArgumentException("La pieza se encuentra congelada por el Poder de Freeze.");
-        //}
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
 

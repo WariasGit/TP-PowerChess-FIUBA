@@ -102,6 +102,7 @@ public class ControladorTablero{
             // Primer click
             if (piezaActual.isPresent()) {
                 Pieza pieza = piezaActual.get();
+
                 // Si el jugador está tocando una pieza del color correcto para su turno
                 if (juego.getColorJugadorActual() == pieza.getColor()) {
                     //System.out.println("Primer click en una pieza del color del jugador actual");
@@ -110,6 +111,7 @@ public class ControladorTablero{
                 else {
                     // Seleccionando una pieza del rival, por ejemplo para poderes
                     //System.out.println("Primer click en una pieza del color rival");
+                    gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                     aplicarColorCasillero(fila, columna);  // Pintar casillero de pieza rival
                     guardarPosicionOrigen(fila, columna);  // Guardar la selección
                 }
@@ -137,6 +139,7 @@ public class ControladorTablero{
                 }
             }
             else {
+                gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                 quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                 limpiarSeleccion();  // No se cambia turno
@@ -147,20 +150,19 @@ public class ControladorTablero{
     private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
         aplicarColorCasillero(fila, columna);
         guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
-        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         juego.actualizarMovimientosPieza(fila, columna);
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         juego.gestionarJaque();
         juego.gestionarEnroque();
         mostrarMovimientosPosibles(piezaActual);
     }
 
     private void manejarSegundoClick(int fila, int columna) {
-        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
             gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
-                    moverPieza(fila, columna);
+                moverPieza(fila, columna);
                 gestionarSiHayEnroque();
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
             } else {

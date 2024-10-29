@@ -41,6 +41,10 @@ public class GestorPoderes {
     }
 
     public String verificarAplicacionPoder(Poder poder) {
+
+        Turno turno = this.juego.getTurno();
+        Jugador jugador = turno.getTurno();
+
         Optional<Pieza> optionalPieza = juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
         Pieza pieza;
 
@@ -50,8 +54,6 @@ public class GestorPoderes {
             System.out.println("No hay pieza en la posición seleccionada.");
             return null;
         }
-        Turno turno = this.juego.getTurno();
-        Jugador jugador = turno.getTurno();
 
         // Verificar si el poder es para piezas propias o del oponente
         boolean esPiezaPropia = pieza.getColor() == jugador.getColor();
@@ -61,7 +63,8 @@ public class GestorPoderes {
         if (tipoPiezaAplicable == Configuracion.AplicacionPoder.PROPIA && !esPiezaPropia) {
             System.out.println("El poder solo se puede aplicar en piezas propias.");
             return null;
-        } else if (tipoPiezaAplicable == Configuracion.AplicacionPoder.RIVAL && esPiezaPropia) {
+        } else if (tipoPiezaAplicable == Configuracion.AplicacionPoder.RIVAL && pieza.getColor() == jugador.getColor()) {
+            System.out.println("PIEZA ACTUAL" + pieza.getColor());
             System.out.println("El poder solo se puede aplicar en piezas del oponente.");
             return null;
         }
