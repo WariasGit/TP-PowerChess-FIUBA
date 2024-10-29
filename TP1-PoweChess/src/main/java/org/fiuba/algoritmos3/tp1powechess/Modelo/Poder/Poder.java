@@ -37,6 +37,9 @@ public abstract class Poder {
         if (this.duracion > 0) {
             this.duracion--;
         }
+        if (this.duracion < 1) {
+            pieza.desactivarPoder();
+        }
     }
 
 }

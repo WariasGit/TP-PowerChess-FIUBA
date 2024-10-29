@@ -9,9 +9,7 @@ public class Freeze extends Poder {
     }
 
     public String  accionarPoder(Pieza pieza) {
-        pieza.setSePuedeMover(false);
         pieza.setPoder(this);
         return this.getNombre();
-
     }
 }

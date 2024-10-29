@@ -12,9 +12,6 @@ public class Limpieza extends Poder {
 
     public String accionarPoder(Pieza pieza) {
         String nombrePoderDesactivado = pieza.desactivarPoder();
-        pieza.setPuedeVolar(false);
-        pieza.setSePuedeMover(true);
-        pieza.setSePuedeCapturar(true);
         return nombrePoderDesactivado;
     }
 }

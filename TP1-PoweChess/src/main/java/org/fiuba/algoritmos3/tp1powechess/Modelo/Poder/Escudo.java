@@ -10,7 +10,6 @@ public class Escudo extends Poder {
 
     }
     public String accionarPoder(Pieza pieza) {
-        pieza.setSePuedeCapturar(false);
         pieza.setPoder(this);
         return this.getNombre();
     }
