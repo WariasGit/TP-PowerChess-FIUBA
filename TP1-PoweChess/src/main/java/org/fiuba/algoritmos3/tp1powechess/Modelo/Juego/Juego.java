@@ -1,7 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.ContextoPoder;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.ContextoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;

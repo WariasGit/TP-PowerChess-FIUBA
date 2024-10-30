@@ -1,7 +1,7 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.General;
 
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.ContextoPoder;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.ContextoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Turno;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
