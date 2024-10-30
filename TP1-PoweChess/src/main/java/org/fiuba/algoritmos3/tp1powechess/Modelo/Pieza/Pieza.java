@@ -166,11 +166,9 @@ public abstract class Pieza implements Movible {
         return this.getTipoDePieza().equals("Rey");
     }
 
-    public void gestionarPoder() {
-        if (this.tienePoderActivo()) {
-            this.poderActual.reducirDuracionoDesactivar(this);
-        }
-    }
 
+    public Poder getPoderActual() {
+        return this.poderActual;
+    }
 
 }

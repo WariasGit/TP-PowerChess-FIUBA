@@ -112,7 +112,7 @@ public class Jugador {
         }
     }
     public void agregarPoder(String nombrePoder) {
-        listaPoderes.put(nombrePoder, listaPoderes.getOrDefault(nombrePoder, 0) + 1); // Incrementar el uso
+        listaPoderes.put(nombrePoder, listaPoderes.getOrDefault(nombrePoder, 0) + 1);
     }
 
     public boolean puedeUsarPoder(String nombrePoder) {

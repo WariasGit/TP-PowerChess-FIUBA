@@ -93,7 +93,6 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
             this.juego.gestionarRendicion();
             generarEventoFinDePartida();
         }
-
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {

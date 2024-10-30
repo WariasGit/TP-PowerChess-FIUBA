@@ -1,4 +1,6 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.ContextoPoder;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.Poder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
@@ -10,7 +12,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.io.*;
 import java.util.*;
 
-public class Juego {
+public class Juego implements ContextoPoder {
     private Configuracion.EstadoJuego estado;
     private final List<Jugador> jugadores;
     private final Turno turno;
@@ -41,6 +43,14 @@ public class Juego {
         gestorDeEnroque = new GestorDeEnroque();
         gestorDeJaque.setTablero(tablero);
         gestorDeEnroque.setTablero(tablero);
+    }
+
+    public Optional<Pieza> getPieza(int fila, int columna) {
+        return tablero.getPieza(fila, columna);
+    }
+
+    public Turno getTurno() {
+        return this.turno;
     }
 
     public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
@@ -175,7 +185,10 @@ public class Juego {
         return false;
     }
 
-    public void cambiarTurno() {turno.gestionarTurno();}
+    public void cambiarTurno() {
+        turno.gestionarTurno();
+
+    }
 
     public void guardarPartida() {
         String estadoTablero = tablero.estadoActualTablero();
@@ -348,8 +361,6 @@ public class Juego {
         System.out.println();
     }
 
-    public Turno getTurno() {
-        return this.turno;
-    }
+
 }
 

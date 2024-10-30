@@ -2,6 +2,7 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Rey;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -9,6 +10,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class Turno {
     private List<Jugador> jugadores;
     private int turnoActual;
+    private GestorPoderes gestorPoderes;
 
     public Turno(List<Jugador> jugadores) {
         this.jugadores = jugadores;
@@ -31,9 +33,18 @@ public class Turno {
     public Rey getReyJugadorActual() {return getTurno().getRey();}
 
     public void gestionarTurno() {
-        verificarPoderesJugadorActual();
+        gestorPoderes.verificarPoderesJugador(); // Delegación a GestorPoderes
         turnoActual = (turnoActual + 1) % jugadores.size();
     }
+
+    /*private void verificarPoderesJugadorActual() {
+        List<Pieza> piezas = getTurno().getPiezasEnJuego();
+        for (Pieza pieza : piezas) {
+            if (pieza.tienePoderActivo()) {
+                pieza.poder();
+            }
+        }
+    }*/
 
     public Jugador getTurno() {
         return jugadores.get(turnoActual);
@@ -72,15 +83,10 @@ public class Turno {
         return (piezaAMover.getColor() == getColorJugadorActual());
     }
 
-    private void verificarPoderesJugadorActual() {
-        List<Pieza> piezas = getTurno().getPiezasEnJuego();
-        for (Pieza pieza : piezas) {
-            if (pieza.tienePoderActivo()) {
-                pieza.gestionarPoder();
-            }
-        }
-    }
 
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
+    }
 }
 
 

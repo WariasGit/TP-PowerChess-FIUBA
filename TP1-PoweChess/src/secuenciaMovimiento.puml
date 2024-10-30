@@ -1,0 +1,69 @@
+@startuml
+
+actor Usuario
+Usuario -> Controlador : Click(fila, columna)
+
+activate Controlador
+Controlador -> Juego : mover(posicionOrigenFila, posicionOrigenColumna, fila, columna)
+
+activate Juego
+Juego -> Juego : esturnoDeMover(origenFila, origenColumna)
+
+alt Es el turno de mover
+    Juego -> Tablero : moverPieza(origenFila, origenColumna, fila, columna)
+
+    activate Tablero
+    activate Casillero
+    Tablero -> Casillero : getCasillero(filaInicial, columnaInicial)
+    Casillero --> Tablero : Casillero Inicial
+    Tablero -> Casillero : getPieza()
+    Casillero --> Tablero : return Pieza a mover
+    deactivate Casillero
+
+    activate Pieza
+    Tablero -> Pieza : puedeMoverseA(filaFinal, columnaFinal)
+    Pieza -> Pieza : tieneFreeze()
+    Pieza --> Tablero : return Boolean
+    deactivate Pieza
+
+    activate Casillero
+
+    Tablero -> Casillero: getCasillero(filaFinal,columnaFinal)
+    Casillero --> Tablero: return Casillero final
+    Tablero -> Casillero: estaOcupado()
+    Casillero --> Tablero: return boolean
+    activate Pieza
+
+    Casillero -> Pieza: getPieza()
+    Pieza --> Pieza: tieneEscudo()
+    Pieza --> Casillero: return Pieza a comer
+
+    alt Pieza se puede mover
+        Tablero -> Pieza : actualizarPosicion(coordenadaFinal)
+        Tablero -> Pieza : ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this)
+        deactivate Pieza
+            deactivate Casillero
+
+        deactivate Tablero
+
+
+    else Pieza no se puede mover
+        Tablero -> Controlador : throw IllegalArgumentException
+    end
+
+    Juego -> Juego : gestionarJaque()
+
+    alt Jugador está en jaque
+        Juego -> Juego : revertirMovimiento(origenFila, origenColumna, fila, columna)
+    else Jugador no está en jaque
+        Juego -> Juego : aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna)
+        Controlador -> TableroGrid : fireEvent(new EventoJuego(CAMBIO_DE_TURNO_EVENT))
+    end
+else No es el turno de mover
+    Juego -> Controlador : "Espera tu turno"
+end
+
+deactivate Juego
+deactivate Controlador
+
+@enduml

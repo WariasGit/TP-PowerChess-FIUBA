@@ -26,7 +26,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     private Juego Ajedrez;
     private GestorPoderes gestorPoderes;
     private final Stage stage;
-    //Reproductor reproductor = new Reproductor();
+    Reproductor reproductor = new Reproductor();
 
     public AdministradorPrimarioJuego(Stage stage) {
 
@@ -93,6 +93,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         jugadores.add(jugadorNegras);
         this.Ajedrez = new Juego(jugadores);
         this.gestorPoderes = new GestorPoderes(Ajedrez);
+        Ajedrez.getTurno().setGestorPoderes(gestorPoderes);
         Ajedrez.cargarPartida(path);
         iniciarVentanaJuego();
     }
@@ -102,7 +103,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
     private void iniciarVentanaJuego() throws IOException {
-        //reproductor.reproducirMusicaJuego();
+        reproductor.reproducirMusicaJuego();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
         VBox root;
         root = loader.load();
@@ -127,7 +128,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
     public void iniciarVentanaPrincipal() throws IOException {
-        //reproductor.reproducirMusicaMenu();
+        reproductor.reproducirMusicaMenu();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_INICIO_FXML));
         Pane root = loader.load();
         root.addEventHandler(EventoJuego.INICIAR_JUEGO, this);

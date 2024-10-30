@@ -1,17 +1,14 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.General;
 
-import javafx.event.EventHandler;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorTablero;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.ContextoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Jugador;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Turno;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
-import javax.sound.sampled.Control;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Esta clase maneja los poderes en el juego de PowerChess.
@@ -22,18 +19,21 @@ import java.util.Optional;
  */
 
 public class GestorPoderes {
-    private Juego juego;
     private Integer posicionFilaPiezaSeleccionada;
     private Integer posicionColumnaPiezaSeleccionada;
     private ControladorTablero controladorTablero;
+    private ContextoPoder contextoPoder;
+    private List<Pieza> poderesActivosPorJugador = new ArrayList<>();
 
-    public GestorPoderes(Juego juego){
-        this.juego = juego;
-    }
 
     public void setPosiciones(Integer fila, Integer columna){
         this.posicionFilaPiezaSeleccionada = fila;
         this.posicionColumnaPiezaSeleccionada = columna;
+
+    }
+
+    public GestorPoderes(ContextoPoder contextoPoder) {
+        this.contextoPoder = contextoPoder;
     }
 
     public void setControladorTablero(ControladorTablero controladorTablero) {
@@ -41,11 +41,7 @@ public class GestorPoderes {
     }
 
     public String verificarAplicacionPoder(Poder poder) {
-
-        Turno turno = this.juego.getTurno();
-        Jugador jugador = turno.getTurno();
-
-        Optional<Pieza> optionalPieza = juego.getPiezaActual(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
+        Optional<Pieza> optionalPieza = contextoPoder.getPieza(this.posicionFilaPiezaSeleccionada, this.posicionColumnaPiezaSeleccionada);
         Pieza pieza;
 
         if (optionalPieza.isPresent()) {
@@ -54,6 +50,10 @@ public class GestorPoderes {
             System.out.println("No hay pieza en la posición seleccionada.");
             return null;
         }
+
+        Turno turno = this.contextoPoder.getTurno();
+        Jugador jugador = turno.getTurno();
+        Jugador oponente = turno.getOponente();
 
         // Verificar si el poder es para piezas propias o del oponente
         boolean esPiezaPropia = pieza.getColor() == jugador.getColor();
@@ -80,14 +80,13 @@ public class GestorPoderes {
             System.out.println("No se puede aplicar el poder a esta pieza");
             return null;
         }
-
         String poderAccionado = pieza.aplicarPoder(poder);
 
         if (poderAccionado != null) {
             jugador.eliminarPoderUsado(poder.getNombre());
         }
+        poderesActivosPorJugador.add(pieza);
         return poderAccionado;
-
     }
 
     public void activarEscudo() {
@@ -114,13 +113,14 @@ public class GestorPoderes {
         String poder = verificarAplicacionPoder(limpieza);
         if (poder != null) {
             System.out.println("SE LIMPIO EL PODER DE " + poder);
+            verificarPoderesJugador();
         } else {
             System.out.println("No se pudo accionar el poder");
         }
     }
 
     public void activarRobar() {
-        Robar robar = new Robar(juego.getTurno());
+        Robar robar = new Robar(contextoPoder.getTurno());
         String poder = verificarAplicacionPoder(robar);
         if (poder != null) {
             System.out.println("SE ROBO EL PODER DE " + poder);
@@ -128,4 +128,32 @@ public class GestorPoderes {
             System.out.println("No se pudo accionar el poder");
         }
     }
+
+    public void desactivarPoder(Pieza pieza) {
+        int fila = pieza.getPosicionActual().getRow();
+        int columna = pieza.getPosicionActual().getCol();
+        controladorTablero.quitarVistaDelPoder(fila,columna);
+    }
+
+    public void verificarPoderesJugador() {
+        Iterator<Pieza> iterator = poderesActivosPorJugador.iterator();
+
+        while (iterator.hasNext()) {
+            Pieza pieza = iterator.next();
+
+            if (pieza.tienePoderActivo()) {
+                String poderDesactivado = pieza.getPoderActual().reducirDuracionoDesactivar(pieza);
+                if (poderDesactivado != null) {
+                    desactivarPoder(pieza);
+                    iterator.remove();
+                }
+            } else {
+                desactivarPoder(pieza);
+                iterator.remove();
+            }
+        }
+    }
+
+
 }
+

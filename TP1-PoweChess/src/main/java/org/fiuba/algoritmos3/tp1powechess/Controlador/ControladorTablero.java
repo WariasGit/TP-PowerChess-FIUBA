@@ -231,4 +231,7 @@ public class ControladorTablero{
 
     public void agregarCongelado(){vistaPoderes.setCongelado(posicionOrigenFila, posicionOrigenColumna);}
 
+    public void quitarVistaDelPoder(int fila, int columna) {vistaPoderes.quitarPoder(fila, columna);}
+
+
 }

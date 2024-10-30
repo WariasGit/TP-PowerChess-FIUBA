@@ -36,7 +36,7 @@ public class ControladorSecundario {
     }
 
     private void cargarPoderesBlancas(Jugador jugador) {
-        poderesBlancas.getChildren().clear(); // Limpiar antes de recargar
+        poderesBlancas.getChildren().clear();
         for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
             String nombrePoder = entry.getKey();
             int cantidadUsos = entry.getValue();
@@ -49,7 +49,7 @@ public class ControladorSecundario {
     }
 
     private void cargarPoderesNegras(Jugador jugador) {
-        poderesNegras.getChildren().clear(); // Limpiar antes de recargar
+        poderesNegras.getChildren().clear();
         for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
             String nombrePoder = entry.getKey();
             int cantidadUsos = entry.getValue();
@@ -63,7 +63,7 @@ public class ControladorSecundario {
 
     private void gestorPoderes(javafx.event.ActionEvent actionEvent) {
         Button boton = (Button) actionEvent.getSource();
-        String nombrePoder = boton.getText().split(" \\(")[0].trim(); // 'Escudo', 'Freeze', etc.
+        String nombrePoder = boton.getText().split(" \\(")[0].trim();
 
         EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
         if (eventoPoder != null) {

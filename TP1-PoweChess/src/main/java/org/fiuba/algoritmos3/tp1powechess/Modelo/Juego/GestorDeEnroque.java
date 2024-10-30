@@ -19,7 +19,6 @@ public class GestorDeEnroque {
 
     private void setRey(Rey rey) {this.rey = rey;}
 
-    // Determina la fila de las piezas en función del color
     private int obtenerFilaInicial() {
         return this.rey.getColor() == Configuracion.ColoresJugadores.BLANCO ? Configuracion.PosicionInicialTorres.FILA_BLANCA : Configuracion.PosicionInicialTorres.FILA_NEGRA;
     }
