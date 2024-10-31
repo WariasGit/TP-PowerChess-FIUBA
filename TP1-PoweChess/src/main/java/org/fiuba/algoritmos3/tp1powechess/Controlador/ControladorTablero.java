@@ -95,10 +95,10 @@ public class ControladorTablero{
         StackPane stackPane = (StackPane) mouseEvent.getSource();
         int fila = getGridIndex(GridPane.getRowIndex(stackPane));
         int columna = getGridIndex(GridPane.getColumnIndex(stackPane));
-        //System.out.println("Click en: " + fila + ", " + columna);
         // Obtener la pieza en la posición actual, si existe
         Optional<Pieza> piezaActual = juego.getPiezaActual(fila, columna);
         if (esPrimeraSeleccion()) {
+            //System.out.println("Primer click");
             // Primer click
             if (piezaActual.isPresent()) {
                 Pieza pieza = piezaActual.get();
@@ -118,27 +118,38 @@ public class ControladorTablero{
             }
         }
         else {
+            //System.out.println("Segundo click");
+            //Segundo click en una posicion diferente al primero
             if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+                //System.out.println("Segundo click diferente al primero");
                 if (piezaActual.isPresent()) {
                     Pieza pieza = piezaActual.get();
                     if (juego.getColorJugadorActual() == pieza.getColor()) {
+                        //System.out.println("Segundo click en una pieza propia");
+                        //El segundo click fue sobre una pieza propia
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         manejarPrimerClick(pieza, fila, columna);  // Cambiar selección y pintar el nuevo casillero
                     }
                     else {
+                        //El segundo click fue sobre una pieza rival
+                        //System.out.println("Segundo click en una pieza rival");
                         manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-                        limpiarSeleccion();  // No se cambia turno
+                        limpiarSeleccion();
                     }
                 }
                 else {
+                    //El segundo click fue en un espacio vacio
+                    //System.out.println("Segundo click en espacio vacio");
                     manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                     quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
+                    limpiarSeleccion();
                 }
             }
             else {
+                //System.out.println("Segundo click igual al primero");
                 gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                 quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);

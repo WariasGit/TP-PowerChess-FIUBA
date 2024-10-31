@@ -133,6 +133,7 @@ public class Juego implements ContextoPoder {
             }
         }
         gestionarTablas();
+        imprimirTablero();
     }
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
@@ -320,5 +321,36 @@ public class Juego implements ContextoPoder {
     public Boolean jugadorActualEnJaque(){return turno.estaEnJaqueJugadorActual();}
 
     public Coordenada2D getPosicionReyAmenazado(){return turno.getPosicionReyActualAmenazado();}
+
+    public void imprimirTablero() {
+        Casillero[][] casilleros = tablero.getTablero();
+        int dimension = tablero.getDimension();
+        // Imprimir los índices de las columnas
+        System.out.print("   ");
+        for (int col = 0; col < dimension; col++) {
+            System.out.print(col + "  ");
+        }
+        System.out.println();
+        // Imprimir el tablero con bordes
+        for (int i = 0; i < dimension; i++) {
+            // Imprimir índice de la fila
+            System.out.print(i + " |");
+            for (int j = 0; j < dimension; j++) {
+                Pieza pieza = casilleros[i][j].getPieza();
+                if (pieza != null) {
+                    System.out.print(" " + pieza.getCaracterFEN() + " ");
+                } else {
+                    System.out.print(" . ");  // Espacio vacío
+                }
+            }
+            System.out.println("| " + i);  // Cerrar el borde de la fila
+        }
+        // Imprimir los índices de las columnas nuevamente
+        System.out.print("   ");
+        for (int col = 0; col < dimension; col++) {
+            System.out.print(col + "  ");
+        }
+        System.out.println();
+    }
 }
 
