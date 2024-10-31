@@ -30,6 +30,16 @@ public class ControladorSecundario {
         cargarPoderes();
     }
 
+    public void ocultarBotones(Configuracion.ColoresJugadores color) {
+        if (color == Configuracion.ColoresJugadores.BLANCO) {
+            poderesBlancas.setVisible(true);
+            poderesNegras.setVisible(false);
+        } else {
+            poderesBlancas.setVisible(false);
+            poderesNegras.setVisible(true);
+        }
+    }
+
     private void cargarPoderes(){
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
         cargarPoderesNegras(JugadoresActuales.get(Configuracion.Jugadores.NEGRAS));

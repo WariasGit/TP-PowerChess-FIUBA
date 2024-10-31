@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>17.0.13</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>17.0.6</version>
+            <version>17.0.13</version>
         </dependency>
         <dependency>
             <groupId>com.dlsc.formsfx</groupId>
@@ -86,7 +86,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                org.fiuba.algoritmos3.tp1powechess/org.fiuba.algoritmos3.tp1powechess.HelloApplication
+                                org.fiuba.algoritmos3.tp1powechess/org.fiuba.algoritmos3.tp1powechess.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

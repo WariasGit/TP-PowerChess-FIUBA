@@ -5,6 +5,7 @@ import java.util.List;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Rey;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Turno {
@@ -83,10 +84,11 @@ public class Turno {
         return (piezaAMover.getColor() == getColorJugadorActual());
     }
 
-
     public void setGestorPoderes(GestorPoderes gestorPoderes) {
         this.gestorPoderes = gestorPoderes;
     }
+
+    public Coordenada2D getPosicionReyActualAmenazado() {return getTurno().getPosicionActualRey();}
 }
 
 

@@ -118,6 +118,8 @@ public class Jugador {
     public boolean puedeUsarPoder(String nombrePoder) {
         return listaPoderes.getOrDefault(nombrePoder, 0) > 0;
     }
+
+    public Coordenada2D getPosicionActualRey() {return rey.getPosicionActual();}
 }
 
 

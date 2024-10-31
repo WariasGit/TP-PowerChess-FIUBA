@@ -21,12 +21,13 @@ public class VistaTablero {
         rectangle.setFill(Color.GREEN);
     }
 
+    public void pintarReyJaque(Integer fila, Integer columna) {
+        StackPane stackPane = this.posiciones[fila][columna];
+        Rectangle rectangle = (Rectangle) stackPane.getChildren().get(0);
+        rectangle.setFill(Color.RED);
+    }
+
     public void pintarCasilleroColorOriginal(Integer fila, Integer columna) {
-        //sacar esto
-        if (fila == null || columna == null) {
-            System.out.println("Error: 'fila' o 'columna' es null.");
-            return;
-        }
         StackPane stackPane = this.posiciones[fila][columna];
         Rectangle rectangle = (Rectangle) stackPane.getChildren().get(0);
         rectangle.setFill((fila + columna) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));

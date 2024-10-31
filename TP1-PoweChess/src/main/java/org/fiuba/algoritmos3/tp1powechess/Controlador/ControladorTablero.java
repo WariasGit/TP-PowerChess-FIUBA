@@ -27,6 +27,8 @@ public class ControladorTablero{
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
+    private Integer posicionJaqueFila;
+    private Integer posicionJaqueColumna;
     private GestorPoderes gestorPoderes;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
     private final VistaTablero vistaTablero = new VistaTablero(posiciones);
@@ -163,6 +165,19 @@ public class ControladorTablero{
                 moverPieza(fila, columna);
                 gestionarSiHayEnroque();
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
+                if(juego.jugadorActualEnJaque()){
+                    Coordenada2D posicionRey = juego.getPosicionReyAmenazado();
+                    this.posicionJaqueFila = posicionRey.getRow();
+                    this.posicionJaqueColumna = posicionRey.getCol();
+                    vistaTablero.pintarReyJaque(posicionJaqueFila,posicionJaqueColumna );
+                }
+                else{
+                    if(posicionJaqueFila != null && posicionJaqueColumna != null){
+                        vistaTablero.pintarCasilleroColorOriginal(posicionJaqueFila, posicionJaqueColumna );
+                    }
+                    posicionJaqueFila = null;
+                    posicionJaqueColumna = null;
+                }
             } else {
                 System.out.println("Movimiento invalido, se muestra la vista del error");
             }
