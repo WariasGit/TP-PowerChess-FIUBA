@@ -49,8 +49,10 @@ public abstract class Pieza implements Movible {
         this.posicionActual = posicionNueva;
     }
 
+    public void corrigeMarcandoComoNoMovida(){this.seHaMovido = false;}
+
     public void marcarComoMovida() {
-        this.seHaMovido = !seHaMovido;
+        this.seHaMovido = true;
     }
 
     public Pieza ejecutarMovimientoSegunEstrategia(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){

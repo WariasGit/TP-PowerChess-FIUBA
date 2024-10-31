@@ -114,6 +114,7 @@ public class Juego implements ContextoPoder {
             Pieza piezaActual = piezaMovida.get();
             //Se revierte el movimiento
             tablero.setPieza(posicionAnterior, piezaActual);
+            piezaActual.corrigeMarcandoComoNoMovida();
         }
     }
 
