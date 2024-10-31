@@ -16,11 +16,6 @@ public class Juego implements ContextoPoder {
     private final Turno turno;
     private final TableroCuadrado tablero;
     private String ganador;
-    private int contadorMovimientosParaTablas;
-    private int contadorMovimientosParaChequearPosiciones;
-    private int contadorMovimientosTotales;
-    private final HashMap<String, Integer> historialPosiciones;
-    private int piezasEnJuego;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
@@ -31,11 +26,6 @@ public class Juego implements ContextoPoder {
         this.jugadores = jugadores;
         turno = new Turno(jugadores);
         tablero = new TableroCuadrado();
-        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        contadorMovimientosTotales = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        piezasEnJuego = Constantes.CANTIDAD_PIEZAS_INICIALES;
-        historialPosiciones = new HashMap<>();
         gestorDeTablas = new GestorDeTablas();
         gestorDeJaque = new GestorDeJaque();
         gestorDeEnroque = new GestorDeEnroque();
@@ -58,9 +48,7 @@ public class Juego implements ContextoPoder {
         terminarPartida();
     }
 
-    public void establecerTablas(){
-        this.estado = Configuracion.EstadoJuego.TABLAS;
-    }
+    public void establecerTablas(){this.estado = Configuracion.EstadoJuego.TABLAS;}
 
     public void establecerJaqueMate(){
         ganador = turno.getNombreOponente();
@@ -78,12 +66,10 @@ public class Juego implements ContextoPoder {
                 gestionarJaque();
                 //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
                 if(turno.estaEnJaqueJugadorActual()){
-                    System.out.println("Se revierte el movimiento \n");
                     revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
                 }
                 else{
                     aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
-                    System.out.println("Se se puede mover \n");
                     sePuedeMover = true;
                 }
             }
@@ -119,22 +105,22 @@ public class Juego implements ContextoPoder {
     }
 
     private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
-        contadorMovimientosTotales++;
+        gestorDeTablas.aumentarContadorDeMovimientosTotales();
         calcularMovimientosPosiblesIniciales();
         if(piezaComida != null){
             quitarPiezaDeJuador(piezaComida);
-            restarUnaPieza();
-            reiniciarContadorMovimientoParaTablas();
-            reiniciarContadorMovimientosParaChequearPosiciones();
-            limpiarHistorialPosiciones();
+            gestorDeTablas.restarUnaPieza();
+            gestorDeTablas.reiniciarContadorMovimientoParaTablas();
+            gestorDeTablas.reiniciarContadorMovimientosParaChequearPosiciones();
+            gestorDeTablas.limpiarHistorialPosiciones();
         }else{
             gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
-            if (contadorMovimientosTotales >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
+            if (gestorDeTablas.getContadorDeMovimientosTotales() >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
                 guardarEstadoTablero();
             }
         }
         gestionarTablas();
-        imprimirTablero();
+        gestorDeTablas.imprimirEstadoDebug();
     }
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
@@ -145,31 +131,16 @@ public class Juego implements ContextoPoder {
         }
     }
 
-    private void restarUnaPieza() {
-        piezasEnJuego--;
-    }
-
-    private void reiniciarContadorMovimientosParaChequearPosiciones() {
-        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-    }
-
-    private void limpiarHistorialPosiciones() {
-        historialPosiciones.clear();
-    }
-
     private void guardarEstadoTablero() {
         String estadoTablero = tablero.estadoActualTablero();
-        historialPosiciones.put(estadoTablero, historialPosiciones.getOrDefault(estadoTablero, Constantes.CERO) + Constantes.UNO);
-        contadorMovimientosParaChequearPosiciones++;
+        gestorDeTablas.guardarEstadoTablero(estadoTablero);
     }
-
-    private void reiniciarContadorMovimientoParaTablas() {contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;}
 
     private void gestionarContadorMovimientosParaTablas(int fila, int columna) {
         if(movioPeon(fila, columna)){
-            reiniciarContadorMovimientoParaTablas();
+            gestorDeTablas.reiniciarContadorMovimientoParaTablas();
         } else {
-            contadorMovimientosParaTablas++;
+            gestorDeTablas.aumentarContadorDeMovimientosParaTablas();
         }
     }
 
@@ -247,45 +218,24 @@ public class Juego implements ContextoPoder {
         }
     }
 
-    public void actualizarMovimientosPieza(int fila, int columna) {
-        tablero.actualizarMovimientosPieza(fila, columna);
-    }
+    public void actualizarMovimientosPieza(int fila, int columna) {tablero.actualizarMovimientosPieza(fila, columna);}
 
     private void gestionarTablas() {
-        Jugador jugadorActual = turno.getTurno();
-        gestorDeTablas.tablasPorAhogado(jugadorActual);
-        if(piezasEnJuego <= Constantes.MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS) {
-            gestorDeTablas.tablasPorMaterialInsuficiente(jugadores);
-        }
-        gestorDeTablas.tablasPorMovimientos(contadorMovimientosParaTablas);
-        if(contadorMovimientosParaChequearPosiciones >= Constantes.CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES) {
-            gestorDeTablas.tablasPorMovimientosRepetidos(historialPosiciones);
-        }
+        gestorDeTablas.gestionarTablas(turno.getTurno(), jugadores);
         if(gestorDeTablas.haytablas()){
             establecerTablas();
         }
     }
 
     public void gestionarJaque(){
-        gestorDeJaque.restarMovimientosPosiblesALosReyes();
-        Jugador jugadorActual = turno.getTurno();
-        Configuracion.ColoresJugadores colorJugadorActual = turno.getColorJugadorActual();
-        if(gestorDeJaque.jugadorActualEnJaque(colorJugadorActual)){
-            turno.ponerEnJaqueJugadorActual();
-            System.out.print("Jaque al jugador " + turno.getNombreTurno());
-        }
-        else{
-            turno.quitarJaqueJugadorActual();
-        }
-        if(gestorDeJaque.mateJugadorActual(jugadorActual)){
+        gestorDeJaque.gestionarJaque(turno.getTurno());
+        if(gestorDeJaque.mateJugadorActual(turno.getTurno())){
             establecerJaqueMate();
             System.out.print("Jaque Mate");
         }
     }
 
-    public void gestionarEnroque(){
-        gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());
-    }
+    public void gestionarEnroque(){gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());}
 
     public void setNombreJugadorBlancas(String nombre){jugadores.get(Configuracion.Jugadores.BLANCAS).setNombre(nombre);}
 
@@ -295,63 +245,24 @@ public class Juego implements ContextoPoder {
 
     public String getNombreGanador(){return this.ganador;}
 
-    public String getNombreJugadorBlancas() {
-        return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
-    }
+    public String getNombreJugadorBlancas() {return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();}
 
-    public String getNombreJugadorNegras() {
-        return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
-    }
+    public String getNombreJugadorNegras() {return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();}
 
     public String getNombreJugadorActual() {return turno.getNombreTurno();}
 
     public TableroCuadrado getTablero() {return tablero;}
 
-    public ArrayList<Jugador> getJugadores() {
-        return new ArrayList<>(jugadores);
-    }
+    public ArrayList<Jugador> getJugadores() {return new ArrayList<>(jugadores);}
 
     public Configuracion.ColoresJugadores getColorJugadorActual() {return turno.getColorJugadorActual();}
 
-    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
-        return tablero.getPieza(i, j);
-    }
+    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {return tablero.getPieza(i, j);}
 
     public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
 
     public Boolean jugadorActualEnJaque(){return turno.estaEnJaqueJugadorActual();}
 
     public Coordenada2D getPosicionReyAmenazado(){return turno.getPosicionReyActualAmenazado();}
-
-    public void imprimirTablero() {
-        Casillero[][] casilleros = tablero.getTablero();
-        int dimension = tablero.getDimension();
-        // Imprimir los índices de las columnas
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
-        // Imprimir el tablero con bordes
-        for (int i = 0; i < dimension; i++) {
-            // Imprimir índice de la fila
-            System.out.print(i + " |");
-            for (int j = 0; j < dimension; j++) {
-                Pieza pieza = casilleros[i][j].getPieza();
-                if (pieza != null) {
-                    System.out.print(" " + pieza.getCaracterFEN() + " ");
-                } else {
-                    System.out.print(" . ");  // Espacio vacío
-                }
-            }
-            System.out.println("| " + i);  // Cerrar el borde de la fila
-        }
-        // Imprimir los índices de las columnas nuevamente
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
-    }
 }
 

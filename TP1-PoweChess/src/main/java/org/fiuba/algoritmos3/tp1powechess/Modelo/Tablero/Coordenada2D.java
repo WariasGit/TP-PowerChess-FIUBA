@@ -17,4 +17,5 @@ public class Coordenada2D {
     public int getCol() {
         return coordenadas[1];
     }
+
 }

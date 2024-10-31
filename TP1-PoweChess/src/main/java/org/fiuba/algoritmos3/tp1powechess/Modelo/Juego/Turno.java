@@ -68,14 +68,6 @@ public class Turno {
         return getTurno().estaEnJaque();
     }
 
-    public void ponerEnJaqueJugadorActual() {
-        getTurno().establecerJaque();
-    }
-
-    public void quitarJaqueJugadorActual() {
-        getTurno().quitarJaque();
-    }
-
     public Configuracion.ColoresJugadores getColorJugadorActual() {
         return getTurno().getColor();
     }

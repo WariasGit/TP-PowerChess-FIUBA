@@ -27,6 +27,8 @@ public class Casillero {
         return color;
     }
 
+    public Coordenada2D getPosicion() {return posicion;}
+
     public Pieza getPieza() {
         return pieza;
     }
@@ -97,5 +99,4 @@ public class Casillero {
     public void desbloquearAmenazasBloqueadas() {
         gestorDeAmenazas.moverTodasAmenazasBloqueadasAActivas();
     }
-
 }

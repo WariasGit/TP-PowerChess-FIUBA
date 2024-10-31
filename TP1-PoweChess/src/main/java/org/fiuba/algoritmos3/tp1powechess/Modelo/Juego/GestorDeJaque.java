@@ -6,9 +6,7 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GestorDeJaque {
     Rey reyNegro;
@@ -94,5 +92,17 @@ public class GestorDeJaque {
             }
         }
         return sePuedeSalvarElJaque;
+    }
+
+    public void gestionarJaque(Jugador jugadorActual){
+        restarMovimientosPosiblesALosReyes();
+        Configuracion.ColoresJugadores colorJugadorActual = jugadorActual.getColor();
+        if(jugadorActualEnJaque(colorJugadorActual)){
+            jugadorActual.establecerJaque();
+            System.out.print("Jaque al jugador " + jugadorActual.getNombre() + "\n");
+        }
+        else{
+            jugadorActual.quitarJaque();
+        }
     }
 }
