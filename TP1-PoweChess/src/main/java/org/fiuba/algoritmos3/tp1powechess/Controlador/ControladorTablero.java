@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Torre;
@@ -26,6 +27,9 @@ public class ControladorTablero{
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
+    private Integer posicionJaqueFila;
+    private Integer posicionJaqueColumna;
+    private GestorPoderes gestorPoderes;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
     private final VistaTablero vistaTablero = new VistaTablero(posiciones);
     private final VistaPoderes vistaPoderes = new VistaPoderes(posiciones);
@@ -52,6 +56,10 @@ public class ControladorTablero{
     public void setJuego(Juego juego) {
         this.juego = juego;
         cargarPiezas();
+    }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
     }
 
     public void cargarPiezas() {
@@ -94,6 +102,7 @@ public class ControladorTablero{
             // Primer click
             if (piezaActual.isPresent()) {
                 Pieza pieza = piezaActual.get();
+
                 // Si el jugador está tocando una pieza del color correcto para su turno
                 if (juego.getColorJugadorActual() == pieza.getColor()) {
                     //System.out.println("Primer click en una pieza del color del jugador actual");
@@ -102,6 +111,7 @@ public class ControladorTablero{
                 else {
                     // Seleccionando una pieza del rival, por ejemplo para poderes
                     //System.out.println("Primer click en una pieza del color rival");
+                    gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                     aplicarColorCasillero(fila, columna);  // Pintar casillero de pieza rival
                     guardarPosicionOrigen(fila, columna);  // Guardar la selección
                 }
@@ -129,6 +139,7 @@ public class ControladorTablero{
                 }
             }
             else {
+                gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                 quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                 limpiarSeleccion();  // No se cambia turno
@@ -140,6 +151,7 @@ public class ControladorTablero{
         aplicarColorCasillero(fila, columna);
         guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
         juego.actualizarMovimientosPieza(fila, columna);
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
         juego.gestionarJaque();
         juego.gestionarEnroque();
         mostrarMovimientosPosibles(piezaActual);
@@ -147,11 +159,25 @@ public class ControladorTablero{
 
     private void manejarSegundoClick(int fila, int columna) {
         if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+            gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
                 moverPieza(fila, columna);
                 gestionarSiHayEnroque();
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
+                if(juego.jugadorActualEnJaque()){
+                    Coordenada2D posicionRey = juego.getPosicionReyAmenazado();
+                    this.posicionJaqueFila = posicionRey.getRow();
+                    this.posicionJaqueColumna = posicionRey.getCol();
+                    vistaTablero.pintarReyJaque(posicionJaqueFila,posicionJaqueColumna );
+                }
+                else{
+                    if(posicionJaqueFila != null && posicionJaqueColumna != null){
+                        vistaTablero.pintarCasilleroColorOriginal(posicionJaqueFila, posicionJaqueColumna );
+                    }
+                    posicionJaqueFila = null;
+                    posicionJaqueColumna = null;
+                }
             } else {
                 System.out.println("Movimiento invalido, se muestra la vista del error");
             }
@@ -160,6 +186,8 @@ public class ControladorTablero{
 
     private void moverPieza(int destinoFila, int destinoColumna) {
         // Obtener la celda de origen y destino
+        System.out.println("La posicion de origen es: " + posicionOrigenFila + ", " + posicionOrigenColumna);
+        System.out.println("La posicion de destino es: " + destinoFila + ", " + destinoColumna);
         StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
         StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
         // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
@@ -216,11 +244,9 @@ public class ControladorTablero{
 
     public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
 
-    public void agregarAlas(){vistaPoderes.setAlas(posicionOrigenFila, posicionOrigenColumna);}
-
     public void agregarCongelado(){vistaPoderes.setCongelado(posicionOrigenFila, posicionOrigenColumna);}
 
-    public void agregarMovimientoDoble(){vistaPoderes.setMovimientoDoble(posicionOrigenFila, posicionOrigenColumna);}
+    public void quitarVistaDelPoder(int fila, int columna) {vistaPoderes.quitarPoder(fila, columna);}
 
-    public void agregarEvolucion(){vistaPoderes.setEvolucion(posicionOrigenFila, posicionOrigenColumna);}
+
 }

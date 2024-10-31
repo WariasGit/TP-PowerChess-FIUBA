@@ -33,6 +33,13 @@ public class Configuracion {
         public static final int COLUMNA_DERECHA= 7;
     }
 
+    public enum TipoPoder {
+        FREEZE,
+        ESCUDO,
+        LIMPIEZA,
+        ROBAR,
+    }
+
     public static class PosicionInicialReyes{
         public static final int FILA_REY_NEGRO = 0;
         public static final int COLUMNA_REY_NEGRO = 4;
@@ -43,38 +50,24 @@ public class Configuracion {
     public enum CategoriaPoder {
         DURACION,
         ACCION,
-        EVOLUCION
+    }
+
+    public enum AplicacionPoder {
+        PROPIA,
+        RIVAL,
+        AMBOS
     }
 
     private static Map<String, EventType<EventoPoder>> mapaEventos = new HashMap<>();
-    static{
-        mapaEventos.put(CaracteristicasPoderes.DOBLE_JUEGO, EventoPoder.DOBLE_JUEGO);
-        mapaEventos.put(CaracteristicasPoderes.ESCUDO, EventoPoder.ESCUDO);
-        mapaEventos.put(CaracteristicasPoderes.EVOLUCION, EventoPoder.EVOLUCION);
-        mapaEventos.put(CaracteristicasPoderes.FREEZE, EventoPoder.FREEZE);
-        mapaEventos.put(CaracteristicasPoderes.LIMPIEZA, EventoPoder.LIMPIEZA);
-        mapaEventos.put(CaracteristicasPoderes.ROBAR, EventoPoder.ROBAR);
-        mapaEventos.put(CaracteristicasPoderes.VUELO, EventoPoder.VUELO);
+    static {
+        mapaEventos.put("Escudo", EventoPoder.ESCUDO);
+        mapaEventos.put("Freeze", EventoPoder.FREEZE);
+        mapaEventos.put("Limpieza", EventoPoder.LIMPIEZA);
+        mapaEventos.put("Robar", EventoPoder.ROBAR);
     }
 
     public static EventType<EventoPoder> getEventoPoder(String nombrePoder) {
         return mapaEventos.get(nombrePoder);
-    }
-
-
-    public class CaracteristicasPoderes{
-        public static final int DURACION_ESCUDO = 3;
-        public static final int DURACION_FREEZE = 2;
-        public static final int DURACION_VUELO = 1;
-        public static final int[] PRIMER_MOVIMIENTO_EXTRA = new int[]{-Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA}; // Diagonal derecha arriba
-        public static final int[] SEGUNDO_MOVIMIENTO_EXTRA = new int[]{Constantes.UNO_EN_FILA, Constantes.CERO_EN_COLUMNA}; //Abajo
-        public static final String DOBLE_JUEGO = "Doble_juego";
-        public static final String ESCUDO = "Escudo";
-        public static final String EVOLUCION = "Evolucion";
-        public static final String FREEZE = "Freeze";
-        public static final String LIMPIEZA = "Limpieza";
-        public static final String ROBAR = "Robar";
-        public static final String VUELO = "Vuelo";
     }
 
     public static class TamanioVentana{

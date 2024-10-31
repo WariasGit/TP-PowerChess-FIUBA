@@ -48,6 +48,16 @@ public class TableroCuadrado {
         Coordenada2D coordenadaInicial = new Coordenada2D(filaInicial, columnaInicial);
         Coordenada2D coordenadaFinal = new Coordenada2D(filaFinal, columnaFinal);
 
+
+        //ESTO HAY QUE CAMBIARLO !!!!
+        Casillero casilleroFinal = getCasillero(filaFinal,columnaFinal);
+        if (casilleroFinal.estaOcupado()) {
+            Pieza piezaAComer = casilleroFinal.getPieza();
+            if (piezaAComer.tieneEscudo()) {
+                throw new IllegalArgumentException("La pieza esta protegida por escudo");
+            }
+        }
+        piezaAMover.actualizarPosicion(coordenadaFinal);
         return piezaAMover.ejecutarMovimientoSegunEstrategia(coordenadaInicial, coordenadaFinal, this);
     }
 
@@ -91,10 +101,8 @@ public class TableroCuadrado {
         }
         // Remover la pieza del casillero. El metodo del casillero devuelve la pieza que se elimina
         Pieza piezaARemover = casillero.removerPieza();
-
         // Actualizar las amenazas de la pieza a remover (solo las activas)
         quitarAmenazasDesdeCoordenadasHastaLimiteUOcupado(piezaARemover.getAmenazasGeneradas(), row, col);
-
         //Actualizamos las amenazas que anteriormente estaban bloqueadas
         ArrayList<Amenaza> amenazasAExtender = casillero.obtenerAmenazasActivasQueSeExtiendenMasQueUnCasillero();
         agregarAmenazasDesdeCoordenadasHastaLimiteUOcupado(amenazasAExtender,row, col);
@@ -168,10 +176,11 @@ public class TableroCuadrado {
 
         // Recorremos el camino hasta la posición final, sin incluir las posiciones inicial y final
         while (filaActual != rowFinal || colActual != colFinal) {
+
+            //VERIFICAR VUELO VOLAR
             if (getCasillero(filaActual, colActual).estaOcupado()) {
                 return false;  // El camino está bloqueado
             }
-
             filaActual += incrementoFila;
             colActual += incrementoColumna;
         }
@@ -202,6 +211,10 @@ public class TableroCuadrado {
     public void actualizarMovimientosPieza(int fila, int columna) {
         Optional<Pieza> pieza = getPieza(fila, columna);
         pieza.ifPresent(value -> filtrarAmenazasYPosiciones(fila, columna, value));
+    }
+
+    private boolean esPosicionValida(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8; // Asumiendo un tablero 8x8
     }
 
     private void filtrarAmenazasYPosiciones(int fila, int columna, Pieza piezaActual) {

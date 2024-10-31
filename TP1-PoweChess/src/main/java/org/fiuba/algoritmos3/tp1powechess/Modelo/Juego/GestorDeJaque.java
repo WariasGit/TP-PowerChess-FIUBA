@@ -38,7 +38,7 @@ public class GestorDeJaque {
     }
 
     public boolean mateJugadorActual(Jugador jugador) {
-        return jugador.estaEnJaque() && !sePuedeSalvarElJaque(jugador);
+        return jugador.estaEnJaque() && !jugador.elReyTieneMovimientosPosibles() && !sePuedeSalvarElJaque(jugador);
     }
 
     public void restarMovimientosPosiblesALosReyes(){

@@ -6,4 +6,5 @@ public interface Movible {
     public void setMovimientosPosibles(ArrayList<int[]> movimientosPosibles);
     public ArrayList<int[]> getMovimientosPosibles();
     public void limpiarListaMovimientosPosibles();
+
 }

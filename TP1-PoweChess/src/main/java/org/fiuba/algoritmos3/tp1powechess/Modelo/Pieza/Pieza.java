@@ -24,12 +24,10 @@ public abstract class Pieza implements Movible {
     protected String tipoDePieza;
     protected char caracterFEN;
     protected int valor;
-    protected Boolean movimientoDoble;
     protected Poder poderActual;
 
     public Pieza(Configuracion.ColoresJugadores color) {
         this.color = color;
-        this.seHaMovido = false;
         this.estrategiaDeMovimiento = new MovimientoNormal();
         this.seHaMovido = false;
     }
@@ -44,7 +42,7 @@ public abstract class Pieza implements Movible {
 
     public boolean seHaMovido() {return seHaMovido;}
 
-    public void setPosicionActual(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
+    public void setPosicionInicial(Coordenada2D posicionNueva) {this.posicionActual = posicionNueva; this.posicionAnterior = posicionNueva;}
 
     public void actualizarPosicion(Coordenada2D posicionNueva) {
         this.posicionAnterior = this.posicionActual;
@@ -104,7 +102,7 @@ public abstract class Pieza implements Movible {
     public void asignarCaracterFEN(char opcionBlanca, char opcionNegra) {
         if(this.color == Configuracion.ColoresJugadores.BLANCO){
             caracterFEN = opcionBlanca;
-        }else {
+        } else {
             caracterFEN = opcionNegra;
         }
     }
@@ -113,15 +111,49 @@ public abstract class Pieza implements Movible {
         return caracterFEN;
     }
 
-    public void aplicarPoder(Poder poder) {
-        poderActual = poder;
+    public String aplicarPoder(Poder poder) {
+        return poder.accionarPoder(this);
     }
 
-    public void desactivarPoder(Poder poder) {
-        poderActual = poder;
+    public void setPoder(Poder poder) {
+        this.poderActual = poder;
+    }
+
+    public boolean verificarAplicacionPoder(Poder poder) {
+        if (this.esRey()) {
+            return false;
+        }
+        if (poder.getTipo() == Configuracion.TipoPoder.LIMPIEZA) {
+            return true;
+        }
+        return !this.tienePoderActivo();
+    }
+
+    public String desactivarPoder() {
+        String nombrePoderActual = null;
+        if (poderActual != null) {
+            nombrePoderActual = poderActual.getNombre();
+        }
+        poderActual = null;
+        return nombrePoderActual;
+    }
+
+    public boolean tieneEscudo() {
+        return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.ESCUDO);
+    }
+
+    public boolean tieneFreeze() {
+        return (this.tienePoderActivo() && poderActual.getTipo() == Configuracion.TipoPoder.FREEZE);
+    }
+
+    public boolean tienePoderActivo() {
+        return poderActual != null;
     }
 
     public boolean puedeMoverseA(int filaFinal, int columnaFinal) {
+        if (this.tieneFreeze()) {
+            return false;
+        }
         for(int[] movimiento : movimientosPosibles) {
             if(movimiento[0] == filaFinal && movimiento[1] == columnaFinal) {
                 return true;
@@ -129,4 +161,14 @@ public abstract class Pieza implements Movible {
         }
         return false;
     }
+
+    public boolean esRey() {
+        return this.getTipoDePieza().equals("Rey");
+    }
+
+
+    public Poder getPoderActual() {
+        return this.poderActual;
+    }
+
 }

@@ -70,7 +70,6 @@ public class GestorDeAmenazas {
                 amenazasFiltradas.add(amenaza);
             }
         });
-
         return amenazasFiltradas;
     }
 

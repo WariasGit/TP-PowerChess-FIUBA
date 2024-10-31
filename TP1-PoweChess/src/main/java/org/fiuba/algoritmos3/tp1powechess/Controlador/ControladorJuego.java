@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 public class ControladorJuego implements EventHandler<EventoJuego>{
     private Juego juego;
+    private GestorPoderes gestorPoderes;
     private ControladorTablero controladorTablero;
     private ControladorSecundario controladorSecundario;
     @FXML private VBox poderes;
@@ -63,6 +65,11 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         controladorSecundario.setJuego(juego.getJugadores());
     }
 
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
+        controladorTablero.setGestorPoderes(gestorPoderes);
+    }
+
     private static final Map<Configuracion.ColoresJugadores, Color> colores = Map.ofEntries(
             Map.entry(Configuracion.ColoresJugadores.BLANCO, Color.WHITE),
             Map.entry(Configuracion.ColoresJugadores.NEGRO, Color.BLACK)
@@ -73,6 +80,7 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         if(juegoEvent.getEventType().equals(EventoJuego.CAMBIO_DE_TURNO_EVENT)){
             this.juego.cambiarTurno();
             this.nombreJugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
+            controladorSecundario.ocultarBotones(juego.getColorJugadorActual());
             this.juego.gestionarJaque();
             if(!juego.sigueElJuego()){
                 generarEventoFinDePartida();
@@ -86,7 +94,6 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
             this.juego.gestionarRendicion();
             generarEventoFinDePartida();
         }
-
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {

@@ -26,9 +26,10 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     private Juego Ajedrez;
     private GestorPoderes gestorPoderes;
     private final Stage stage;
-    //Reproductor reproductor = new Reproductor();
+    Reproductor reproductor = new Reproductor();
 
     public AdministradorPrimarioJuego(Stage stage) {
+
         this.stage = stage;
     }
 
@@ -84,7 +85,6 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         }
     }
 
-
     private void iniciarJuego(String path) throws IOException {
         Jugador jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO);
         Jugador jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO);
@@ -93,6 +93,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         jugadores.add(jugadorNegras);
         this.Ajedrez = new Juego(jugadores);
         this.gestorPoderes = new GestorPoderes(Ajedrez);
+        Ajedrez.getTurno().setGestorPoderes(gestorPoderes);
         Ajedrez.cargarPartida(path);
         iniciarVentanaJuego();
     }
@@ -102,12 +103,13 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
     private void iniciarVentanaJuego() throws IOException {
-        //reproductor.reproducirMusicaJuego();
+        reproductor.reproducirMusicaJuego();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
         VBox root;
         root = loader.load();
         ControladorJuego juegoController = loader.getController();
         juegoController.setJuego(Ajedrez);
+        juegoController.setGestorPoderes(this.gestorPoderes);
         ControladorTablero controladorTablero= juegoController.getControladorTablero();
         this.gestorPoderes.setControladorTablero(controladorTablero);
         root.addEventHandler(EventoJuego.CAMBIO_DE_TURNO_EVENT, juegoController);
@@ -115,13 +117,10 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         root.addEventHandler(EventoJuego.RENDIRSE_EVENT, juegoController);
         root.addEventHandler(EventoJuego.VOLVER_AL_MENU, this);
         root.addEventHandler(EventoJuego.TERMINAR_PARTIDA, this);
-        root.addEventHandler(EventoPoder.DOBLE_JUEGO, evento -> gestorPoderes.activarDobleJuego());
         root.addEventHandler(EventoPoder.ESCUDO, evento -> gestorPoderes.activarEscudo());
-        root.addEventHandler(EventoPoder.EVOLUCION, evento -> gestorPoderes.activarEvolucion());
         root.addEventHandler(EventoPoder.FREEZE, evento -> gestorPoderes.activarFreeze());
         root.addEventHandler(EventoPoder.LIMPIEZA, evento -> gestorPoderes.activarLimpieza());
         root.addEventHandler(EventoPoder.ROBAR, evento -> gestorPoderes.activarRobar());
-        root.addEventHandler(EventoPoder.VUELO, evento -> gestorPoderes.activarVuelo());
         Scene scene = new Scene(root, Configuracion.TamanioVentana.ANCHO, Configuracion.TamanioVentana.ALTO);
         stage.setScene(scene);
         stage.setOnCloseRequest(juegoController::mostrarConfirmacionCierre);
@@ -129,7 +128,7 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     }
 
     public void iniciarVentanaPrincipal() throws IOException {
-        //reproductor.reproducirMusicaMenu();
+        reproductor.reproducirMusicaMenu();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_INICIO_FXML));
         Pane root = loader.load();
         root.addEventHandler(EventoJuego.INICIAR_JUEGO, this);

@@ -1,8 +1,8 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Rey;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
@@ -11,6 +11,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 public class Turno {
     private List<Jugador> jugadores;
     private int turnoActual;
+    private GestorPoderes gestorPoderes;
 
     public Turno(List<Jugador> jugadores) {
         this.jugadores = jugadores;
@@ -33,8 +34,18 @@ public class Turno {
     public Rey getReyJugadorActual() {return getTurno().getRey();}
 
     public void gestionarTurno() {
+        gestorPoderes.verificarPoderesJugador(); // Delegación a GestorPoderes
         turnoActual = (turnoActual + 1) % jugadores.size();
     }
+
+    /*private void verificarPoderesJugadorActual() {
+        List<Pieza> piezas = getTurno().getPiezasEnJuego();
+        for (Pieza pieza : piezas) {
+            if (pieza.tienePoderActivo()) {
+                pieza.poder();
+            }
+        }
+    }*/
 
     public Jugador getTurno() {
         return jugadores.get(turnoActual);
@@ -64,4 +75,12 @@ public class Turno {
     public boolean estaPiezaEsDelJugadorActual(Pieza piezaAMover){
         return (piezaAMover.getColor() == getColorJugadorActual());
     }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
+    }
+
+    public Coordenada2D getPosicionReyActualAmenazado() {return getTurno().getPosicionActualRey();}
 }
+
+

@@ -24,8 +24,16 @@ public class VistaPoderes {
         sticker.setFitWidth(20);
         sticker.setFitHeight(20);
         sticker.setPreserveRatio(true);
+        sticker.setId("sticker");
         StackPane.setAlignment(sticker, Pos.TOP_RIGHT);
         celdaSecundaria.getChildren().add(sticker);
+    }
+
+    public void quitarSticker(int fila, int columna) {
+        StackPane celdaPrincipal = this.posiciones[fila][columna];
+        StackPane celdaSecundaria = (StackPane) celdaPrincipal.getChildren().get(1);
+        // Buscar el ImageView con el ID "sticker" y eliminarlo
+        celdaSecundaria.getChildren().removeIf(node -> node instanceof ImageView && "sticker".equals(node.getId()));
     }
 
     public void setEscudo(int fila, int columna) {
@@ -48,5 +56,5 @@ public class VistaPoderes {
         agregarSticker(fila, columna, Constantes.RUTA_STICKER_EVOLUCION);
     }
 
-
+    public void quitarPoder(int fila, int columna) {quitarSticker(fila, columna);}
 }

@@ -38,40 +38,4 @@ public class Caballo extends Pieza {
         return "Caballo";
     }
 
-    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
-
-        // Verificar si alguna dirección de amenaza es válida para el movimiento actual
-        return esAmenazaValida(inicioX, inicioY, finX, finY);
-    }
-
-    // Metodo privado que verifica si la dirección del movimiento es válida
-    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
-        for (int[] direccion : this.direccionesDeMovimiento) {
-            if (direccion[0] == difX && direccion[1] == difY) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean esAmenazaValida(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
-
-        for (int[] direccion : this.direccionesDeAmenaza) {
-            // Crear la amenaza en la dirección dada
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
-
-            // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
-            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
-                // Verificar si la dirección de amenaza es válida para este movimiento
-                if (Math.abs(difX) == Math.abs(direccion[0]) && Math.abs(difY) == Math.abs(direccion[1])) {
-                        return true;
-                }
-            }
-        }
-        return false;
-    }
 }

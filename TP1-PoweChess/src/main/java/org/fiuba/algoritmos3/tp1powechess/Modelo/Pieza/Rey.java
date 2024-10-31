@@ -41,33 +41,6 @@ public class Rey extends Pieza implements Enrocable {
         this.movimientosDeEnroqueDerecha = new ArrayList<>();
     }
 
-    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
-        // Verificamos si la dirección está entre las permitidas para las amenazas
-        for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza(), posicionActual);
-            // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
-            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
-                // Verificar que la distancia sea válida (<= 1 casilla para el Rey)
-                if (Math.abs(difX) == Math.abs(direccion[0]) && Math.abs(difY) == Math.abs(direccion[1])) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // Metodo privado que verifica si la dirección del movimiento es válida
-    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
-        for (int[] direccion : direccionesDeMovimiento) {
-            if (direccion[0] == difX && direccion[1] == difY) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado,int row) {
         tableroCuadrado.removePieza(this.posicionAnterior);
         System.out.println("Posicion a eliminar del rey: " + posicionActual.getRow() + "," + posicionActual.getCol());
@@ -111,4 +84,5 @@ public class Rey extends Pieza implements Enrocable {
             this.movimientosPosibles.addAll(movimientosDeEnroque);
         }
     }
+
 }

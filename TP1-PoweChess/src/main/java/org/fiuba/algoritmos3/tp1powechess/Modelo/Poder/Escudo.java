@@ -5,17 +5,13 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 
 public class Escudo extends Poder {
 
-    public Escudo(int duracion) {
-        super(Configuracion.CaracteristicasPoderes.ESCUDO, duracion, Configuracion.CategoriaPoder.DURACION);
+    public Escudo() {
+        super("Escudo",3,Configuracion.CategoriaPoder.DURACION, Configuracion.TipoPoder.ESCUDO, Configuracion.AplicacionPoder.PROPIA);
     }
 
-    @Override
-    public void aplicar(Pieza pieza) {
-        pieza.aplicarPoder(this);
+    public String accionarPoder(Pieza pieza) {
+        pieza.setPoder(this);
+        return this.getNombre();
     }
 
-    @Override
-    public void desactivar(Pieza pieza) {
-        pieza.desactivarPoder(this);  // Elimina el poder Freeze de la pieza
-    }
 }

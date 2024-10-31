@@ -59,7 +59,7 @@ public class MovimientoRey implements EstrategiaDeMovimiento{
     private Pieza moverPiezaYCapturarSiEsNecesario(Rey piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
         // Remover la pieza del casillero inicial
         tablero.removePieza(coordenadaInicial);
-        Casillero casilleroNuevo = tablero.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());
+        Casillero casilleroNuevo = tablero.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
         piezaAMover.actualizarCasilleroActual(casilleroNuevo);
         // Colocar la pieza en el casillero final
         return tablero.setPieza(coordenadaFinal, piezaAMover); // Devuelve la pieza capturada si la hubiera, sino null

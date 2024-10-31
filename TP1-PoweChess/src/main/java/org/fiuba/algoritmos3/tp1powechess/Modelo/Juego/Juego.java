@@ -1,4 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.ContextoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
@@ -9,7 +10,7 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.io.*;
 import java.util.*;
 
-public class Juego {
+public class Juego implements ContextoPoder {
     private Configuracion.EstadoJuego estado;
     private final List<Jugador> jugadores;
     private final Turno turno;
@@ -19,7 +20,6 @@ public class Juego {
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
     private Pieza ultimaPiezaCapturada;
-
 
     public Juego(List<Jugador> jugadores) throws IOException {
         this.estado = Configuracion.EstadoJuego.EN_JUEGO;
@@ -31,6 +31,14 @@ public class Juego {
         gestorDeEnroque = new GestorDeEnroque();
         gestorDeJaque.setTablero(tablero);
         gestorDeEnroque.setTablero(tablero);
+    }
+
+    public Optional<Pieza> getPieza(int fila, int columna) {
+        return tablero.getPieza(fila, columna);
+    }
+
+    public Turno getTurno() {
+        return this.turno;
     }
 
     public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
@@ -111,7 +119,6 @@ public class Juego {
             }
         }
         gestionarTablas();
-        imprimirTablero();
         gestorDeTablas.imprimirEstadoDebug();
     }
 
@@ -174,7 +181,7 @@ public class Juego {
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
                     Coordenada2D posicionActual = new Coordenada2D(fila, columna);
-                    pieza.setPosicionActual(posicionActual);
+                    pieza.setPosicionInicial(posicionActual);
                     guardarPiezaJugador(pieza);
                 }
                 columna++;
@@ -253,35 +260,8 @@ public class Juego {
 
     public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
 
-    private void imprimirTablero() {
-        Casillero[][] casilleros = tablero.getTablero();
-        int dimension = tablero.getDimension();
-        // Imprimir los índices de las columnas
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
-        // Imprimir el tablero con bordes
-        for (int i = 0; i < dimension; i++) {
-            // Imprimir índice de la fila
-            System.out.print(i + " |");
-            for (int j = 0; j < dimension; j++) {
-                Pieza pieza = casilleros[i][j].getPieza();
-                if (pieza != null) {
-                    System.out.print(" " + pieza.getCaracterFEN() + " ");
-                } else {
-                    System.out.print(" . ");  // Espacio vacío
-                }
-            }
-            System.out.println("| " + i);  // Cerrar el borde de la fila
-        }
-        // Imprimir los índices de las columnas nuevamente
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
-    }
+    public Boolean jugadorActualEnJaque(){return turno.estaEnJaqueJugadorActual();}
+
+    public Coordenada2D getPosicionReyAmenazado(){return turno.getPosicionReyActualAmenazado();}
 }
 
