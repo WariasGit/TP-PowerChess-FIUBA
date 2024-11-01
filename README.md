@@ -31,6 +31,6 @@ mvn clean install
 mvn javafx:run
 
 Problemas Comunes
-Versiones de Java: Si tenes problemas con la versión de Java, asegúrate de que estás usando Java 17.0.6 o superior.
+Versiones de Java: Si tenes problemas con la versión de Java, asegúrate de que estás usando Java 17.0.6 instalado.
 
 
