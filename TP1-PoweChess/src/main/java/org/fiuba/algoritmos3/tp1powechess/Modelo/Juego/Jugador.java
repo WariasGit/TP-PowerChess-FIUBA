@@ -1,12 +1,11 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.*;
+
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class Jugador {
     private final Configuracion.ColoresJugadores color;

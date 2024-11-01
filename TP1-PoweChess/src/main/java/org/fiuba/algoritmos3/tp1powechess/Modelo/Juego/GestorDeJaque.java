@@ -59,9 +59,9 @@ public class GestorDeJaque {
     private boolean sePuedeSalvarElJaque(Jugador jugadorActual){
         Rey rey = getReyDeJugadorActual(jugadorActual.getColor());
         Coordenada2D posicionActual = rey.getPosicionActual();
-        int filaActual = posicionActual.getRow();
-        int columnaActual = posicionActual.getCol();
-        System.out.println("Posicion actual: " + posicionActual.getRow() + ", " + posicionActual.getCol());
+        int filaActual = posicionActual.getFila();
+        int columnaActual = posicionActual.getColumna();
+        System.out.println("Posicion actual: " + posicionActual.getFila() + ", " + posicionActual.getColumna());
         boolean sePuedeSalvarElJaque = false;
         ArrayList<Amenaza> amenazas = rey.getAmenazasRecibidas();
         System.out.println("Amenazas recibidas por el rey: " + amenazas.size());
@@ -69,8 +69,8 @@ public class GestorDeJaque {
             int[] direccion = amenaza.getDireccion();
             int casilleros = amenaza.getCantidadCasilleros();
             Coordenada2D posicionAmenaza = amenaza.getPosicion();
-            System.out.println("Posicion de la amenaza: " + posicionAmenaza.getRow() + ", " + posicionAmenaza.getCol());
-            if(jugadorActual.puedeOcuparEsteCasillero(posicionAmenaza.getRow(), posicionAmenaza.getCol())){
+            System.out.println("Posicion de la amenaza: " + posicionAmenaza.getFila() + ", " + posicionAmenaza.getColumna());
+            if(jugadorActual.puedeOcuparEsteCasillero(posicionAmenaza.getFila(), posicionAmenaza.getColumna())){
                 sePuedeSalvarElJaque = true;
             }
             else{

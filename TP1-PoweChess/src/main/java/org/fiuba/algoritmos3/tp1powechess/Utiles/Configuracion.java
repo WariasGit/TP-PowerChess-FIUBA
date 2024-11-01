@@ -74,6 +74,8 @@ public class Configuracion {
         public static final double ANCHO = 900;
         public static final double ALTO = 750;
         public static final Integer DIMENSION_TABLERO = 8;
+        public static final Integer CERO = 0;
+        public static final Integer DOS = 2;
     }
 
     public static class Jugadores {

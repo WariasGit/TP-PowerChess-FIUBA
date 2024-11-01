@@ -10,6 +10,10 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Clase que representa un juego de ajedrez, gestionando el estado del juego,
+ * los jugadores, el tablero y la lógica de movimientos.
+ */
 public class Juego implements ContextoPoder {
     private Configuracion.EstadoJuego estado;
     private final List<Jugador> jugadores;
@@ -33,30 +37,14 @@ public class Juego implements ContextoPoder {
         gestorDeEnroque.setTablero(tablero);
     }
 
-    public Optional<Pieza> getPieza(int fila, int columna) {
-        return tablero.getPieza(fila, columna);
-    }
-
-    public Turno getTurno() {
-        return this.turno;
-    }
-
-    public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
-
-    public void gestionarRendicion() {
-        ganador = turno.getNombreOponente();
-        terminarPartida();
-    }
-
-    public void establecerTablas(){this.estado = Configuracion.EstadoJuego.TABLAS;}
-
-    public void establecerJaqueMate(){
-        ganador = turno.getNombreOponente();
-        this.estado = Configuracion.EstadoJuego.JAQUE_MATE;
-    }
-
-    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
-
+    /**
+     * Realiza un movimiento en el tablero.
+     * @param origenFila Fila de la posición de origen de la pieza.
+     * @param origenColumna Columna de la posición de origen de la pieza.
+     * @param destinoFila Fila de la posición de destino.
+     * @param destinoColumna Columna de la posición de destino.
+     * @return true si el movimiento se realizó con éxito; false en caso contrario.
+     */
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         boolean sePuedeMover = false;
         try {
@@ -83,27 +71,34 @@ public class Juego implements ContextoPoder {
         return sePuedeMover;
     }
 
-    private boolean esturnoDeMover(int fila, int columna){
-        Optional<Pieza> piezaAMover = tablero.getPieza(fila, columna);
-        Pieza piezaActual = null;
-        if(piezaAMover.isPresent()){
-            piezaActual = piezaAMover.get();
-        }
-        return turno.estaPiezaEsDelJugadorActual(piezaActual);
-    }
-
+    /**
+     * Revierte un movimiento en el tablero.
+     * @param origenFila Fila de la posición de origen.
+     * @param origenColumna Columna de la posición de origen.
+     * @param destinoFila Fila de la posición de destino.
+     * @param destinoColumna Columna de la posición de destino.
+     */
     private void revertirMovimiento(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
         System.out.print("Debe realizar un movimiento para evitar el Jaque");
         Optional<Pieza> piezaMovida = tablero.getPieza(destinoFila, destinoColumna);
         Coordenada2D posicionAnterior = new Coordenada2D(origenFila, origenColumna);
+        Coordenada2D posicionActual = new Coordenada2D(destinoFila, destinoColumna);
         if(piezaMovida.isPresent()){
             Pieza piezaActual = piezaMovida.get();
-            //Se revierte el movimiento
+            //Se revierte el movimiento, devolviendo la pieza a la posicion anterior.
             tablero.setPieza(posicionAnterior, piezaActual);
+            //Se remueve la pieza de la posicion a la que se habia movido.
+            tablero.removerPieza(posicionActual);
             piezaActual.corrigeMarcandoComoNoMovida();
         }
     }
 
+    /**
+     * Aplica la lógica de movimientos después de un movimiento exitoso.
+     * @param piezaComida Pieza que fue comida (capturada) durante el movimiento. Puede ser null si fue un movimiento sin captura.
+     * @param destinoFila Fila de la posición de destino.
+     * @param destinoColumna Columna de la posición de destino.
+     */
     private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
         gestorDeTablas.aumentarContadorDeMovimientosTotales();
         calcularMovimientosPosiblesIniciales();
@@ -121,6 +116,15 @@ public class Juego implements ContextoPoder {
         }
         gestionarTablas();
         gestorDeTablas.imprimirEstadoDebug();
+    }
+
+    private boolean esturnoDeMover(int fila, int columna){
+        Optional<Pieza> piezaAMover = tablero.getPieza(fila, columna);
+        Pieza piezaActual = null;
+        if(piezaAMover.isPresent()){
+            piezaActual = piezaAMover.get();
+        }
+        return turno.estaPiezaEsDelJugadorActual(piezaActual);
     }
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
@@ -150,13 +154,6 @@ public class Juego implements ContextoPoder {
             return Objects.equals(pieza.get().getTipoDePieza(), Constantes.PEON);
         }
         return false;
-    }
-
-    public void cambiarTurno() {turno.gestionarTurno();}
-
-    public void guardarPartida() {
-        String estadoTablero = tablero.estadoActualTablero();
-        GestorDeArchivos.guardarFen(estadoTablero);
     }
 
     public void cargarPartida(String path) throws IOException {
@@ -208,6 +205,37 @@ public class Juego implements ContextoPoder {
             reyes.add(reyNegro);
         }
         turno.setReyes(reyes);
+    }
+
+    public Optional<Pieza> getPieza(int fila, int columna) {
+        return tablero.getPieza(fila, columna);
+    }
+
+    public Turno getTurno() {
+        return this.turno;
+    }
+
+    public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
+
+    public void gestionarRendicion() {
+        ganador = turno.getNombreOponente();
+        terminarPartida();
+    }
+
+    public void establecerTablas(){this.estado = Configuracion.EstadoJuego.TABLAS;}
+
+    public void establecerJaqueMate(){
+        ganador = turno.getNombreOponente();
+        this.estado = Configuracion.EstadoJuego.JAQUE_MATE;
+    }
+
+    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
+
+    public void cambiarTurno() {turno.gestionarTurno();}
+
+    public void guardarPartida() {
+        String estadoTablero = tablero.estadoActualTablero();
+        GestorDeArchivos.guardarFen(estadoTablero);
     }
 
     private void guardarPiezaJugador(Pieza pieza) {

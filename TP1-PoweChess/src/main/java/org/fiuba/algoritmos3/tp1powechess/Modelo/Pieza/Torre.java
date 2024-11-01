@@ -1,5 +1,4 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Enrocable.Enrocable;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Movimientos.MovimientoNormal;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
@@ -35,14 +34,14 @@ public class Torre extends Pieza implements Enrocable {
     }
 
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado, int row) {
-        tableroCuadrado.removePieza(posicionActual);
+        tableroCuadrado.removerPieza(posicionActual);
         Coordenada2D nuevaPosicion = new Coordenada2D(row,5);
         tableroCuadrado.setPieza(nuevaPosicion,this);
         enrocado = true;
     }
 
     public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado, int row) {
-        tableroCuadrado.removePieza(posicionActual);
+        tableroCuadrado.removerPieza(posicionActual);
         Coordenada2D nuevaPosicion = new Coordenada2D(row,3);
         tableroCuadrado.setPieza(nuevaPosicion,this);
         enrocado = true;

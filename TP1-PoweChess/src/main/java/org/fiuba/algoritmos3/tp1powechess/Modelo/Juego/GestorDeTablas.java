@@ -2,8 +2,6 @@ package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

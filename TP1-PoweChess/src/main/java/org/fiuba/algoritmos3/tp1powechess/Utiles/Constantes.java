@@ -63,4 +63,10 @@ public class Constantes {
 
     public static int NO_TIENE_IMAGEN = 1;
     public static int INDICE_IMAGEN = 1;
+
+    public static int COLUMNA_CERO = 0;
+    public static int COLUMNA_UNO = 1;
+    public static int COLUMNA_DOS = 2;
+    public static int COLUMNA_SEIS = 6;
+    public static int COLUMNA_SIETE = 7;
 }

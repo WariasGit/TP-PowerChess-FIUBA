@@ -1,5 +1,4 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero;
-import java.util.Objects;
 
 public class Coordenada2D {
     protected int[] coordenadas;
@@ -10,11 +9,11 @@ public class Coordenada2D {
         this.coordenadas[1] = col;
     }
 
-    public int getRow() {
+    public int getFila() {
         return coordenadas[0];
     }
 
-    public int getCol() {
+    public int getColumna() {
         return coordenadas[1];
     }
 

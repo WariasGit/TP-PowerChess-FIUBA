@@ -130,8 +130,8 @@ public class GestorPoderes {
     }
 
     public void desactivarPoder(Pieza pieza) {
-        int fila = pieza.getPosicionActual().getRow();
-        int columna = pieza.getPosicionActual().getCol();
+        int fila = pieza.getPosicionActual().getFila();
+        int columna = pieza.getPosicionActual().getColumna();
         controladorTablero.quitarVistaDelPoder(fila,columna);
     }
 

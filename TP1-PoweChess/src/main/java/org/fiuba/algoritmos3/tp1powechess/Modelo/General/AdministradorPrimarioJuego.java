@@ -22,17 +22,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La clase AdministradorPrimarioJuego es la encargada de manejar los eventos principales del flujo de juego.
+ * Como la inicialización, carga de partidas, gestión de fin de partida y navegación entre ventanas (menú principal y ventana de juego).
+ * Implementa la interfaz EventHandler<EventoJuego> para responder a diferentes tipos de eventos que ocurren en el juego.
+ * Actúa como mediador entre las diferentes etapas del juego y la interfaz gráfica.
+ */
 public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
     private Juego Ajedrez;
     private GestorPoderes gestorPoderes;
     private final Stage stage;
     Reproductor reproductor = new Reproductor();
 
+    /**
+     * Constructor de la clase AdministradorPrimarioJuego.
+     * @param stage La ventana (Stage) en la que se ejecuta el juego.
+     */
     public AdministradorPrimarioJuego(Stage stage) {
-
         this.stage = stage;
     }
 
+    /**
+     * Maneja los eventos del juego. Dependiendo del tipo de evento recibido, se ejecutan diferentes acciones,
+     * como iniciar el juego, volver al menú, cargar una partida guardada, terminar la partida o salir del juego.
+     * @param evento El evento de juego a manejar.
+     */
     @Override
     public void handle(EventoJuego evento) {
         System.out.println("Evento: " + evento.getEventType());
@@ -85,6 +99,11 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         }
     }
 
+    /**
+     * Inicializa un nuevo juego de ajedrez cargando los jugadores y la partida desde un archivo.
+     * @param path La ruta del archivo que contiene la información inicial de la partida en formato FEN.
+     * @throws IOException Si ocurre un error al cargar la partida.
+     */
     private void iniciarJuego(String path) throws IOException {
         Jugador jugadorBlancas = new Jugador(Configuracion.ColoresJugadores.BLANCO);
         Jugador jugadorNegras = new Jugador(Configuracion.ColoresJugadores.NEGRO);
@@ -98,10 +117,18 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         iniciarVentanaJuego();
     }
 
+    /**
+     * Carga una partida guardada desde un archivo.
+     * @throws IOException Si ocurre un error al cargar la partida guardada.
+     */
     private void cargarPartidaGuardada() throws IOException {
         iniciarJuego(Constantes.RUTA_ARCHIVO_PARTIDDA_GUARDADA);
     }
 
+    /**
+     * Inicia la ventana de juego y configura los controladores de eventos necesarios.
+     * @throws IOException Si ocurre un error al cargar la interfaz de usuario del juego.
+     */
     private void iniciarVentanaJuego() throws IOException {
         reproductor.reproducirMusicaJuego();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_JUEGO_FXML));
@@ -127,6 +154,10 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         stage.show();
     }
 
+    /**
+     * Inicia la ventana principal del juego y configura los controladores de eventos necesarios.
+     * @throws IOException Si ocurre un error al cargar la interfaz de usuario del menú principal.
+     */
     public void iniciarVentanaPrincipal() throws IOException {
         reproductor.reproducirMusicaMenu();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Constantes.RUTA_INICIO_FXML));
@@ -140,6 +171,10 @@ public class AdministradorPrimarioJuego implements EventHandler<EventoJuego> {
         stage.show();
     }
 
+    /**
+     * Muestra una ventana de confirmación al intentar cerrar la aplicación.
+     * @param windowEvent El evento de ventana que se dispara al intentar cerrar.
+     */
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {
         VistaPrimaria.mostrarConfirmacionCierre(windowEvent);
     }

@@ -42,14 +42,14 @@ public class Rey extends Pieza implements Enrocable {
     }
 
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado,int row) {
-        tableroCuadrado.removePieza(this.posicionAnterior);
-        System.out.println("Posicion a eliminar del rey: " + posicionActual.getRow() + "," + posicionActual.getCol());
+        tableroCuadrado.removerPieza(this.posicionAnterior);
+        System.out.println("Posicion a eliminar del rey: " + posicionActual.getFila() + "," + posicionActual.getColumna());
         tableroCuadrado.setPieza(new Coordenada2D(row,6),this);
     }
 
     public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado,int row) {
-        tableroCuadrado.removePieza(this.posicionAnterior);
-        System.out.println("Posicion a eliminar del rey: " + posicionActual.getRow() + "," + posicionActual.getCol());
+        tableroCuadrado.removerPieza(this.posicionAnterior);
+        System.out.println("Posicion a eliminar del rey: " + posicionActual.getFila() + "," + posicionActual.getColumna());
         tableroCuadrado.setPieza(new Coordenada2D(row,2),this);
     }
 
@@ -68,10 +68,10 @@ public class Rey extends Pieza implements Enrocable {
 
     public void cargarMovimientosDeEnroque(){
         Coordenada2D posicionActual = this.posicionActual;
-        this.movimientosDeEnroqueDerecha.add(new int[]{posicionActual.getRow(), (posicionActual.getCol() + Constantes.UNO_EN_COLUMNA)});
-        this.movimientosDeEnroqueDerecha.add(new int[]{posicionActual.getRow(), (posicionActual.getCol() + Constantes.DOS_EN_COLUMNA)});
-        this.movimientosDeEnroqueIzquierda.add(new int[]{posicionActual.getRow(), (posicionActual.getCol() - Constantes.UNO_EN_COLUMNA)});
-        this.movimientosDeEnroqueIzquierda.add(new int[]{posicionActual.getRow(), (posicionActual.getCol() - Constantes.DOS_EN_COLUMNA)});
+        this.movimientosDeEnroqueDerecha.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() + Constantes.UNO_EN_COLUMNA)});
+        this.movimientosDeEnroqueDerecha.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() + Constantes.DOS_EN_COLUMNA)});
+        this.movimientosDeEnroqueIzquierda.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() - Constantes.UNO_EN_COLUMNA)});
+        this.movimientosDeEnroqueIzquierda.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() - Constantes.DOS_EN_COLUMNA)});
     }
 
     public ArrayList<int[]> getMovimientosDeEnroqueIzquierda() {return new ArrayList<>(movimientosDeEnroqueIzquierda);}

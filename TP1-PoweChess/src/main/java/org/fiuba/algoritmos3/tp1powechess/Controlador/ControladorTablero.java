@@ -178,8 +178,8 @@ public class ControladorTablero{
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
                 if(juego.jugadorActualEnJaque()){
                     Coordenada2D posicionRey = juego.getPosicionReyAmenazado();
-                    this.posicionJaqueFila = posicionRey.getRow();
-                    this.posicionJaqueColumna = posicionRey.getCol();
+                    this.posicionJaqueFila = posicionRey.getFila();
+                    this.posicionJaqueColumna = posicionRey.getColumna();
                     vistaTablero.pintarReyJaque(posicionJaqueFila,posicionJaqueColumna );
                 }
                 else{
@@ -225,9 +225,9 @@ public class ControladorTablero{
                 if(torre.seHaEnrocado()){
                     Coordenada2D posicionAnterior = piezaCapturada.getPosicionAnterior();
                     Coordenada2D posicionActual = piezaCapturada.getPosicionActual();
-                    this.posicionOrigenFila = posicionAnterior.getRow();
-                    this.posicionOrigenColumna = posicionAnterior.getCol();
-                    moverPieza(posicionActual.getRow(), posicionActual.getCol());
+                    this.posicionOrigenFila = posicionAnterior.getFila();
+                    this.posicionOrigenColumna = posicionAnterior.getColumna();
+                    moverPieza(posicionActual.getFila(), posicionActual.getColumna());
                 }
             }
         }
