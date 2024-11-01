@@ -15,7 +15,7 @@
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></Label>
-                <ButtonBar buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
+                <ButtonBar fx:id="botonesNegras" buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
                     <buttons>
                         <Button fx:id="botonOfrecerTablasNegras" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#gestionarTablas" text="Ofrecer Tablas" />
                         <Button fx:id="botonRendirseNegras" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarAbandono" text="Rendirse" />
@@ -46,7 +46,7 @@
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></Label>
-                <ButtonBar buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
+                <ButtonBar fx:id="botonesBlancas" buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
                     <buttons>
                         <Button fx:id="botonOfrecerTablasBlancas" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarTablas" text="Ofrecer Tablas" />
                         <Button fx:id="botonRendirseBlancas" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarAbandono" text="Rendirse" />

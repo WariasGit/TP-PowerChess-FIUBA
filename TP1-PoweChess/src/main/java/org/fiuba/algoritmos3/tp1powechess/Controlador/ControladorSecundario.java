@@ -4,6 +4,7 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
@@ -20,9 +21,11 @@ import java.util.Map;
 public class ControladorSecundario {
     @FXML public FlowPane poderesNegras;
     @FXML public FlowPane poderesBlancas;
+    public ButtonBar botonesNegras;
+    public ButtonBar botonesBlancas;
+    public Button botonOfrecerTablasBlancas;
+    public Button botonOfrecerTablasNegras;
     @FXML VBox vboxPoderes;
-    @FXML private Button botonOfrecerTablasNegras;
-    @FXML private Button botonOfrecerTablasBlancas;
     private ArrayList<Jugador> JugadoresActuales;
 
     public void setJuego(ArrayList<Jugador> Jugadores) {
@@ -33,10 +36,14 @@ public class ControladorSecundario {
     public void ocultarBotones(Configuracion.ColoresJugadores color) {
         if (color == Configuracion.ColoresJugadores.BLANCO) {
             poderesBlancas.setVisible(true);
+            botonesBlancas.setVisible(true);
             poderesNegras.setVisible(false);
+            botonesNegras.setVisible(false);
         } else {
             poderesBlancas.setVisible(false);
+            botonesBlancas.setVisible(false);
             poderesNegras.setVisible(true);
+            botonesNegras.setVisible(true);
         }
     }
 

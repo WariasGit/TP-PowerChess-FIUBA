@@ -63,6 +63,7 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
         this.nombreJugadorActual.setText("Es turno de: " + juego.getNombreJugadorActual());
         controladorTablero.setJuego(juego);
         controladorSecundario.setJuego(juego.getJugadores());
+        controladorSecundario.ocultarBotones(juego.getColorJugadorActual());
     }
 
     public void setGestorPoderes(GestorPoderes gestorPoderes) {
