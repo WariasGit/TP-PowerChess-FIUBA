@@ -6,8 +6,7 @@ TP1-PoweChess es un juego de ajedrez implementado en Java utilizando JavaFX. Est
 
 ## Requisitos
 
-- **Java JDK 17.0.6** o superior. Debe ser compatible con JavaFX 17.0.6.
-- La version utilizada y probada fue Java JDK 17.0.6
+- **Java JDK 17.0.6** Debe ser compatible con JavaFX 17.0.6.
 - **Apache Maven 3.6.3** o superior
 - **JavaFX** (incluido en las dependencias del proyecto)
 
