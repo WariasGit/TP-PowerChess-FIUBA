@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class Rey extends Pieza implements Enrocable {
     protected Casillero casilleroActual;
+    private ArrayList<int[]> movimientosDeEnroqueIzquierda;
+    private ArrayList<int[]> movimientosDeEnroqueDerecha;
 
     public Rey(Configuracion.ColoresJugadores color) {
 
@@ -32,51 +34,22 @@ public class Rey extends Pieza implements Enrocable {
         this.direccionesDeMovimiento.add(new int[]{-Constantes.UNO_EN_FILA, -Constantes.UNO_EN_COLUMNA});  // Diagonal izquierda arriba
         this.direccionesDeMovimiento.add(new int[]{Constantes.UNO_EN_FILA, Constantes.UNO_EN_COLUMNA});  // Diagonal derecha abajo
         this.direccionesDeMovimiento.add(new int[]{Constantes.UNO_EN_FILA, -Constantes.UNO_EN_COLUMNA}); // Diagonal izquierda abajo
-
         // Para el Rey, las direcciones de movimiento y de amenaza son las mismas
         direccionesDeAmenaza = new ArrayList<>(direccionesDeMovimiento);
-
         this.estrategiaDeMovimiento = new MovimientoRey();
-    }
-
-    public String getTipoDePieza() {
-        return "Rey";
-    }
-
-    public boolean esCapturaValida(int inicioX, int inicioY, int finX, int finY) {
-        int difX = finX - inicioX;
-        int difY = finY - inicioY;
-
-        // Verificamos si la dirección está entre las permitidas para las amenazas
-        for (int[] direccion : direccionesDeAmenaza) {
-            Amenaza amenaza = new Amenaza(color, direccion, getMaxDistanciaDeAmenaza());
-
-            // Verificar si las coordenadas objetivo están dentro de la dirección y rango de amenaza
-            if (amenaza.coordenadasEnDireccionAmenazada(inicioX, inicioY, finX, finY)) {
-                // Verificar que la distancia sea válida (<= 1 casilla para el Rey)
-                if (Math.abs(difX) == Math.abs(direccion[0]) && Math.abs(difY) == Math.abs(direccion[1])) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // Metodo privado que verifica si la dirección del movimiento es válida
-    public boolean esDireccionDeMovimientoValida(int difX, int difY) {
-        for (int[] direccion : direccionesDeMovimiento) {
-            if (direccion[0] == difX && direccion[1] == difY) {
-                return true;
-            }
-        }
-        return false;
+        this.movimientosDeEnroqueIzquierda = new ArrayList<>();
+        this.movimientosDeEnroqueDerecha = new ArrayList<>();
     }
 
     public void enrocarSegunEnroqueDerecho(TableroCuadrado tableroCuadrado,int row) {
+        tableroCuadrado.removerPieza(this.posicionAnterior);
+        System.out.println("Posicion a eliminar del rey: " + posicionActual.getFila() + "," + posicionActual.getColumna());
         tableroCuadrado.setPieza(new Coordenada2D(row,6),this);
     }
 
     public void enrocarSegunEnroqueIzquierdo(TableroCuadrado tableroCuadrado,int row) {
+        tableroCuadrado.removerPieza(this.posicionAnterior);
+        System.out.println("Posicion a eliminar del rey: " + posicionActual.getFila() + "," + posicionActual.getColumna());
         tableroCuadrado.setPieza(new Coordenada2D(row,2),this);
     }
 
@@ -84,7 +57,32 @@ public class Rey extends Pieza implements Enrocable {
         this.casilleroActual = casillero;
     }
 
-    public boolean estaEnJaque(){
-        return this.casilleroActual.estaAmenazadoPorColorDistinto(String.valueOf(this.color));
+    public boolean estaEnJaque(){return this.casilleroActual.estaAmenazadoPorColorDistinto(color);}
+
+    public void quitarMovimientoPosible(int[] movimientoPosible) {
+        this.movimientosPosibles.removeIf(movimiento ->
+                movimiento[0] == movimientoPosible[0] && movimiento[1] == movimientoPosible[1]);
     }
+
+    public ArrayList<Amenaza> getAmenazasRecibidas() {return this.casilleroActual.getAmenazasJaque(color);}
+
+    public void cargarMovimientosDeEnroque(){
+        Coordenada2D posicionActual = this.posicionActual;
+        this.movimientosDeEnroqueDerecha.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() + Constantes.UNO_EN_COLUMNA)});
+        this.movimientosDeEnroqueDerecha.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() + Constantes.DOS_EN_COLUMNA)});
+        this.movimientosDeEnroqueIzquierda.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() - Constantes.UNO_EN_COLUMNA)});
+        this.movimientosDeEnroqueIzquierda.add(new int[]{posicionActual.getFila(), (posicionActual.getColumna() - Constantes.DOS_EN_COLUMNA)});
+    }
+
+    public ArrayList<int[]> getMovimientosDeEnroqueIzquierda() {return new ArrayList<>(movimientosDeEnroqueIzquierda);}
+
+    public ArrayList<int[]> getMovimientosDeEnroqueDerecha() {return new ArrayList<>(movimientosDeEnroqueDerecha);}
+
+    public void agregarMovimientosPosiblesParaEnrocar(ArrayList<int[]> movimientosDeEnroque){
+        if(!this.seHaMovido && !this.estaEnJaque()){
+            System.out.println("Se agregan movimientos de enroque");
+            this.movimientosPosibles.addAll(movimientosDeEnroque);
+        }
+    }
+
 }

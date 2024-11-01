@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vboxPoderes" alignment="TOP_CENTER" prefHeight="50" prefWidth="250.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorSecundario">
+<VBox fx:id="vboxPoderes" alignment="TOP_CENTER" prefHeight="50" prefWidth="250.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fiuba.algoritmos3.tp1powechess.Controlador.ControladorSecundario">
     <children>
         <VBox alignment="CENTER_LEFT">
             <children>
@@ -15,7 +15,7 @@
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></Label>
-                <ButtonBar buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
+                <ButtonBar fx:id="botonesNegras" buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
                     <buttons>
                         <Button fx:id="botonOfrecerTablasNegras" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#gestionarTablas" text="Ofrecer Tablas" />
                         <Button fx:id="botonRendirseNegras" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarAbandono" text="Rendirse" />
@@ -46,7 +46,7 @@
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin></Label>
-                <ButtonBar buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
+                <ButtonBar fx:id="botonesBlancas" buttonMinWidth="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
                     <buttons>
                         <Button fx:id="botonOfrecerTablasBlancas" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarTablas" text="Ofrecer Tablas" />
                         <Button fx:id="botonRendirseBlancas" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#gestionarAbandono" text="Rendirse" />

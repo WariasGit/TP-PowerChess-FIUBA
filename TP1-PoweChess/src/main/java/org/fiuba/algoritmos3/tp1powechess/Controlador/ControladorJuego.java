@@ -10,26 +10,29 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import javafx.stage.WindowEvent;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
+import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaPrimaria;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class ControladorJuego implements EventHandler<EventoJuego>{
     private Juego juego;
+    private GestorPoderes gestorPoderes;
     private ControladorTablero controladorTablero;
     private ControladorSecundario controladorSecundario;
-    @FXML private VBox contenedor;
     @FXML private VBox poderes;
     @FXML private GridPane tablero;
     @FXML private Rectangle jugador1_color;
     @FXML private Rectangle jugador2_color;
-    @FXML private Label jugador1;
-    @FXML private Label jugador2;
-    @FXML private Label jugadorActual;
+    @FXML private Label nombreJugador1;
+    @FXML private Label nombreJugador2;
+    @FXML private Label nombreJugadorActual;
 
     @FXML private void initialize() {
         try {
@@ -52,13 +55,20 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
 
     public void setJuego(Juego juego) {
         this.juego = juego;
-        this.jugador1.setText(juego.getNombreJugadorBlancas());
-        this.jugador2.setText(juego.getNombreJugadorNegras());
+        cargarNombresJugadores();
+        this.nombreJugador1.setText(juego.getNombreJugadorBlancas());
+        this.nombreJugador2.setText(juego.getNombreJugadorNegras());
         this.jugador1_color.setFill(colores.get(Configuracion.ColoresJugadores.BLANCO));
         this.jugador2_color.setFill(colores.get(Configuracion.ColoresJugadores.NEGRO));
-        this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
+        this.nombreJugadorActual.setText("Es turno de: " + juego.getNombreJugadorActual());
         controladorTablero.setJuego(juego);
         controladorSecundario.setJuego(juego.getJugadores());
+        controladorSecundario.ocultarBotones(juego.getColorJugadorActual());
+    }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
+        controladorTablero.setGestorPoderes(gestorPoderes);
     }
 
     private static final Map<Configuracion.ColoresJugadores, Color> colores = Map.ofEntries(
@@ -67,9 +77,24 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
     );
 
     @Override
-    public void handle(EventoJuego cambioDeTurnoEvent) {
-        this.juego.cambiarTurno();
-        this.jugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
+    public void handle(EventoJuego juegoEvent) {
+        if(juegoEvent.getEventType().equals(EventoJuego.CAMBIO_DE_TURNO_EVENT)){
+            this.juego.cambiarTurno();
+            this.nombreJugadorActual.setText("Es turno de: " + juego.getNombreJugadorActual());
+            controladorSecundario.ocultarBotones(juego.getColorJugadorActual());
+            this.juego.gestionarJaque();
+            if(!juego.sigueElJuego()){
+                generarEventoFinDePartida();
+            }
+        }
+        else if (juegoEvent.getEventType().equals(EventoJuego.TABLAS_ACEPTADAS_EVENT)) {
+            this.juego.establecerTablas();
+            generarEventoFinDePartida();
+        }
+        else if (juegoEvent.getEventType().equals(EventoJuego.RENDIRSE_EVENT)) {
+            this.juego.gestionarRendicion();
+            generarEventoFinDePartida();
+        }
     }
 
     public void mostrarConfirmacionCierre(WindowEvent windowEvent) {
@@ -82,5 +107,22 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
 
     public void guardarPartida() throws IOException {
         juego.guardarPartida();
+    }
+
+    private void generarEventoFinDePartida(){
+        tablero.fireEvent(new EventoJuego(EventoJuego.TERMINAR_PARTIDA));
+    }
+
+    public void cargarNombresJugadores() {
+        String[] nombresJugadores = VistaJuego.pedirNombresJugadores();
+        String nombreBlancas = nombresJugadores[0];
+        String nombreNegras = nombresJugadores[1];
+        juego.setNombreJugadorBlancas(nombreBlancas);
+        juego.setNombreJugadorNegras(nombreNegras);
+        System.out.println("Nombres establecidos: Blancas - " + nombreBlancas + ", Negras - " + nombreNegras);
+    }
+
+    public ControladorTablero getControladorTablero() {
+        return controladorTablero;
     }
 }

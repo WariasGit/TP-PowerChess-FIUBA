@@ -4,13 +4,10 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 public class EventoPoder extends Event {
-    public static final EventType<EventoPoder> DOBLE_JUEGO = new EventType<>("Activa el doble-juego.");
     public static final EventType<EventoPoder> ESCUDO = new EventType<>("Activa el escudo.");
-    public static final EventType<EventoPoder> EVOLUCION = new EventType<>("Activa la evolución.");
     public static final EventType<EventoPoder> FREEZE = new EventType<>("Activa el freeze.");
     public static final EventType<EventoPoder> LIMPIEZA = new EventType<>("Activa la limpieza.");
     public static final EventType<EventoPoder> ROBAR = new EventType<>("Activa el robar.");
-    public static final EventType<EventoPoder> VUELO = new EventType<>("Activa el vuelo.");
 
     public EventoPoder(EventType<? extends Event> eventType) {
         super(eventType);

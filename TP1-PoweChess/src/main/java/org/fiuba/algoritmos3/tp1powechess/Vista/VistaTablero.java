@@ -21,6 +21,12 @@ public class VistaTablero {
         rectangle.setFill(Color.GREEN);
     }
 
+    public void pintarReyJaque(Integer fila, Integer columna) {
+        StackPane stackPane = this.posiciones[fila][columna];
+        Rectangle rectangle = (Rectangle) stackPane.getChildren().get(0);
+        rectangle.setFill(Color.RED);
+    }
+
     public void pintarCasilleroColorOriginal(Integer fila, Integer columna) {
         StackPane stackPane = this.posiciones[fila][columna];
         Rectangle rectangle = (Rectangle) stackPane.getChildren().get(0);

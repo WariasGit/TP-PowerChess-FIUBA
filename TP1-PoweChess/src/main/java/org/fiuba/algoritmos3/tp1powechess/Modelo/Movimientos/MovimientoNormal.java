@@ -5,37 +5,37 @@ import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 
+/**
+ * La clase MovimientoNormal implementa la interfaz EstrategiaDeMovimiento y define la estrategia de movimiento
+ * normal para las piezas en el tablero de ajedrez.
+ * Permite mover una pieza, verificando si el movimiento es válido y capturando una pieza enemiga si es necesario.
+ */
 public class MovimientoNormal implements EstrategiaDeMovimiento {
+
+    /**
+     * Ejecuta un movimiento, si es válido, moviéndola de una coordenada inicial a una coordenada final el tablero.
+     * @param coordenadaInicial La coordenada donde se encuentra la pieza a mover.
+     * @param coordenadaFinal La coordenada a la que se desea mover la pieza.
+     * @param tableroCuadrado El tablero en el que se realiza el movimiento.
+     * @return La pieza capturada si el movimiento resultó en una captura; de lo contrario, devuelve null.
+     */
     public Pieza ejecutarMovimientoSiEsValido(Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tableroCuadrado){
-        Coordenada2D diferenciasCoordenadas = coordenadaFinal.calcularDiferenciaCon(coordenadaInicial);
-
-        Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getRow(),coordenadaInicial.getCol());
-        Casillero casilleroFinal = tableroCuadrado.getCasillero(coordenadaFinal.getRow(),coordenadaFinal.getCol());
-
+        Casillero casilleroInicial = tableroCuadrado.getCasillero(coordenadaInicial.getFila(),coordenadaInicial.getColumna());
         Pieza piezaAMover = casilleroInicial.getPieza();
-
-        if (esMovimientoValido(piezaAMover,coordenadaInicial, coordenadaFinal, casilleroFinal, diferenciasCoordenadas, tableroCuadrado)) {
-            return moverPiezaYCapturarSiEsNecesario(piezaAMover, coordenadaInicial, coordenadaFinal, tableroCuadrado);
-        }
-
-        return null; // Movimiento no válido
+        return moverPiezaYCapturarSiEsNecesario(piezaAMover, coordenadaInicial, coordenadaFinal, tableroCuadrado);
     }
 
-    private boolean esMovimientoValido(Pieza pieza,Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, Casillero casilleroFinal, Coordenada2D diferencias, TableroCuadrado tablero) {
-        // Verificar si es un movimiento simple o una captura
-        boolean esMovimientoNormal = !casilleroFinal.estaOcupado() && pieza.esDireccionDeMovimientoValida(diferencias.getRow(), diferencias.getCol());
-        boolean esCaptura = casilleroFinal.estaOcupado() && !casilleroFinal.getPieza().esDelMismoColorQue(pieza) &&
-                pieza.esCapturaValida(diferencias.getRow(), diferencias.getCol(), diferencias.getRow(), diferencias.getCol());
-
-        return (esMovimientoNormal || esCaptura) && tablero.caminoEstaDesocupado(coordenadaInicial.getRow(),coordenadaInicial.getCol(),coordenadaFinal.getRow(),coordenadaFinal.getCol());
-    }
-
+    /**
+     * Mueve una pieza de su casillero inicial a su casillero final y captura una pieza enemiga si está presente.
+     * @param piezaAMover La pieza que se desea mover.
+     * @param coordenadaInicial La coordenada inicial de la pieza.
+     * @param coordenadaFinal La coordenada final a la que se desea mover la pieza.
+     * @param tablero El tablero en el que se realiza el movimiento.
+     * @return La pieza capturada si había una en la coordenada final; de lo contrario, devuelve null.
+     */
     private Pieza moverPiezaYCapturarSiEsNecesario(Pieza piezaAMover, Coordenada2D coordenadaInicial, Coordenada2D coordenadaFinal, TableroCuadrado tablero) {
-        piezaAMover.marcarComoMovida();
-
         // Remover la pieza del casillero inicial
-        tablero.removePieza(coordenadaInicial);
-
+        tablero.removerPieza(coordenadaInicial);
         // Colocar la pieza en el casillero final
         return tablero.setPieza(coordenadaFinal, piezaAMover); // Devuelve la pieza capturada si la hubiera, sino null
     }

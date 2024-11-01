@@ -15,10 +15,6 @@ public class ControladorPrimario {
         System.out.println("Se quiere salir del juego");
     }
 
-    public void opciones(){
-        //
-    }
-
     public void cargarPartida(){
         panePrincipal.fireEvent(new EventoJuego(EventoJuego.CARGAR_PARTIDA_GUARDADA));
         System.out.println("Se carga una partida guardada");

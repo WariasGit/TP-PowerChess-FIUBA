@@ -1,0 +1,87 @@
+@startuml
+
+
+class Casillero
+class ContextoPoder
+class GestorPoderes
+class GestorDeJaque
+class Juego
+class Jugador
+interface Enrocable
+class GestorDeEnroque
+class GestorDeTablas
+class EstrategiaDeMovimiento
+class MovimientoRey
+class MovimientoNormal
+class GestorDeAmenazas
+class Turno
+class Amenaza
+class Poder
+class Freeze
+class Limpieza
+class Escudo
+class Robar
+class TableroCuadrado
+class EstadoDeOcupacionCasillero
+class EstadoDesocupado
+class EstadoOcupado
+interface Movible
+class Pieza
+class Caballo
+class Alfil
+class Reina
+class PeonBase
+class Torre
+class Rey
+class PeonAscendente
+class PeonDescendente
+
+
+MovimientoRey --|> EstrategiaDeMovimiento
+MovimientoNormal --|> EstrategiaDeMovimiento
+EstadoDesocupado --|> EstadoDeOcupacionCasillero
+EstadoOcupado --|> EstadoDeOcupacionCasillero
+Pieza <|-- Caballo
+Pieza <|-- Alfil
+Pieza <|-- Reina
+Pieza <|-- Torre
+Pieza <|-- Rey
+Pieza <|-- PeonBase
+PeonBase <|-- PeonAscendente
+PeonBase <|-- PeonDescendente
+Rey --|> Enrocable
+Torre --|> Enrocable
+
+' Ejemplo de asociaciones (ajusta estas relaciones según el diagrama)
+Poder <|-- Freeze
+Poder <|-- Escudo
+Poder <|-- Limpieza
+Poder <|-- Robar
+
+Jugador -- Turno
+Pieza --> EstrategiaDeMovimiento
+Juego --> GestorDeTablas
+Juego --> GestorDeEnroque
+Juego --> Turno
+Juego --> TableroCuadrado
+Juego --> Pieza
+Juego --> Jugador
+GestorDeAmenazas --> Amenaza
+Jugador --> Rey
+Jugador --> Pieza
+Juego --|> ContextoPoder
+Enrocable <|.. MovimientoRey
+Pieza  --|> Movible
+TableroCuadrado --> Casillero
+Casillero --> EstadoDeOcupacionCasillero
+Casillero --> GestorDeAmenazas
+Pieza --> Poder
+Amenaza --> GestorDeAmenazas
+Juego --> GestorDeTablas
+Juego --> GestorDeJaque
+Juego --> GestorDeEnroque
+GestorPoderes ..> Poder
+GestorPoderes ..> Turno
+
+
+@enduml

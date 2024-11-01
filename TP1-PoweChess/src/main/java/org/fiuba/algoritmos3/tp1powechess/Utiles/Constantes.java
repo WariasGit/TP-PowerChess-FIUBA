@@ -7,8 +7,14 @@ public class Constantes {
     public static final String RUTA_ARCHIVO_GUARDAR_PARTIDA = "src/main/resources/PartidaGuardada.txt";
     public static final String RUTA_ARCHIVO_PARTIDDA_GUARDADA = "PartidaGuardada.txt";
 
-    public static final String RUTA_MUSICA_MENU = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_menu.mp3";
-    public static final String RUTA_MUSICA_JUEGO = "/org/fiuba/algoritmos3/tp1powechess/sonidos/rock_partida.mp3";
+    public static final String RUTA_STICKER_ALAS = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/alas.png";
+    public static final String RUTA_STICKER_CONGELADO = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/congelado.png";
+    public static final String RUTA_STICKER_DOBLE = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/doble.png";
+    public static final String RUTA_STICKER_ESCUDO = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/escudo.png";
+    public static final String RUTA_STICKER_EVOLUCION = "/org/fiuba/algoritmos3/tp1powechess/StickersPoderes/evolucion.png";
+
+    public static final String RUTA_MUSICA_MENU = "/sonidos/rock_menu.mp3";
+    public static final String RUTA_MUSICA_JUEGO = "/sonidos/rock_partida.mp3";
 
     public static String REY = "Rey";
     public static String REINA = "Reina";
@@ -40,6 +46,7 @@ public class Constantes {
     public static final int CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES = 4;
     public static final int MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS = 6;
 
+    public static final int INDICE_MOVIMIENTO_SIMPLE = 0;
     public static int INDICE_MOVIMIENTO_DOBLE = 1;
     public static int COORDENADA_FILA = 0;
     public static int COORDENADA_COLUMNA = 1;
@@ -52,7 +59,14 @@ public class Constantes {
     public static int UNO_EN_COLUMNA = 1;
     public static int DOS_EN_FILA = 2;
     public static int DOS_EN_COLUMNA = 2;
+    public static final int SIETE_EN_FILA = 7;
 
     public static int NO_TIENE_IMAGEN = 1;
     public static int INDICE_IMAGEN = 1;
+
+    public static int COLUMNA_CERO = 0;
+    public static int COLUMNA_UNO = 1;
+    public static int COLUMNA_DOS = 2;
+    public static int COLUMNA_SEIS = 6;
+    public static int COLUMNA_SIETE = 7;
 }

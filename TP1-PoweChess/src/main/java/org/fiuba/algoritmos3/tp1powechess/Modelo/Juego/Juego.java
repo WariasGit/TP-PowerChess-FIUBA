@@ -1,5 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.ContextoPoder;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -9,161 +9,135 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import java.io.*;
 import java.util.*;
 
-public class Juego {
+/**
+ * Clase que representa un juego de ajedrez, gestionando el estado del juego,
+ * los jugadores, el tablero y la lógica de movimientos.
+ */
+public class Juego implements ContextoPoder {
     private Configuracion.EstadoJuego estado;
-    private List<Jugador> jugadores;
-    private Turno turno;
-    private TableroCuadrado tablero;
+    private final TableroCuadrado tablero;
     private String ganador;
-    private int contadorMovimientosParaTablas;
-    private int contadorMovimientosParaChequearPosiciones;
-    private int contadorMovimientosTotales;
-    private HashMap<String, Integer> historialPosiciones;
-    private int piezasEnJuego;
-
+    private final GestorDeTablas gestorDeTablas;
+    private final GestorDeJaque gestorDeJaque;
+    private final GestorDeEnroque gestorDeEnroque;
+    private final GestorDeTurnoJugadores gestorDeTurnoJugadores;
+    private Pieza ultimaPiezaCapturada;
 
     public Juego(List<Jugador> jugadores) throws IOException {
         this.estado = Configuracion.EstadoJuego.EN_JUEGO;
-        this.jugadores = jugadores;
-        turno = new Turno(jugadores);
+        gestorDeTurnoJugadores = new GestorDeTurnoJugadores(jugadores);
         tablero = new TableroCuadrado();
-        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        contadorMovimientosTotales = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-        piezasEnJuego = Constantes.CANTIDAD_PIEZAS_INICIALES;
-        historialPosiciones = new HashMap<>();
+        gestorDeTablas = new GestorDeTablas();
+        gestorDeJaque = new GestorDeJaque();
+        gestorDeEnroque = new GestorDeEnroque();
+        gestorDeJaque.setTablero(tablero);
+        gestorDeEnroque.setTablero(tablero);
     }
 
-    public void gestionarRendicion() {
-        terminarPartida();
-        ganador = turno.getNombreOponente();
-    }
-
-    public void establecerJaqueMate() {
-        ganador = turno.getNombreTurno();
-        estado = Configuracion.EstadoJuego.FINALIZADO;
-    }
-
-    public void establecerTablas() {
-        estado = Configuracion.EstadoJuego.TABLAS;
-        System.out.println("Tablas");
-    }
-
-    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
-
-    public String getNombreJugadorBlancas() {
-        return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();
-    }
-
-    public String getNombreJugadorNegras() {
-        return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();
-    }
-
-    public String getNombreJugadorActual() {return turno.getTurno().getNombre();}
-
-    public TableroCuadrado getTablero() {return tablero;}
-
-    public ArrayList<Jugador> getJugadores() {
-        return new ArrayList<>(jugadores);
-    }
-
+    /**
+     * Realiza un movimiento en el tablero.
+     * @param origenFila Fila de la posición de origen de la pieza.
+     * @param origenColumna Columna de la posición de origen de la pieza.
+     * @param destinoFila Fila de la posición de destino.
+     * @param destinoColumna Columna de la posición de destino.
+     * @return true si el movimiento se realizó con éxito; false en caso contrario.
+     */
     public Boolean mover(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
+        boolean sePuedeMover = false;
         try {
-            Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
-            contadorMovimientosTotales++;
-            if(piezaComida != null){
-                quitarPiezaDeJuador(piezaComida);
-                restarUnaPieza();
-                reiniciarContadorMovimientoParaTablas();
-                reiniciarContadorMovimientosParaChequearPosiciones();
-                limpiarHistorialPosiciones();
-            }else{
-                gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
-                if (contadorMovimientosTotales >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
-                    guardarEstadoTablero();
+            if(esturnoDeMover(origenFila, origenColumna)){
+                Pieza piezaComida = tablero.moverPieza(origenFila, origenColumna, destinoFila, destinoColumna);
+                this.ultimaPiezaCapturada = piezaComida;
+                gestionarJaque();
+                //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
+                if(gestorDeTurnoJugadores.jaqueJugadorActual()){
+                    revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
+                }
+                else{
+                    aplicarLogicaDeMovimientos(piezaComida, destinoFila, destinoColumna);
+                    sePuedeMover = true;
                 }
             }
-            gestionarTablas();
-            imprimirTablero();
-            //imprimirEstadoDebug();
-            return true;
-        } catch (Exception e) {
+            else{
+                System.out.println("Espera a tu turno para realizar un movimiento");
+            }
+        }
+        catch (Exception e) {
             System.out.println("Ocurrió un error: " + e.getMessage());
-            return false;
+        }
+        return sePuedeMover;
+    }
+
+    /**
+     * Revierte un movimiento en el tablero.
+     * @param origenFila Fila de la posición de origen.
+     * @param origenColumna Columna de la posición de origen.
+     * @param destinoFila Fila de la posición de destino.
+     * @param destinoColumna Columna de la posición de destino.
+     */
+    private void revertirMovimiento(int origenFila, int origenColumna, int destinoFila, int destinoColumna) {
+        System.out.print("Debe realizar un movimiento para evitar el Jaque");
+        Optional<Pieza> piezaMovida = tablero.getPieza(destinoFila, destinoColumna);
+        Coordenada2D posicionAnterior = new Coordenada2D(origenFila, origenColumna);
+        Coordenada2D posicionActual = new Coordenada2D(destinoFila, destinoColumna);
+        if(piezaMovida.isPresent()){
+            Pieza piezaActual = piezaMovida.get();
+            //Se revierte el movimiento, devolviendo la pieza a la posicion anterior.
+            tablero.setPieza(posicionAnterior, piezaActual);
+            //Se remueve la pieza de la posicion a la que se habia movido.
+            tablero.removerPieza(posicionActual);
+            piezaActual.corrigeMarcandoComoNoMovida();
         }
     }
 
-
-
-    private void imprimirTablero() {
-        Casillero[][] casilleros = tablero.getTablero();
-        int dimension = tablero.getDimension();
-        // Imprimir los índices de las columnas
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
-        // Imprimir el tablero con bordes
-        for (int i = 0; i < dimension; i++) {
-            // Imprimir índice de la fila
-            System.out.print(i + " |");
-            for (int j = 0; j < dimension; j++) {
-                Pieza pieza = casilleros[i][j].getPieza();
-                if (pieza != null) {
-                    System.out.print(" " + pieza.getCaracterFEN() + " ");
-                } else {
-                    System.out.print(" . ");  // Espacio vacío
-                }
+    /**
+     * Aplica la lógica de movimientos después de un movimiento exitoso.
+     * @param piezaComida Pieza que fue comida (capturada) durante el movimiento. Puede ser null si fue un movimiento sin captura.
+     * @param destinoFila Fila de la posición de destino.
+     * @param destinoColumna Columna de la posición de destino.
+     */
+    private void aplicarLogicaDeMovimientos(Pieza piezaComida, int destinoFila, int destinoColumna) {
+        gestorDeTablas.aumentarContadorDeMovimientosTotales();
+        calcularMovimientosPosiblesIniciales();
+        if(piezaComida != null){
+            quitarPiezaDeJuador(piezaComida);
+            gestorDeTablas.restarUnaPieza();
+            gestorDeTablas.reiniciarContadorMovimientoParaTablas();
+            gestorDeTablas.reiniciarContadorMovimientosParaChequearPosiciones();
+            gestorDeTablas.limpiarHistorialPosiciones();
+        }else{
+            gestionarContadorMovimientosParaTablas(destinoFila, destinoColumna);
+            if (gestorDeTablas.getContadorDeMovimientosTotales() >= Constantes.CANTIDAD_MOVIMIENTOS_PARAGUARDAR_POSICIONES){
+                guardarEstadoTablero();
             }
-            System.out.println("| " + i);  // Cerrar el borde de la fila
         }
-        // Imprimir los índices de las columnas nuevamente
-        System.out.print("   ");
-        for (int col = 0; col < dimension; col++) {
-            System.out.print(col + "  ");
-        }
-        System.out.println();
+        gestionarTablas();
+        gestorDeTablas.imprimirEstadoDebug();
     }
 
-
-
+    private boolean esturnoDeMover(int fila, int columna){
+        Optional<Pieza> piezaAMover = tablero.getPieza(fila, columna);
+        Pieza piezaActual = null;
+        if(piezaAMover.isPresent()){
+            piezaActual = piezaAMover.get();
+        }
+        return gestorDeTurnoJugadores.jugadorActualPuedeMoverEstaPieza(piezaActual);
+    }
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
-        if(piezaComida.getColor() == Configuracion.ColoresJugadores.BLANCO) {
-            jugadores.get(Configuracion.Jugadores.BLANCAS).quitarPiezaEnJuego(piezaComida);
-        } else {
-            jugadores.get(Configuracion.Jugadores.NEGRAS).quitarPiezaEnJuego(piezaComida);
-        }
-    }
-
-    private void restarUnaPieza() {
-        piezasEnJuego--;
-    }
-
-    private void reiniciarContadorMovimientosParaChequearPosiciones() {
-        contadorMovimientosParaChequearPosiciones = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
-    }
-
-    private void limpiarHistorialPosiciones() {
-        historialPosiciones.clear();
+        gestorDeTurnoJugadores.quitarPiezaComidaDelJugador(piezaComida);
     }
 
     private void guardarEstadoTablero() {
         String estadoTablero = tablero.estadoActualTablero();
-        historialPosiciones.put(estadoTablero, historialPosiciones.getOrDefault(estadoTablero, Constantes.CERO) + Constantes.UNO);
-        contadorMovimientosParaChequearPosiciones++;
-    }
-
-    private void reiniciarContadorMovimientoParaTablas() {
-        contadorMovimientosParaTablas = Constantes.CANTIDAD_MOVIMIENTOS_INICIALES;
+        gestorDeTablas.guardarEstadoTablero(estadoTablero);
     }
 
     private void gestionarContadorMovimientosParaTablas(int fila, int columna) {
         if(movioPeon(fila, columna)){
-            reiniciarContadorMovimientoParaTablas();
+            gestorDeTablas.reiniciarContadorMovimientoParaTablas();
         } else {
-            contadorMovimientosParaTablas++;
+            gestorDeTablas.aumentarContadorDeMovimientosParaTablas();
         }
     }
 
@@ -175,33 +149,11 @@ public class Juego {
         return false;
     }
 
-    public void cambiarTurno() {turno.gestionarTurno();}
-
-
-    /*Implemento los metodos "leerArchivoFen" y "setearPiezasDesdeFEN"
-    para cargar una partida desde un archivo de texto,la notacion de FEN
-    es una forma de almacenar el estado de una partida en caso de ser guardada*/
-
-    public static String leerArchivoFen(String rutaArchivo) throws IOException {
-        InputStream inputStream = Constantes.class.getClassLoader().getResourceAsStream(rutaArchivo);
-
-        if (inputStream == null) {
-            throw new FileNotFoundException("InputStream is null, Archivo no encontrado: " + rutaArchivo);
-        }
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            String linea = reader.readLine();
-            if (linea == null || linea.length() < 4) {
-                throw new IllegalArgumentException("La cadena FEN no es válida");
-            }
-            return linea;
-        } catch (IOException e) {
-            if (e instanceof FileNotFoundException) {
-                throw new FileNotFoundException("Archivo no encontrado: " + rutaArchivo);
-            } else {
-                throw new IOException("Error al leer el archivo: " + rutaArchivo, e);
-            }
-        }
+    public void cargarPartida(String path) throws IOException {
+        String cadenaFen = GestorDeArchivos.leerArchivoFen(path);
+        setearPiezasDesdeFEN(cadenaFen);
+        tablero.setearCasillerosReyes();
+        guardarReferenciaDeReyes();
     }
 
     public void setearPiezasDesdeFEN(String cadenaFen) {
@@ -219,126 +171,115 @@ public class Juego {
                 Pieza pieza = Configuracion.getPieza(caracter);
                 if (pieza != null) {
                     tablero.setPiezaInicial(fila, columna, pieza);
+                    Coordenada2D posicionActual = new Coordenada2D(fila, columna);
+                    pieza.setPosicionInicial(posicionActual);
                     guardarPiezaJugador(pieza);
                 }
                 columna++;
             }
         }
+        calcularMovimientosPosiblesIniciales();
+    }
+
+    private void calcularMovimientosPosiblesIniciales() {this.tablero.calcularMovimientosPosiblesIniciales();}
+
+    private void guardarReferenciaDeReyes(){
+        Optional<Pieza> reyBlancoOpcional = tablero.getReyBlancoPosicionInicial();
+        Optional<Pieza> reyNegroOpcional = tablero.getReyNegroPosicionInicial();
+        ArrayList<Rey> reyes = new ArrayList<>();
+        if(reyBlancoOpcional.isPresent()){
+            Rey reyBlanco = (Rey) reyBlancoOpcional.get();
+            gestorDeJaque.setReyBlanco(reyBlanco);
+            reyes.add(reyBlanco);
+        }
+        if(reyNegroOpcional.isPresent()){
+            Rey reyNegro = (Rey) reyNegroOpcional.get();
+            gestorDeJaque.setReyNegro(reyNegro);
+            reyes.add(reyNegro);
+        }
+        gestorDeTurnoJugadores.guardarReyes(reyes);
+    }
+
+    public Optional<Pieza> getPieza(int fila, int columna) {
+        return tablero.getPieza(fila, columna);
+    }
+
+    public Turno getTurno() {
+        return gestorDeTurnoJugadores.obtenerTurno();
+    }
+
+    public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
+
+    public void gestionarRendicion() {
+        ganador = gestorDeTurnoJugadores.obtenerNombreOponente();
+        terminarPartida();
+    }
+
+    public void establecerTablas(){this.estado = Configuracion.EstadoJuego.TABLAS;}
+
+    public void establecerJaqueMate(){
+        ganador = gestorDeTurnoJugadores.obtenerNombreOponente();
+        this.estado = Configuracion.EstadoJuego.JAQUE_MATE;
+    }
+
+    public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
+
+    public void cambiarTurno() {gestorDeTurnoJugadores.cambiarTurno();}
+
+    public void guardarPartida() {
+        String estadoTablero = tablero.estadoActualTablero();
+        GestorDeArchivos.guardarFen(estadoTablero);
     }
 
     private void guardarPiezaJugador(Pieza pieza) {
-        if(pieza.getColor() == Configuracion.ColoresJugadores.BLANCO) {
-            jugadores.get(Configuracion.Jugadores.BLANCAS).setPiezasEnJuego(pieza);
-        } else {
-            jugadores.get(Configuracion.Jugadores.NEGRAS).setPiezasEnJuego(pieza);
-        }
+        gestorDeTurnoJugadores.guardarPiezaJugador(pieza);
     }
 
-    public void cargarPartida(String path) throws IOException {
-        String linea = leerArchivoFen(path);
-        setearPiezasDesdeFEN(linea);
-    }
+    public void actualizarMovimientosPieza(int fila, int columna) {tablero.actualizarMovimientosPieza(fila, columna);}
 
-    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {
-        return tablero.getPieza(i, j);
-    }
-
-    public void actualizarMovimientosPieza(int fila, int columna) {
-        tablero.actualizarMovimientosPieza(fila, columna);
-    }
-
-    private Boolean jugadorActualEstaEnJaque(){
-        return turno.estaEnJaqueJugadorActual();
-    }
-
-    private Boolean jugadorActualTieneMovimientos(){
-        return turno.tieneMovimientosJugadorActual();
-    }
-
-    private void tablasPorAhogado(){
-        if(!jugadorActualTieneMovimientos() && !jugadorActualEstaEnJaque()){
+    private void gestionarTablas() {
+        gestorDeTablas.gestionarTablas(gestorDeTurnoJugadores.obtenerJugadorTurnoActual(), gestorDeTurnoJugadores.obtenerJugadores());
+        if(gestorDeTablas.haytablas()){
             establecerTablas();
         }
     }
 
-    private Boolean jugadoresTienenMaterialMinimo(){
-        boolean continuar = false;
-        for (Jugador jugador : jugadores) {
-            if(jugador.tieneMaterialSuficiente()){
-                continuar = true;
-            }
-        }
-        return continuar;
-    }
-
-    private void tablasPorMaterialInsuficiente(){
-        if(!jugadoresTienenMaterialMinimo()){
-            establecerTablas();
+    public void gestionarJaque(){
+        gestorDeJaque.gestionarJaque(gestorDeTurnoJugadores.obtenerJugadorTurnoActual());
+        if(gestorDeJaque.mateJugadorActual(gestorDeTurnoJugadores.obtenerJugadorTurnoActual())){
+            establecerJaqueMate();
+            System.out.print("Jaque Mate");
         }
     }
 
-    private void tablasPorMovimientos(){
-        if(contadorMovimientosParaTablas == Constantes.CANTIDAD_MOVIMIENTOS_PARA_TABLAS){
-            establecerTablas();
-        }
-    }
+    public void gestionarEnroque(){gestorDeEnroque.gestionarEnroque(gestorDeTurnoJugadores.obtenerReyJugadorActual());}
 
-    private boolean hayMovimientosRepetidos() {
-        for (Integer contador : historialPosiciones.values()) {
-            if (contador >= 3) {
-                return true;
-            }
-        }
-        return false;
-    }
+    public void setNombreJugadorBlancas(String nombre){gestorDeTurnoJugadores.setNombreJugadorBlancas(nombre);}
 
-    private void tablasPorMovimientosRepetidos(){
-        if (hayMovimientosRepetidos()) {
-            establecerTablas();
-        }
-    }
+    public void setNombreJugadorNegras(String nombre){gestorDeTurnoJugadores.setNombreJugadorNegras(nombre);}
 
-    public void gestionarTablas() {
-        tablasPorAhogado();
-        if(piezasEnJuego <= Constantes.MINIMO_PIEZAS_PARA_CHEQUEAR_TABLAS) {
-            tablasPorMaterialInsuficiente();
-        }
-        tablasPorMovimientos();
-        if(contadorMovimientosParaChequearPosiciones >= Constantes.CANTIDAD_MOVIMIENTOS_MINIMOS_PARA_CHEQUEAR_POSICIONES) {
-            tablasPorMovimientosRepetidos();
-        }
-    }
+    public Configuracion.EstadoJuego getEstado(){return this.estado;}
 
-    public void guardarPartida() throws IOException {
-        String estadoTablero = tablero.estadoActualTablero();
-        try {
-            FileWriter escritorArchivo = new FileWriter(Constantes.RUTA_ARCHIVO_GUARDAR_PARTIDA);
-            BufferedWriter bufferEscritor = new BufferedWriter(escritorArchivo);
-            bufferEscritor.write(estadoTablero);
-            bufferEscritor.close();
-            System.out.println("Archivo guardado exitosamente.");
-        } catch (IOException e) {
-            System.out.println("Ocurrió un error al escribir el archivo.");
-            e.printStackTrace();
-        }
-    }
+    public String getNombreGanador(){return this.ganador;}
 
-    public Configuracion.ColoresJugadores getColorJugadorActual() {
-        return turno.getColorJugadorActual();
-    }
+    public String getNombreJugadorBlancas() {return gestorDeTurnoJugadores.obtenerNombreJugadorBlancas();}
 
+    public String getNombreJugadorNegras() {return gestorDeTurnoJugadores.obtenerNombreJugadorNegras();}
 
+    public String getNombreJugadorActual() {return gestorDeTurnoJugadores.obtenerNombreJugadorActual();}
 
+    public TableroCuadrado getTablero() {return tablero;}
 
-    public void imprimirEstadoDebug() {
-        System.out.println("----- Estado de Debug -----");
-        System.out.println("Movimientos para tablas: " + contadorMovimientosParaTablas);
-        System.out.println("Movimientos para chequear posiciones: " + contadorMovimientosParaChequearPosiciones);
-        System.out.println("Movimientos totales: " + contadorMovimientosTotales);
-        System.out.println("Tamaño del historial de posiciones: " + historialPosiciones.size());
-        System.out.println("Piezas en juego: " + piezasEnJuego);
-        System.out.println("---------------------------");
-    }
+    public ArrayList<Jugador> getJugadores() {return new ArrayList<>(gestorDeTurnoJugadores.obtenerJugadores());}
 
+    public Configuracion.ColoresJugadores getColorJugadorActual() {return gestorDeTurnoJugadores.obtenerColorJugadorActual();}
+
+    public Optional<Pieza> getPiezaActual(Integer i, Integer j) {return tablero.getPieza(i, j);}
+
+    public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
+
+    public Boolean jugadorActualEnJaque(){return gestorDeTurnoJugadores.jaqueJugadorActual();}
+
+    public Coordenada2D getPosicionReyAmenazado(){return gestorDeTurnoJugadores.obtenerCoordenadasReyAmenazado();}
 }
 

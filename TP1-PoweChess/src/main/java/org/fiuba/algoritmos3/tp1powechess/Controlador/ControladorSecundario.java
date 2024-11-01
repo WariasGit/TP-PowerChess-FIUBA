@@ -2,7 +2,9 @@ package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
@@ -14,15 +16,16 @@ import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.VistaJuego;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ControladorSecundario {
     @FXML public FlowPane poderesNegras;
     @FXML public FlowPane poderesBlancas;
+    public ButtonBar botonesNegras;
+    public ButtonBar botonesBlancas;
+    public Button botonOfrecerTablasBlancas;
+    public Button botonOfrecerTablasNegras;
     @FXML VBox vboxPoderes;
-    @FXML private Button botonOfrecerTablasNegras;
-    @FXML private Button botonRendirseNegras;
-    @FXML private Button botonOfrecerTablasBlancas;
-    @FXML private Button botonRendirseBlancas;
     private ArrayList<Jugador> JugadoresActuales;
 
     public void setJuego(ArrayList<Jugador> Jugadores) {
@@ -30,37 +33,64 @@ public class ControladorSecundario {
         cargarPoderes();
     }
 
+    public void ocultarBotones(Configuracion.ColoresJugadores color) {
+        if (color == Configuracion.ColoresJugadores.BLANCO) {
+            poderesBlancas.setVisible(true);
+            botonesBlancas.setVisible(true);
+            poderesNegras.setVisible(false);
+            botonesNegras.setVisible(false);
+        } else {
+            poderesBlancas.setVisible(false);
+            botonesBlancas.setVisible(false);
+            poderesNegras.setVisible(true);
+            botonesNegras.setVisible(true);
+        }
+    }
 
     private void cargarPoderes(){
-        System.out.println("Cargando poderes");
         cargarPoderesBlancas(JugadoresActuales.get(Configuracion.Jugadores.BLANCAS));
         cargarPoderesNegras(JugadoresActuales.get(Configuracion.Jugadores.NEGRAS));
     }
 
     private void cargarPoderesBlancas(Jugador jugador) {
-        System.out.println("Cargando blancas");
-        for(Poder poder: jugador.getListaPoderes()){
-            Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(this::gestorPoderes);
-            poderesBlancas.getChildren().add(botonPoder);
+        poderesBlancas.getChildren().clear();
+        for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
+            String nombrePoder = entry.getKey();
+            int cantidadUsos = entry.getValue();
+            if (cantidadUsos > 0) {
+                Button botonPoder = new Button(nombrePoder + " (" + cantidadUsos + ")");
+                botonPoder.setOnAction(this::gestorPoderes);
+                poderesBlancas.getChildren().add(botonPoder);
+            }
         }
     }
 
     private void cargarPoderesNegras(Jugador jugador) {
-        System.out.println("Cargando negras");
-        for(Poder poder: jugador.getListaPoderes()){
-            Button botonPoder = new Button(poder.getNombre());
-            botonPoder.setOnAction(this::gestorPoderes);
-            poderesNegras.getChildren().add(botonPoder);
+        poderesNegras.getChildren().clear();
+        for (Map.Entry<String, Integer> entry : jugador.getListaPoderes().entrySet()) {
+            String nombrePoder = entry.getKey();
+            int cantidadUsos = entry.getValue();
+            if (cantidadUsos > 0) {
+                Button botonPoder = new Button(nombrePoder + " (" + cantidadUsos + ")");
+                botonPoder.setOnAction(this::gestorPoderes);
+                poderesNegras.getChildren().add(botonPoder);
+            }
         }
     }
 
     private void gestorPoderes(javafx.event.ActionEvent actionEvent) {
         Button boton = (Button) actionEvent.getSource();
-        String nombrePoder = boton.getText();
+        String nombrePoder = boton.getText().split(" \\(")[0].trim();
+
         EventType<EventoPoder> eventoPoder = Configuracion.getEventoPoder(nombrePoder);
-        vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
-        System.out.println("Poder: " + nombrePoder);
+        if (eventoPoder != null) {
+            vboxPoderes.fireEvent(new EventoPoder(eventoPoder));
+            System.out.println("Poder: " + nombrePoder);
+            cargarPoderes();
+
+        } else {
+            System.out.println("Poder no encontrado: " + nombrePoder);
+        }
     }
 
     public void gestionarTablas(javafx.event.ActionEvent actionEvent){
@@ -75,8 +105,7 @@ public class ControladorSecundario {
         Boolean continuar = VistaJuego.mostrarConfirmacionTablas(NombreJugadorTablas);
         if(continuar){
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.TABLAS_ACEPTADAS_EVENT));
-        }
-        else {
+        } else {
             vboxPoderes.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
         }
     }
@@ -84,7 +113,7 @@ public class ControladorSecundario {
     public void gestionarAbandono(javafx.event.ActionEvent actionEvent){
         Boolean continuar = VistaJuego.mostrarConfirmacionAbandono();
         if(continuar){
-            //juego.gestionarRendicion();
+            vboxPoderes.fireEvent(new EventoJuego(EventoJuego.RENDIRSE_EVENT));
         }
     }
 }

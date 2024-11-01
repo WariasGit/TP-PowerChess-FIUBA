@@ -1,7 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Controlador;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -12,17 +10,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoJuego;
-import org.fiuba.algoritmos3.tp1powechess.Controlador.Eventos.EventoPoder;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Amenaza.Amenaza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.General.GestorPoderes;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Juego.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Pieza;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Pieza.Torre;
+import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Constantes;
 import org.fiuba.algoritmos3.tp1powechess.Vista.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,23 +27,28 @@ public class ControladorTablero{
     private Juego juego;
     private Integer posicionOrigenFila;
     private Integer posicionOrigenColumna;
+    private Integer posicionJaqueFila;
+    private Integer posicionJaqueColumna;
+    private GestorPoderes gestorPoderes;
     private final StackPane[][] posiciones = new StackPane[Configuracion.TamanioVentana.DIMENSION_TABLERO][Configuracion.TamanioVentana.DIMENSION_TABLERO];
-    private VistaTablero vistaTablero = new VistaTablero(posiciones);
-
+    private final VistaTablero vistaTablero = new VistaTablero(posiciones);
+    private final VistaPoderes vistaPoderes = new VistaPoderes(posiciones);
 
     public void initialize() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                StackPane stackPane = new StackPane();
-                stackPane.setOnMouseClicked(this::handleEventoClick);
-                Rectangle rectangle = new Rectangle(75, 75);
-                rectangle.setArcHeight(2.0);
-                rectangle.setArcWidth(2.0);
-                rectangle.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));
-                rectangle.setStroke(Color.BLACK);
-                rectangle.setStrokeType(StrokeType.INSIDE);
-                stackPane.getChildren().add(rectangle);
-                tableroGrid.add(stackPane, col, row);
+                StackPane celdaPrincipal = new StackPane();
+                StackPane celdaSecundaria = new StackPane();
+                celdaPrincipal.setOnMouseClicked(this::handleEventoClick);
+                Rectangle rectanguloColor = new Rectangle(75, 75);
+                rectanguloColor.setArcHeight(2.0);
+                rectanguloColor.setArcWidth(2.0);
+                rectanguloColor.setFill((row + col) % 2 == 0 ? Color.WHITE : Color.web("#0000006e"));
+                rectanguloColor.setStroke(Color.BLACK);
+                rectanguloColor.setStrokeType(StrokeType.INSIDE);
+                celdaPrincipal.getChildren().add(rectanguloColor);
+                celdaPrincipal.getChildren().add(celdaSecundaria);
+                tableroGrid.add(celdaPrincipal, col, row);
             }
         }
     }
@@ -55,6 +56,10 @@ public class ControladorTablero{
     public void setJuego(Juego juego) {
         this.juego = juego;
         cargarPiezas();
+    }
+
+    public void setGestorPoderes(GestorPoderes gestorPoderes) {
+        this.gestorPoderes = gestorPoderes;
     }
 
     public void cargarPiezas() {
@@ -65,6 +70,7 @@ public class ControladorTablero{
             Integer i = fila != null ? fila : 0;
             Integer j = columna != null ? columna : 0;
             this.posiciones[i][j] = (StackPane) stackPane;
+            StackPane celdaSecundaria = (StackPane) ((StackPane) stackPane).getChildren().get(1);
             Optional<Pieza> pieza = tablero.getPieza(i, j);
             if (pieza.isPresent()) {
                 Pieza piezaActual = pieza.get();
@@ -72,7 +78,7 @@ public class ControladorTablero{
                 vistaImagen.setFitWidth(70);
                 vistaImagen.setFitHeight(70);
                 vistaImagen.setPreserveRatio(true);
-                this.posiciones[i][j].getChildren().add(vistaImagen);
+                celdaSecundaria.getChildren().add(vistaImagen);
             }
         }
     }
@@ -89,62 +95,62 @@ public class ControladorTablero{
         StackPane stackPane = (StackPane) mouseEvent.getSource();
         int fila = getGridIndex(GridPane.getRowIndex(stackPane));
         int columna = getGridIndex(GridPane.getColumnIndex(stackPane));
-        System.out.println("Click en: " + fila + ", " + columna);
         // Obtener la pieza en la posición actual, si existe
         Optional<Pieza> piezaActual = juego.getPiezaActual(fila, columna);
         if (esPrimeraSeleccion()) {
+            //System.out.println("Primer click");
             // Primer click
             if (piezaActual.isPresent()) {
                 Pieza pieza = piezaActual.get();
+
                 // Si el jugador está tocando una pieza del color correcto para su turno
                 if (juego.getColorJugadorActual() == pieza.getColor()) {
-                    System.out.println("Primer click en una pieza del color del jugador actual");
+                    //System.out.println("Primer click en una pieza del color del jugador actual");
                     manejarPrimerClick(pieza, fila, columna);  // Guardar selección y pintar
                 }
                 else {
                     // Seleccionando una pieza del rival, por ejemplo para poderes
-                    System.out.println("Primer click en una pieza del color rival");
+                    //System.out.println("Primer click en una pieza del color rival");
+                    gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                     aplicarColorCasillero(fila, columna);  // Pintar casillero de pieza rival
                     guardarPosicionOrigen(fila, columna);  // Guardar la selección
                 }
             }
-            else {
-                // Si se selecciona un casillero vacío en el primer click, no se hace nada
-                System.out.println("Primer click en casillero vacío, no se hace nada");
-            }
         }
         else {
-            // Segundo click
-            System.out.println("Segundo click");
+            //System.out.println("Segundo click");
+            //Segundo click en una posicion diferente al primero
             if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+                //System.out.println("Segundo click diferente al primero");
                 if (piezaActual.isPresent()) {
                     Pieza pieza = piezaActual.get();
                     if (juego.getColorJugadorActual() == pieza.getColor()) {
-                        // Click en una nueva pieza propia, cambiar la selección
-                        System.out.println("Cambiando selección a una nueva pieza del mismo jugador");
+                        //System.out.println("Segundo click en una pieza propia");
+                        //El segundo click fue sobre una pieza propia
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         manejarPrimerClick(pieza, fila, columna);  // Cambiar selección y pintar el nuevo casillero
                     }
                     else {
-                        // Segundo click en pieza del rival, deseleccionar
-                        System.out.println("Click en pieza rival");
+                        //El segundo click fue sobre una pieza rival
+                        //System.out.println("Segundo click en una pieza rival");
                         manejarSegundoClick(fila, columna);  // Ejecutar movimiento
                         quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                         quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-                        limpiarSeleccion();  // No se cambia turno
+                        limpiarSeleccion();
                     }
                 }
                 else {
-                    // Segundo click en un casillero vacío,
+                    //El segundo click fue en un espacio vacio
+                    //System.out.println("Segundo click en espacio vacio");
                     manejarSegundoClick(fila, columna);  // Ejecutar movimiento
-                    quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
-                    limpiarSeleccion();  // Limpiar selección después del segundo click
                     quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
+                    limpiarSeleccion();
                 }
             }
             else {
-                //Segundo click en la misma pieza, deseleccionar
+                //System.out.println("Segundo click igual al primero");
+                gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
                 quitarMovimientosPosibles();  // Remover las posibles jugadas mostradas
                 quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
                 limpiarSeleccion();  // No se cambia turno
@@ -152,36 +158,78 @@ public class ControladorTablero{
         }
     }
 
-
     private void manejarPrimerClick(Pieza piezaActual ,int fila, int columna) {
         aplicarColorCasillero(fila, columna);
         guardarPosicionOrigen(fila, columna); //Cuenta como seleccionar una pieza, el siguiente click se gestiona como el segundo
         juego.actualizarMovimientosPieza(fila, columna);
+        gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
+        juego.gestionarJaque();
+        juego.gestionarEnroque();
         mostrarMovimientosPosibles(piezaActual);
     }
 
     private void manejarSegundoClick(int fila, int columna) {
         if(fila != this.posicionOrigenFila || columna != this.posicionOrigenColumna){
+            gestorPoderes.setPosiciones(fila, columna); // Establecer posiciones
             boolean movimientoValido = juego.mover(this.posicionOrigenFila, this.posicionOrigenColumna, fila, columna);
             if (movimientoValido) {
                 moverPieza(fila, columna);
-                juego.actualizarMovimientosPieza(fila, columna);
+                gestionarSiHayEnroque();
                 tableroGrid.fireEvent(new EventoJuego(EventoJuego.CAMBIO_DE_TURNO_EVENT));
+                if(juego.jugadorActualEnJaque()){
+                    Coordenada2D posicionRey = juego.getPosicionReyAmenazado();
+                    this.posicionJaqueFila = posicionRey.getFila();
+                    this.posicionJaqueColumna = posicionRey.getColumna();
+                    vistaTablero.pintarReyJaque(posicionJaqueFila,posicionJaqueColumna );
+                }
+                else{
+                    if(posicionJaqueFila != null && posicionJaqueColumna != null){
+                        vistaTablero.pintarCasilleroColorOriginal(posicionJaqueFila, posicionJaqueColumna );
+                    }
+                    posicionJaqueFila = null;
+                    posicionJaqueColumna = null;
+                }
             } else {
                 System.out.println("Movimiento invalido, se muestra la vista del error");
             }
         }
     }
 
-    private void moverPieza(int fila, int columna) {
-        System.out.println("Moviendo pieza");
-        ImageView imageView = (ImageView) this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna].getChildren().remove(1);
+    private void moverPieza(int destinoFila, int destinoColumna) {
+        // Obtener la celda de origen y destino
+        System.out.println("La posicion de origen es: " + posicionOrigenFila + ", " + posicionOrigenColumna);
+        System.out.println("La posicion de destino es: " + destinoFila + ", " + destinoColumna);
+        StackPane celdaOrigen = this.posiciones[this.posicionOrigenFila][this.posicionOrigenColumna];
+        StackPane celdaDestino = this.posiciones[destinoFila][destinoColumna];
+        // Obtener la celda secundaria, que contiene la imagen de las piezas y los stickers de poderes.
+        StackPane contenidoOrigen = (StackPane) celdaOrigen.getChildren().get(Constantes.INDICE_IMAGEN);
 
-        if (this.posiciones[fila][columna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
-            this.posiciones[fila][columna].getChildren().add(imageView);
+        if (this.posiciones[destinoFila][destinoColumna].getChildren().size() == Constantes.NO_TIENE_IMAGEN) {
+            // Mover el contenido (pieza + stickers) a la celda de destino
+            celdaDestino.getChildren().add(contenidoOrigen);
         }else{
-            this.posiciones[fila][columna].getChildren().remove(Constantes.INDICE_IMAGEN);
-            this.posiciones[fila][columna].getChildren().add(imageView);
+            this.posiciones[destinoFila][destinoColumna].getChildren().remove(Constantes.INDICE_IMAGEN);
+            // Mover el contenido (pieza + stickers) a la celda de destino
+            celdaDestino.getChildren().add(contenidoOrigen);
+        }
+        // Limpiar la celda de origen
+        celdaOrigen.getChildren().remove(contenidoOrigen);
+        quitarColorCasilleroSeleccionado(this.posicionOrigenFila, this.posicionOrigenColumna);
+    }
+
+    private void gestionarSiHayEnroque() {
+        Pieza piezaCapturada = juego.getUltimaPiezaCapturada();
+        if(piezaCapturada != null){
+            if(Objects.equals(piezaCapturada.getTipoDePieza(), Constantes.TORRE)){
+                Torre torre = (Torre) piezaCapturada;
+                if(torre.seHaEnrocado()){
+                    Coordenada2D posicionAnterior = piezaCapturada.getPosicionAnterior();
+                    Coordenada2D posicionActual = piezaCapturada.getPosicionActual();
+                    this.posicionOrigenFila = posicionAnterior.getFila();
+                    this.posicionOrigenColumna = posicionAnterior.getColumna();
+                    moverPieza(posicionActual.getFila(), posicionActual.getColumna());
+                }
+            }
         }
     }
 
@@ -195,20 +243,21 @@ public class ControladorTablero{
         this.posicionOrigenColumna = null;
     }
 
-    private void aplicarColorCasillero(Integer fila, Integer columna) {
-        vistaTablero.pintarCasilleroSeleccionado(fila, columna);
-    }
+    private void aplicarColorCasillero(Integer fila, Integer columna) {vistaTablero.pintarCasilleroSeleccionado(fila, columna);}
 
-    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {
-        vistaTablero.pintarCasilleroColorOriginal(fila, columna);
-    }
+    private void quitarColorCasilleroSeleccionado(Integer fila, Integer columna) {vistaTablero.pintarCasilleroColorOriginal(fila, columna);}
 
-    private void mostrarMovimientosPosibles(Pieza piezaActual) {
-            vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());
-    }
+    private void mostrarMovimientosPosibles(Pieza piezaActual) {vistaTablero.mostrarMovimientosPosibles(piezaActual.getMovimientosPosibles());}
 
     private void quitarMovimientosPosibles() {
         vistaTablero.limpiarCasillerosPintados();
     }
+
+    public void agregarEscudo(){vistaPoderes.setEscudo(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void agregarCongelado(){vistaPoderes.setCongelado(posicionOrigenFila, posicionOrigenColumna);}
+
+    public void quitarVistaDelPoder(int fila, int columna) {vistaPoderes.quitarPoder(fila, columna);}
+
 
 }
