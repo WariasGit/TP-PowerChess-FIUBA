@@ -61,7 +61,6 @@ Poder <|-- Robar
 Jugador -- Turno
 Pieza --> EstrategiaDeMovimiento
 Juego --> GestorDeTablas
-Juego --> GestorDeJaque
 Juego --> GestorDeEnroque
 Juego --> Turno
 Juego --> TableroCuadrado
