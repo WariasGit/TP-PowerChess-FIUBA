@@ -1,6 +1,5 @@
 package org.fiuba.algoritmos3.tp1powechess.Modelo.Juego;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Poder.ContextoPoder;
-import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Casillero;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.Coordenada2D;
 import org.fiuba.algoritmos3.tp1powechess.Modelo.Tablero.TableroCuadrado;
 import org.fiuba.algoritmos3.tp1powechess.Utiles.Configuracion;
@@ -16,19 +15,17 @@ import java.util.*;
  */
 public class Juego implements ContextoPoder {
     private Configuracion.EstadoJuego estado;
-    private final List<Jugador> jugadores;
-    private final Turno turno;
     private final TableroCuadrado tablero;
     private String ganador;
     private final GestorDeTablas gestorDeTablas;
     private final GestorDeJaque gestorDeJaque;
     private final GestorDeEnroque gestorDeEnroque;
+    private final GestorDeTurnoJugadores gestorDeTurnoJugadores;
     private Pieza ultimaPiezaCapturada;
 
     public Juego(List<Jugador> jugadores) throws IOException {
         this.estado = Configuracion.EstadoJuego.EN_JUEGO;
-        this.jugadores = jugadores;
-        turno = new Turno(jugadores);
+        gestorDeTurnoJugadores = new GestorDeTurnoJugadores(jugadores);
         tablero = new TableroCuadrado();
         gestorDeTablas = new GestorDeTablas();
         gestorDeJaque = new GestorDeJaque();
@@ -53,7 +50,7 @@ public class Juego implements ContextoPoder {
                 this.ultimaPiezaCapturada = piezaComida;
                 gestionarJaque();
                 //Se verifica si luego de mover, el jugador continua en jaque, o si un movimiento lo pone en jaque.
-                if(turno.estaEnJaqueJugadorActual()){
+                if(gestorDeTurnoJugadores.jaqueJugadorActual()){
                     revertirMovimiento(origenFila, origenColumna, destinoFila, destinoColumna);
                 }
                 else{
@@ -124,15 +121,11 @@ public class Juego implements ContextoPoder {
         if(piezaAMover.isPresent()){
             piezaActual = piezaAMover.get();
         }
-        return turno.estaPiezaEsDelJugadorActual(piezaActual);
+        return gestorDeTurnoJugadores.jugadorActualPuedeMoverEstaPieza(piezaActual);
     }
 
     private void quitarPiezaDeJuador(Pieza piezaComida) {
-        if(piezaComida.getColor() == Configuracion.ColoresJugadores.BLANCO) {
-            jugadores.get(Configuracion.Jugadores.BLANCAS).quitarPiezaEnJuego(piezaComida);
-        } else {
-            jugadores.get(Configuracion.Jugadores.NEGRAS).quitarPiezaEnJuego(piezaComida);
-        }
+        gestorDeTurnoJugadores.quitarPiezaComidaDelJugador(piezaComida);
     }
 
     private void guardarEstadoTablero() {
@@ -204,7 +197,7 @@ public class Juego implements ContextoPoder {
             gestorDeJaque.setReyNegro(reyNegro);
             reyes.add(reyNegro);
         }
-        turno.setReyes(reyes);
+        gestorDeTurnoJugadores.guardarReyes(reyes);
     }
 
     public Optional<Pieza> getPieza(int fila, int columna) {
@@ -212,26 +205,26 @@ public class Juego implements ContextoPoder {
     }
 
     public Turno getTurno() {
-        return this.turno;
+        return gestorDeTurnoJugadores.obtenerTurno();
     }
 
     public boolean sigueElJuego(){return this.estado == Configuracion.EstadoJuego.EN_JUEGO;}
 
     public void gestionarRendicion() {
-        ganador = turno.getNombreOponente();
+        ganador = gestorDeTurnoJugadores.obtenerNombreOponente();
         terminarPartida();
     }
 
     public void establecerTablas(){this.estado = Configuracion.EstadoJuego.TABLAS;}
 
     public void establecerJaqueMate(){
-        ganador = turno.getNombreOponente();
+        ganador = gestorDeTurnoJugadores.obtenerNombreOponente();
         this.estado = Configuracion.EstadoJuego.JAQUE_MATE;
     }
 
     public void terminarPartida() {estado = Configuracion.EstadoJuego.FINALIZADO;}
 
-    public void cambiarTurno() {turno.gestionarTurno();}
+    public void cambiarTurno() {gestorDeTurnoJugadores.cambiarTurno();}
 
     public void guardarPartida() {
         String estadoTablero = tablero.estadoActualTablero();
@@ -239,58 +232,54 @@ public class Juego implements ContextoPoder {
     }
 
     private void guardarPiezaJugador(Pieza pieza) {
-        if(pieza.getColor() == Configuracion.ColoresJugadores.BLANCO) {
-            jugadores.get(Configuracion.Jugadores.BLANCAS).setPiezasEnJuego(pieza);
-        } else {
-            jugadores.get(Configuracion.Jugadores.NEGRAS).setPiezasEnJuego(pieza);
-        }
+        gestorDeTurnoJugadores.guardarPiezaJugador(pieza);
     }
 
     public void actualizarMovimientosPieza(int fila, int columna) {tablero.actualizarMovimientosPieza(fila, columna);}
 
     private void gestionarTablas() {
-        gestorDeTablas.gestionarTablas(turno.getTurno(), jugadores);
+        gestorDeTablas.gestionarTablas(gestorDeTurnoJugadores.obtenerJugadorTurnoActual(), gestorDeTurnoJugadores.obtenerJugadores());
         if(gestorDeTablas.haytablas()){
             establecerTablas();
         }
     }
 
     public void gestionarJaque(){
-        gestorDeJaque.gestionarJaque(turno.getTurno());
-        if(gestorDeJaque.mateJugadorActual(turno.getTurno())){
+        gestorDeJaque.gestionarJaque(gestorDeTurnoJugadores.obtenerJugadorTurnoActual());
+        if(gestorDeJaque.mateJugadorActual(gestorDeTurnoJugadores.obtenerJugadorTurnoActual())){
             establecerJaqueMate();
             System.out.print("Jaque Mate");
         }
     }
 
-    public void gestionarEnroque(){gestorDeEnroque.gestionarEnroque(turno.getReyJugadorActual());}
+    public void gestionarEnroque(){gestorDeEnroque.gestionarEnroque(gestorDeTurnoJugadores.obtenerReyJugadorActual());}
 
-    public void setNombreJugadorBlancas(String nombre){jugadores.get(Configuracion.Jugadores.BLANCAS).setNombre(nombre);}
+    public void setNombreJugadorBlancas(String nombre){gestorDeTurnoJugadores.setNombreJugadorBlancas(nombre);}
 
-    public void setNombreJugadorNegras(String nombre){jugadores.get(Configuracion.Jugadores.NEGRAS).setNombre(nombre);}
+    public void setNombreJugadorNegras(String nombre){gestorDeTurnoJugadores.setNombreJugadorNegras(nombre);}
 
     public Configuracion.EstadoJuego getEstado(){return this.estado;}
 
     public String getNombreGanador(){return this.ganador;}
 
-    public String getNombreJugadorBlancas() {return jugadores.get(Configuracion.Jugadores.BLANCAS).getNombre();}
+    public String getNombreJugadorBlancas() {return gestorDeTurnoJugadores.obtenerNombreJugadorBlancas();}
 
-    public String getNombreJugadorNegras() {return jugadores.get(Configuracion.Jugadores.NEGRAS).getNombre();}
+    public String getNombreJugadorNegras() {return gestorDeTurnoJugadores.obtenerNombreJugadorNegras();}
 
-    public String getNombreJugadorActual() {return turno.getNombreTurno();}
+    public String getNombreJugadorActual() {return gestorDeTurnoJugadores.obtenerNombreJugadorActual();}
 
     public TableroCuadrado getTablero() {return tablero;}
 
-    public ArrayList<Jugador> getJugadores() {return new ArrayList<>(jugadores);}
+    public ArrayList<Jugador> getJugadores() {return new ArrayList<>(gestorDeTurnoJugadores.obtenerJugadores());}
 
-    public Configuracion.ColoresJugadores getColorJugadorActual() {return turno.getColorJugadorActual();}
+    public Configuracion.ColoresJugadores getColorJugadorActual() {return gestorDeTurnoJugadores.obtenerColorJugadorActual();}
 
     public Optional<Pieza> getPiezaActual(Integer i, Integer j) {return tablero.getPieza(i, j);}
 
     public Pieza getUltimaPiezaCapturada(){return this.ultimaPiezaCapturada;}
 
-    public Boolean jugadorActualEnJaque(){return turno.estaEnJaqueJugadorActual();}
+    public Boolean jugadorActualEnJaque(){return gestorDeTurnoJugadores.jaqueJugadorActual();}
 
-    public Coordenada2D getPosicionReyAmenazado(){return turno.getPosicionReyActualAmenazado();}
+    public Coordenada2D getPosicionReyAmenazado(){return gestorDeTurnoJugadores.obtenerCoordenadasReyAmenazado();}
 }
 

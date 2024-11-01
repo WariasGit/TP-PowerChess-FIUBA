@@ -38,15 +38,6 @@ public class Turno {
         turnoActual = (turnoActual + 1) % jugadores.size();
     }
 
-    /*private void verificarPoderesJugadorActual() {
-        List<Pieza> piezas = getTurno().getPiezasEnJuego();
-        for (Pieza pieza : piezas) {
-            if (pieza.tienePoderActivo()) {
-                pieza.poder();
-            }
-        }
-    }*/
-
     public Jugador getTurno() {
         return jugadores.get(turnoActual);
     }
@@ -60,27 +51,37 @@ public class Turno {
         return getOponente().getNombre();
     }
 
-    public String getNombreTurno() {
-        return getTurno().getNombre();
-    }
-
-    public Boolean estaEnJaqueJugadorActual() {
-        return getTurno().estaEnJaque();
-    }
-
     public Configuracion.ColoresJugadores getColorJugadorActual() {
         return getTurno().getColor();
     }
 
-    public boolean estaPiezaEsDelJugadorActual(Pieza piezaAMover){
-        return (piezaAMover.getColor() == getColorJugadorActual());
-    }
+    public boolean estaPiezaEsDelJugadorActual(Pieza piezaAMover){return (piezaAMover.getColor() == getColorJugadorActual());}
+
+    private Jugador getJugadorBlancas(){return jugadores.get(Configuracion.Jugadores.BLANCAS);}
+
+    private Jugador getJugadorNegras(){return jugadores.get(Configuracion.Jugadores.NEGRAS);}
+
+    public List<Jugador> getJugadores() {return this.jugadores;}
 
     public void setGestorPoderes(GestorPoderes gestorPoderes) {
         this.gestorPoderes = gestorPoderes;
     }
 
-    public Coordenada2D getPosicionReyActualAmenazado() {return getTurno().getPosicionActualRey();}
+    public void quitarPiezaJugadorBlancas(Pieza piezaComida) {getJugadorBlancas().quitarPiezaEnJuego(piezaComida);}
+
+    public void quitarPiezaJugaddorNegras(Pieza piezaComida) {getJugadorNegras().quitarPiezaEnJuego(piezaComida);}
+
+    public void guardarPiezaJugadorBlancas(Pieza pieza) {getJugadorBlancas().setPiezasEnJuego(pieza);}
+
+    public void guardarPiezaJugadorNegras(Pieza pieza) {getJugadorNegras().setPiezasEnJuego(pieza);}
+
+    public void setNombreJugadorBlancas(String nombreJugador) {getJugadorBlancas().setNombre(nombreJugador);}
+
+    public void setNOmbreJugadorNegras(String nombreJugador) {getJugadorNegras().setNombre(nombreJugador);}
+
+    public String getNombreJugadorBlancas() {return getJugadorBlancas().getNombre();}
+
+    public String getNombreJugadorNegras() {return getJugadorNegras().getNombre();}
 }
 
 

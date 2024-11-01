@@ -79,7 +79,7 @@ public class ControladorJuego implements EventHandler<EventoJuego>{
     public void handle(EventoJuego juegoEvent) {
         if(juegoEvent.getEventType().equals(EventoJuego.CAMBIO_DE_TURNO_EVENT)){
             this.juego.cambiarTurno();
-            this.nombreJugadorActual.setText("Jugador actual: " + juego.getNombreJugadorActual());
+            this.nombreJugadorActual.setText("Es turno de: " + juego.getNombreJugadorActual());
             controladorSecundario.ocultarBotones(juego.getColorJugadorActual());
             this.juego.gestionarJaque();
             if(!juego.sigueElJuego()){
